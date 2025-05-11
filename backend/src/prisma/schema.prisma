@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+  // output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id           String   @id @default(uuid())
+  name         String
+  description  String?
+  sellingPrice Decimal
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  purchases    Purchase[]
+  sales        Sale[]
+  prices       ProductPrice[]
+  lots         Lot[]
+  StockSummary StockSummary[]
+}
+
+model Supplier {
+  id          String   @id @default(uuid())
+  name        String
+  contactInfo String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  purchases Purchase[]
+}
+
+model Purchase {
+  id             String    @id @default(uuid())
+  productId      String
+  supplierId     String
+  lotNumber      String
+  quantity       Int
+  unitCost       Decimal
+  expirationDate DateTime?
+  purchasedAt    DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  product  Product  @relation(fields: [productId], references: [id])
+  supplier Supplier @relation(fields: [supplierId], references: [id])
+  lot      Lot?     @relation(fields: [lotNumber, productId], references: [lotNumber, productId])
+}
+
+model Sale {
+  id        String   @id @default(uuid())
+  productId String
+  lotNumber String?
+  quantity  Int
+  soldAt    DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model StockSummary {
+  id                String   @id @default(uuid())
+  productId         String
+  lotNumber         String
+  availableQuantity Int
+  lastUpdated       DateTime @updatedAt
+
+  product Product @relation(fields: [productId], references: [id])
+
+  @@unique([productId, lotNumber])
+}
+
+model ProductPrice {
+  id          String   @id @default(uuid())
+  productId   String
+  price       Decimal
+  effectiveAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model Lot {
+  lotNumber      String
+  productId      String
+  expirationDate DateTime?
+
+  purchases Purchase[]
+  Product   Product    @relation(fields: [productId], references: [id])
+
+  @@id([lotNumber, productId])
+}
