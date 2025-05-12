@@ -1,7 +1,7 @@
 import Fastify from 'fastify';
 import fastifyCors from '@fastify/cors';
 import fastifyHelmet from '@fastify/helmet';
-import { productRoutes, purchaseRoutes, supplierRoutes } from './routes';
+import { productRoutes, purchaseRoutes, salesRoutes, stockSummaryRoutes, supplierRoutes } from './routes';
 
 const app = Fastify({ logger: true });
 
@@ -13,25 +13,26 @@ app.register(fastifyHelmet);
 // app.register(authRoutes);
 
 // Register routes
-app.register(productRoutes, { prefix: '/products' })
-app.register(supplierRoutes, { prefix: '/suppliers' })
-app.register(purchaseRoutes, { prefix: '/purchases' })
-
+app.register(productRoutes, { prefix: '/products' });
+app.register(supplierRoutes, { prefix: '/suppliers' });
+app.register(purchaseRoutes, { prefix: '/purchases' });
+app.register(salesRoutes, { prefix: '/sales' });
+app.register(stockSummaryRoutes, { prefix: '/stocks' });
 
 // Central error handler
 app.setErrorHandler((error, request, reply) => {
-  request.log.error(error)
+  request.log.error(error);
 
   if (error.validation) {
-    return reply.code(400).send({ message: 'Validation error', errors: error.validation })
+    return reply.code(400).send({ message: 'Validation error', errors: error.validation });
   }
 
   if (error.code === 'P2002') {
-    return reply.code(409).send({ message: 'Duplicate entry' })
+    return reply.code(409).send({ message: 'Duplicate entry' });
   }
 
-  return reply.code(500).send({ message: 'Internal server error' })
-})
+  return reply.code(500).send({ message: 'Internal server error' });
+});
 
 const startServer = async () => {
   try {
