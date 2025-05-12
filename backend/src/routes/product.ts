@@ -11,7 +11,7 @@ const productSchema = z.object({
   // sellingPrice: z.number().positive('Price must be greater than zero'),
 });
 
-const productUpdateSchema = productSchema.partial()
+const productUpdateSchema = productSchema.partial();
 
 // TypeScript types inferred from Zod
 // export type ProductInput = z.infer<typeof productSchema>
@@ -38,27 +38,38 @@ const productRoutes = (app: FastifyInstance) => {
     return reply.send(product);
   });
 
+  // Get product
+  app.get('/by-name/:name', async (request, reply) => {
+    const paramsSchema = z.object({ name: z.string() });
+    const { name } = paramsSchema.parse(request.params);
+
+    const products = await prisma.product.findMany({
+      where: {
+        name,
+      },
+    });
+    return reply.send(products);
+  });
+
   app.put('/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const data = productUpdateSchema.parse(request.body);
 
-    try {
-      const updated = await prisma.product.update({ where: { id }, data });
-      return reply.send(updated);
-    } catch {
-      return reply.code(404).send({ error: 'Not found' });
-    }
+    const existing = await prisma.product.findUnique({ where: { id } });
+    if (!existing) return reply.code(404).send({ error: 'Not found' });
+
+    const updated = await prisma.product.update({ where: { id }, data });
+    return reply.send(updated);
   });
 
   app.delete('/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
 
-    try {
-      await prisma.product.delete({ where: { id } });
-      return reply.code(204).send();
-    } catch {
-      return reply.code(404).send({ error: 'Not found' });
-    }
+    const existing = await prisma.product.findUnique({ where: { id } });
+    if (!existing) return reply.code(404).send({ error: 'Not found' });
+
+    await prisma.product.delete({ where: { id } });
+    return reply.code(204).send();
   });
 };
 
