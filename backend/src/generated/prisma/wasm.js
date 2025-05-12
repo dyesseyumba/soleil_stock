@@ -137,7 +137,6 @@ exports.Prisma.PurchaseScalarFieldEnum = {
   id: 'id',
   productId: 'productId',
   supplierId: 'supplierId',
-  lotNumber: 'lotNumber',
   quantity: 'quantity',
   unitCost: 'unitCost',
   expirationDate: 'expirationDate',
@@ -148,7 +147,6 @@ exports.Prisma.PurchaseScalarFieldEnum = {
 exports.Prisma.SaleScalarFieldEnum = {
   id: 'id',
   productId: 'productId',
-  lotNumber: 'lotNumber',
   quantity: 'quantity',
   soldAt: 'soldAt',
   updatedAt: 'updatedAt'
@@ -157,7 +155,7 @@ exports.Prisma.SaleScalarFieldEnum = {
 exports.Prisma.StockSummaryScalarFieldEnum = {
   id: 'id',
   productId: 'productId',
-  lotNumber: 'lotNumber',
+  nextToExpire: 'nextToExpire',
   availableQuantity: 'availableQuantity',
   lastUpdated: 'lastUpdated'
 };
@@ -167,12 +165,6 @@ exports.Prisma.ProductPriceScalarFieldEnum = {
   productId: 'productId',
   price: 'price',
   effectiveAt: 'effectiveAt'
-};
-
-exports.Prisma.LotScalarFieldEnum = {
-  lotNumber: 'lotNumber',
-  productId: 'productId',
-  expirationDate: 'expirationDate'
 };
 
 exports.Prisma.SortOrder = {
@@ -192,8 +184,7 @@ exports.Prisma.ModelName = {
   Purchase: 'Purchase',
   Sale: 'Sale',
   StockSummary: 'StockSummary',
-  ProductPrice: 'ProductPrice',
-  Lot: 'Lot'
+  ProductPrice: 'ProductPrice'
 };
 
 /**

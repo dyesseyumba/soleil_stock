@@ -7,7 +7,6 @@ const prisma = new PrismaClient();
 const purchaseSchema = z.object({
   productId: z.string().uuid(),
   supplierId: z.string().uuid(),
-  lotNumber: z.string().min(2),
   quantity: z.number().int().positive(),
   unitCost: z.number().positive(),
   expirationDate: z.date().optional(),
@@ -19,33 +18,35 @@ const purchaseRoutes = (app: FastifyInstance) => {
   app.post('/', async (request, reply) => {
     const body = purchaseSchema.parse(request.body);
 
-    const { productId, lotNumber, quantity } = body;
+    const { productId, quantity, expirationDate } = body;
 
     const result = await prisma.$transaction(async (tx) => {
       const purchase = await tx.purchase.create({
         data: body,
       });
 
-      await tx.stockSummary.upsert({
-        where: {
-          productId_lotNumber: {
-            productId,
-            lotNumber,
-          },
-        },
+      const stock = await tx.stockSummary.upsert({
+        where: { productId },
         update: {
           availableQuantity: {
             increment: quantity,
           },
-          // lastUpdated: new Date(),
         },
         create: {
           productId,
-          lotNumber,
           availableQuantity: quantity,
-          lastUpdated: new Date(),
+          nextToExpire: expirationDate,
         },
+        select: { id: true, nextToExpire: true },
       });
+
+      if (
+        expirationDate != undefined &&
+        stock.nextToExpire != undefined &&
+        new Date(expirationDate) < new Date(stock.nextToExpire)
+      ) {
+        await tx.stockSummary.update({ where: { id: stock.id }, data: { nextToExpire: expirationDate } });
+      }
 
       return purchase;
     });
@@ -101,7 +102,7 @@ const purchaseRoutes = (app: FastifyInstance) => {
   app.put('/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const data = purchaseSchema.parse(request.body);
-    const { productId, lotNumber, quantity } = data;
+    const { productId, expirationDate, quantity } = data;
 
     const purchase = await prisma.$transaction(async (tx) => {
       const existing = await tx.purchase.findUnique({ where: { id } });
@@ -109,26 +110,33 @@ const purchaseRoutes = (app: FastifyInstance) => {
 
       const updated = await tx.purchase.update({ where: { id }, data });
 
-      await tx.stockSummary.upsert({
-        where: {
-          productId_lotNumber: { productId, lotNumber },
-        },
+      const stock = await tx.stockSummary.upsert({
+        where: { productId },
         create: {
           productId,
-          lotNumber,
           availableQuantity: data.quantity,
+          nextToExpire: expirationDate,
         },
         update: {
           availableQuantity: {
             increment: quantity - existing.quantity,
           },
         },
+        select: { id: true, nextToExpire: true },
       });
 
-      return reply.send(updated);;
+      if (
+        expirationDate != undefined &&
+        stock.nextToExpire != undefined &&
+        new Date(expirationDate) < new Date(stock.nextToExpire)
+      ) {
+        await tx.stockSummary.update({ where: { id: stock.id }, data: { nextToExpire: expirationDate } });
+      }
+
+      return reply.send(updated);
     });
 
-    return reply.send(purchase);;
+    return reply.send(purchase);
   });
 
   // Delete a purchase
@@ -140,12 +148,7 @@ const purchaseRoutes = (app: FastifyInstance) => {
       if (!existing) throw new Error('Purchase not found');
 
       await tx.stockSummary.update({
-        where: {
-          productId_lotNumber: {
-            productId: existing.productId,
-            lotNumber: existing.lotNumber,
-          },
-        },
+        where: { productId: existing.productId },
         data: {
           availableQuantity: {
             decrement: existing.quantity,
