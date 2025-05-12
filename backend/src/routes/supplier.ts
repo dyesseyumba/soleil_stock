@@ -36,27 +36,34 @@ const supplierRoutes = (app: FastifyInstance) => {
     return reply.send(supplier);
   });
 
+  // Get product
+  app.get('/by-name/:name', async (request, reply) => {
+    const paramsSchema = z.object({ name: z.string() });
+    const { name } = paramsSchema.parse(request.params);
+
+    const suppliers = await prisma.supplier.findMany({ where: { name } });
+    return reply.send(suppliers);
+  });
+
   app.put('/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const data = supplierUpdateSchema.parse(request.body);
 
-    try {
-      const updated = await prisma.supplier.update({ where: { id }, data });
-      return reply.send(updated);
-    } catch {
-      return reply.code(404).send({ error: 'Not found' });
-    }
+    const existing = await prisma.supplier.findUnique({ where: { id } });
+    if (!existing) return reply.code(404).send({ error: 'Not found' });
+
+    const updated = await prisma.supplier.update({ where: { id }, data });
+    return reply.send(updated);
   });
 
   app.delete('/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
 
-    try {
-      await prisma.supplier.delete({ where: { id } });
-      return reply.code(204).send();
-    } catch {
-      return reply.code(404).send({ error: 'Not found' });
-    }
+    const existing = await prisma.supplier.findUnique({ where: { id } });
+    if (!existing) return reply.code(404).send({ error: 'Not found' });
+
+    await prisma.supplier.delete({ where: { id } });
+    return reply.code(204).send();
   });
 };
 
