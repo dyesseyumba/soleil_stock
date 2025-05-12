@@ -1,7 +1,7 @@
 import Fastify from 'fastify';
 import fastifyCors from '@fastify/cors';
 import fastifyHelmet from '@fastify/helmet';
-import { productRoutes } from './routes/product';
+import { productRoutes } from './routes';
 
 const app = Fastify();
 

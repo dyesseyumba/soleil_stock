@@ -6,7 +6,7 @@ import { z } from 'zod';
 const prisma = new PrismaClient();
 
 const productSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
+  name: z.string().min(2, 'Name is required'),
   description: z.string().optional(),
   // sellingPrice: z.number().positive('Price must be greater than zero'),
 });
