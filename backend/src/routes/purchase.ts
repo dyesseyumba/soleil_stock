@@ -98,7 +98,7 @@ const purchaseRoutes = (app: FastifyInstance) => {
   });
 
   // Update a purchase
-  app.put('/purchases/:id', async (request, reply) => {
+  app.put('/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const data = purchaseSchema.parse(request.body);
     const { productId, lotNumber, quantity } = data;
