@@ -43,11 +43,6 @@ export type StockSummary = $Result.DefaultSelection<Prisma.$StockSummaryPayload>
  * 
  */
 export type ProductPrice = $Result.DefaultSelection<Prisma.$ProductPricePayload>
-/**
- * Model Lot
- * 
- */
-export type Lot = $Result.DefaultSelection<Prisma.$LotPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -233,16 +228,6 @@ export class PrismaClient<
     * ```
     */
   get productPrice(): Prisma.ProductPriceDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.lot`: Exposes CRUD operations for the **Lot** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Lots
-    * const lots = await prisma.lot.findMany()
-    * ```
-    */
-  get lot(): Prisma.LotDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -688,8 +673,7 @@ export namespace Prisma {
     Purchase: 'Purchase',
     Sale: 'Sale',
     StockSummary: 'StockSummary',
-    ProductPrice: 'ProductPrice',
-    Lot: 'Lot'
+    ProductPrice: 'ProductPrice'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -708,7 +692,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "product" | "supplier" | "purchase" | "sale" | "stockSummary" | "productPrice" | "lot"
+      modelProps: "product" | "supplier" | "purchase" | "sale" | "stockSummary" | "productPrice"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1156,80 +1140,6 @@ export namespace Prisma {
           }
         }
       }
-      Lot: {
-        payload: Prisma.$LotPayload<ExtArgs>
-        fields: Prisma.LotFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.LotFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$LotPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.LotFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$LotPayload>
-          }
-          findFirst: {
-            args: Prisma.LotFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$LotPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.LotFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$LotPayload>
-          }
-          findMany: {
-            args: Prisma.LotFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$LotPayload>[]
-          }
-          create: {
-            args: Prisma.LotCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$LotPayload>
-          }
-          createMany: {
-            args: Prisma.LotCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.LotCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$LotPayload>[]
-          }
-          delete: {
-            args: Prisma.LotDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$LotPayload>
-          }
-          update: {
-            args: Prisma.LotUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$LotPayload>
-          }
-          deleteMany: {
-            args: Prisma.LotDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.LotUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.LotUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$LotPayload>[]
-          }
-          upsert: {
-            args: Prisma.LotUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$LotPayload>
-          }
-          aggregate: {
-            args: Prisma.LotAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateLot>
-          }
-          groupBy: {
-            args: Prisma.LotGroupByArgs<ExtArgs>
-            result: $Utils.Optional<LotGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.LotCountArgs<ExtArgs>
-            result: $Utils.Optional<LotCountAggregateOutputType> | number
-          }
-        }
-      }
     }
   } & {
     other: {
@@ -1320,7 +1230,6 @@ export namespace Prisma {
     sale?: SaleOmit
     stockSummary?: StockSummaryOmit
     productPrice?: ProductPriceOmit
-    lot?: LotOmit
   }
 
   /* Types for Logging */
@@ -1418,7 +1327,6 @@ export namespace Prisma {
     purchases: number
     sales: number
     prices: number
-    lots: number
     StockSummary: number
   }
 
@@ -1426,7 +1334,6 @@ export namespace Prisma {
     purchases?: boolean | ProductCountOutputTypeCountPurchasesArgs
     sales?: boolean | ProductCountOutputTypeCountSalesArgs
     prices?: boolean | ProductCountOutputTypeCountPricesArgs
-    lots?: boolean | ProductCountOutputTypeCountLotsArgs
     StockSummary?: boolean | ProductCountOutputTypeCountStockSummaryArgs
   }
 
@@ -1465,13 +1372,6 @@ export namespace Prisma {
   /**
    * ProductCountOutputType without action
    */
-  export type ProductCountOutputTypeCountLotsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: LotWhereInput
-  }
-
-  /**
-   * ProductCountOutputType without action
-   */
   export type ProductCountOutputTypeCountStockSummaryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: StockSummaryWhereInput
   }
@@ -1504,37 +1404,6 @@ export namespace Prisma {
    * SupplierCountOutputType without action
    */
   export type SupplierCountOutputTypeCountPurchasesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: PurchaseWhereInput
-  }
-
-
-  /**
-   * Count Type LotCountOutputType
-   */
-
-  export type LotCountOutputType = {
-    purchases: number
-  }
-
-  export type LotCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    purchases?: boolean | LotCountOutputTypeCountPurchasesArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * LotCountOutputType without action
-   */
-  export type LotCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LotCountOutputType
-     */
-    select?: LotCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * LotCountOutputType without action
-   */
-  export type LotCountOutputTypeCountPurchasesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PurchaseWhereInput
   }
 
@@ -1710,7 +1579,6 @@ export namespace Prisma {
     purchases?: boolean | Product$purchasesArgs<ExtArgs>
     sales?: boolean | Product$salesArgs<ExtArgs>
     prices?: boolean | Product$pricesArgs<ExtArgs>
-    lots?: boolean | Product$lotsArgs<ExtArgs>
     StockSummary?: boolean | Product$StockSummaryArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["product"]>
@@ -1744,7 +1612,6 @@ export namespace Prisma {
     purchases?: boolean | Product$purchasesArgs<ExtArgs>
     sales?: boolean | Product$salesArgs<ExtArgs>
     prices?: boolean | Product$pricesArgs<ExtArgs>
-    lots?: boolean | Product$lotsArgs<ExtArgs>
     StockSummary?: boolean | Product$StockSummaryArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -1757,7 +1624,6 @@ export namespace Prisma {
       purchases: Prisma.$PurchasePayload<ExtArgs>[]
       sales: Prisma.$SalePayload<ExtArgs>[]
       prices: Prisma.$ProductPricePayload<ExtArgs>[]
-      lots: Prisma.$LotPayload<ExtArgs>[]
       StockSummary: Prisma.$StockSummaryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -2163,7 +2029,6 @@ export namespace Prisma {
     purchases<T extends Product$purchasesArgs<ExtArgs> = {}>(args?: Subset<T, Product$purchasesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PurchasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sales<T extends Product$salesArgs<ExtArgs> = {}>(args?: Subset<T, Product$salesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     prices<T extends Product$pricesArgs<ExtArgs> = {}>(args?: Subset<T, Product$pricesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductPricePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    lots<T extends Product$lotsArgs<ExtArgs> = {}>(args?: Subset<T, Product$lotsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     StockSummary<T extends Product$StockSummaryArgs<ExtArgs> = {}>(args?: Subset<T, Product$StockSummaryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StockSummaryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2654,30 +2519,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ProductPriceScalarFieldEnum | ProductPriceScalarFieldEnum[]
-  }
-
-  /**
-   * Product.lots
-   */
-  export type Product$lotsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Lot
-     */
-    select?: LotSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Lot
-     */
-    omit?: LotOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LotInclude<ExtArgs> | null
-    where?: LotWhereInput
-    orderBy?: LotOrderByWithRelationInput | LotOrderByWithRelationInput[]
-    cursor?: LotWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: LotScalarFieldEnum | LotScalarFieldEnum[]
   }
 
   /**
@@ -3817,7 +3658,6 @@ export namespace Prisma {
     id: string | null
     productId: string | null
     supplierId: string | null
-    lotNumber: string | null
     quantity: number | null
     unitCost: Decimal | null
     expirationDate: Date | null
@@ -3829,7 +3669,6 @@ export namespace Prisma {
     id: string | null
     productId: string | null
     supplierId: string | null
-    lotNumber: string | null
     quantity: number | null
     unitCost: Decimal | null
     expirationDate: Date | null
@@ -3841,7 +3680,6 @@ export namespace Prisma {
     id: number
     productId: number
     supplierId: number
-    lotNumber: number
     quantity: number
     unitCost: number
     expirationDate: number
@@ -3865,7 +3703,6 @@ export namespace Prisma {
     id?: true
     productId?: true
     supplierId?: true
-    lotNumber?: true
     quantity?: true
     unitCost?: true
     expirationDate?: true
@@ -3877,7 +3714,6 @@ export namespace Prisma {
     id?: true
     productId?: true
     supplierId?: true
-    lotNumber?: true
     quantity?: true
     unitCost?: true
     expirationDate?: true
@@ -3889,7 +3725,6 @@ export namespace Prisma {
     id?: true
     productId?: true
     supplierId?: true
-    lotNumber?: true
     quantity?: true
     unitCost?: true
     expirationDate?: true
@@ -3988,7 +3823,6 @@ export namespace Prisma {
     id: string
     productId: string
     supplierId: string
-    lotNumber: string
     quantity: number
     unitCost: Decimal
     expirationDate: Date | null
@@ -4019,7 +3853,6 @@ export namespace Prisma {
     id?: boolean
     productId?: boolean
     supplierId?: boolean
-    lotNumber?: boolean
     quantity?: boolean
     unitCost?: boolean
     expirationDate?: boolean
@@ -4027,14 +3860,12 @@ export namespace Prisma {
     updatedAt?: boolean
     product?: boolean | ProductDefaultArgs<ExtArgs>
     supplier?: boolean | SupplierDefaultArgs<ExtArgs>
-    lot?: boolean | Purchase$lotArgs<ExtArgs>
   }, ExtArgs["result"]["purchase"]>
 
   export type PurchaseSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     productId?: boolean
     supplierId?: boolean
-    lotNumber?: boolean
     quantity?: boolean
     unitCost?: boolean
     expirationDate?: boolean
@@ -4042,14 +3873,12 @@ export namespace Prisma {
     updatedAt?: boolean
     product?: boolean | ProductDefaultArgs<ExtArgs>
     supplier?: boolean | SupplierDefaultArgs<ExtArgs>
-    lot?: boolean | Purchase$lotArgs<ExtArgs>
   }, ExtArgs["result"]["purchase"]>
 
   export type PurchaseSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     productId?: boolean
     supplierId?: boolean
-    lotNumber?: boolean
     quantity?: boolean
     unitCost?: boolean
     expirationDate?: boolean
@@ -4057,14 +3886,12 @@ export namespace Prisma {
     updatedAt?: boolean
     product?: boolean | ProductDefaultArgs<ExtArgs>
     supplier?: boolean | SupplierDefaultArgs<ExtArgs>
-    lot?: boolean | Purchase$lotArgs<ExtArgs>
   }, ExtArgs["result"]["purchase"]>
 
   export type PurchaseSelectScalar = {
     id?: boolean
     productId?: boolean
     supplierId?: boolean
-    lotNumber?: boolean
     quantity?: boolean
     unitCost?: boolean
     expirationDate?: boolean
@@ -4072,21 +3899,18 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type PurchaseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "supplierId" | "lotNumber" | "quantity" | "unitCost" | "expirationDate" | "purchasedAt" | "updatedAt", ExtArgs["result"]["purchase"]>
+  export type PurchaseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "supplierId" | "quantity" | "unitCost" | "expirationDate" | "purchasedAt" | "updatedAt", ExtArgs["result"]["purchase"]>
   export type PurchaseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     product?: boolean | ProductDefaultArgs<ExtArgs>
     supplier?: boolean | SupplierDefaultArgs<ExtArgs>
-    lot?: boolean | Purchase$lotArgs<ExtArgs>
   }
   export type PurchaseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     product?: boolean | ProductDefaultArgs<ExtArgs>
     supplier?: boolean | SupplierDefaultArgs<ExtArgs>
-    lot?: boolean | Purchase$lotArgs<ExtArgs>
   }
   export type PurchaseIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     product?: boolean | ProductDefaultArgs<ExtArgs>
     supplier?: boolean | SupplierDefaultArgs<ExtArgs>
-    lot?: boolean | Purchase$lotArgs<ExtArgs>
   }
 
   export type $PurchasePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4094,13 +3918,11 @@ export namespace Prisma {
     objects: {
       product: Prisma.$ProductPayload<ExtArgs>
       supplier: Prisma.$SupplierPayload<ExtArgs>
-      lot: Prisma.$LotPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       productId: string
       supplierId: string
-      lotNumber: string
       quantity: number
       unitCost: Prisma.Decimal
       expirationDate: Date | null
@@ -4502,7 +4324,6 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     supplier<T extends SupplierDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SupplierDefaultArgs<ExtArgs>>): Prisma__SupplierClient<$Result.GetResult<Prisma.$SupplierPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    lot<T extends Purchase$lotArgs<ExtArgs> = {}>(args?: Subset<T, Purchase$lotArgs<ExtArgs>>): Prisma__LotClient<$Result.GetResult<Prisma.$LotPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4535,7 +4356,6 @@ export namespace Prisma {
     readonly id: FieldRef<"Purchase", 'String'>
     readonly productId: FieldRef<"Purchase", 'String'>
     readonly supplierId: FieldRef<"Purchase", 'String'>
-    readonly lotNumber: FieldRef<"Purchase", 'String'>
     readonly quantity: FieldRef<"Purchase", 'Int'>
     readonly unitCost: FieldRef<"Purchase", 'Decimal'>
     readonly expirationDate: FieldRef<"Purchase", 'DateTime'>
@@ -4935,25 +4755,6 @@ export namespace Prisma {
   }
 
   /**
-   * Purchase.lot
-   */
-  export type Purchase$lotArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Lot
-     */
-    select?: LotSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Lot
-     */
-    omit?: LotOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LotInclude<ExtArgs> | null
-    where?: LotWhereInput
-  }
-
-  /**
    * Purchase without action
    */
   export type PurchaseDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4995,7 +4796,6 @@ export namespace Prisma {
   export type SaleMinAggregateOutputType = {
     id: string | null
     productId: string | null
-    lotNumber: string | null
     quantity: number | null
     soldAt: Date | null
     updatedAt: Date | null
@@ -5004,7 +4804,6 @@ export namespace Prisma {
   export type SaleMaxAggregateOutputType = {
     id: string | null
     productId: string | null
-    lotNumber: string | null
     quantity: number | null
     soldAt: Date | null
     updatedAt: Date | null
@@ -5013,7 +4812,6 @@ export namespace Prisma {
   export type SaleCountAggregateOutputType = {
     id: number
     productId: number
-    lotNumber: number
     quantity: number
     soldAt: number
     updatedAt: number
@@ -5032,7 +4830,6 @@ export namespace Prisma {
   export type SaleMinAggregateInputType = {
     id?: true
     productId?: true
-    lotNumber?: true
     quantity?: true
     soldAt?: true
     updatedAt?: true
@@ -5041,7 +4838,6 @@ export namespace Prisma {
   export type SaleMaxAggregateInputType = {
     id?: true
     productId?: true
-    lotNumber?: true
     quantity?: true
     soldAt?: true
     updatedAt?: true
@@ -5050,7 +4846,6 @@ export namespace Prisma {
   export type SaleCountAggregateInputType = {
     id?: true
     productId?: true
-    lotNumber?: true
     quantity?: true
     soldAt?: true
     updatedAt?: true
@@ -5146,7 +4941,6 @@ export namespace Prisma {
   export type SaleGroupByOutputType = {
     id: string
     productId: string
-    lotNumber: string | null
     quantity: number
     soldAt: Date
     updatedAt: Date
@@ -5174,7 +4968,6 @@ export namespace Prisma {
   export type SaleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     productId?: boolean
-    lotNumber?: boolean
     quantity?: boolean
     soldAt?: boolean
     updatedAt?: boolean
@@ -5184,7 +4977,6 @@ export namespace Prisma {
   export type SaleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     productId?: boolean
-    lotNumber?: boolean
     quantity?: boolean
     soldAt?: boolean
     updatedAt?: boolean
@@ -5194,7 +4986,6 @@ export namespace Prisma {
   export type SaleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     productId?: boolean
-    lotNumber?: boolean
     quantity?: boolean
     soldAt?: boolean
     updatedAt?: boolean
@@ -5204,13 +4995,12 @@ export namespace Prisma {
   export type SaleSelectScalar = {
     id?: boolean
     productId?: boolean
-    lotNumber?: boolean
     quantity?: boolean
     soldAt?: boolean
     updatedAt?: boolean
   }
 
-  export type SaleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "lotNumber" | "quantity" | "soldAt" | "updatedAt", ExtArgs["result"]["sale"]>
+  export type SaleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "quantity" | "soldAt" | "updatedAt", ExtArgs["result"]["sale"]>
   export type SaleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     product?: boolean | ProductDefaultArgs<ExtArgs>
   }
@@ -5229,7 +5019,6 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       productId: string
-      lotNumber: string | null
       quantity: number
       soldAt: Date
       updatedAt: Date
@@ -5659,7 +5448,6 @@ export namespace Prisma {
   interface SaleFieldRefs {
     readonly id: FieldRef<"Sale", 'String'>
     readonly productId: FieldRef<"Sale", 'String'>
-    readonly lotNumber: FieldRef<"Sale", 'String'>
     readonly quantity: FieldRef<"Sale", 'Int'>
     readonly soldAt: FieldRef<"Sale", 'DateTime'>
     readonly updatedAt: FieldRef<"Sale", 'DateTime'>
@@ -6098,7 +5886,7 @@ export namespace Prisma {
   export type StockSummaryMinAggregateOutputType = {
     id: string | null
     productId: string | null
-    lotNumber: string | null
+    nextToExpire: Date | null
     availableQuantity: number | null
     lastUpdated: Date | null
   }
@@ -6106,7 +5894,7 @@ export namespace Prisma {
   export type StockSummaryMaxAggregateOutputType = {
     id: string | null
     productId: string | null
-    lotNumber: string | null
+    nextToExpire: Date | null
     availableQuantity: number | null
     lastUpdated: Date | null
   }
@@ -6114,7 +5902,7 @@ export namespace Prisma {
   export type StockSummaryCountAggregateOutputType = {
     id: number
     productId: number
-    lotNumber: number
+    nextToExpire: number
     availableQuantity: number
     lastUpdated: number
     _all: number
@@ -6132,7 +5920,7 @@ export namespace Prisma {
   export type StockSummaryMinAggregateInputType = {
     id?: true
     productId?: true
-    lotNumber?: true
+    nextToExpire?: true
     availableQuantity?: true
     lastUpdated?: true
   }
@@ -6140,7 +5928,7 @@ export namespace Prisma {
   export type StockSummaryMaxAggregateInputType = {
     id?: true
     productId?: true
-    lotNumber?: true
+    nextToExpire?: true
     availableQuantity?: true
     lastUpdated?: true
   }
@@ -6148,7 +5936,7 @@ export namespace Prisma {
   export type StockSummaryCountAggregateInputType = {
     id?: true
     productId?: true
-    lotNumber?: true
+    nextToExpire?: true
     availableQuantity?: true
     lastUpdated?: true
     _all?: true
@@ -6243,7 +6031,7 @@ export namespace Prisma {
   export type StockSummaryGroupByOutputType = {
     id: string
     productId: string
-    lotNumber: string
+    nextToExpire: Date | null
     availableQuantity: number
     lastUpdated: Date
     _count: StockSummaryCountAggregateOutputType | null
@@ -6270,7 +6058,7 @@ export namespace Prisma {
   export type StockSummarySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     productId?: boolean
-    lotNumber?: boolean
+    nextToExpire?: boolean
     availableQuantity?: boolean
     lastUpdated?: boolean
     product?: boolean | ProductDefaultArgs<ExtArgs>
@@ -6279,7 +6067,7 @@ export namespace Prisma {
   export type StockSummarySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     productId?: boolean
-    lotNumber?: boolean
+    nextToExpire?: boolean
     availableQuantity?: boolean
     lastUpdated?: boolean
     product?: boolean | ProductDefaultArgs<ExtArgs>
@@ -6288,7 +6076,7 @@ export namespace Prisma {
   export type StockSummarySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     productId?: boolean
-    lotNumber?: boolean
+    nextToExpire?: boolean
     availableQuantity?: boolean
     lastUpdated?: boolean
     product?: boolean | ProductDefaultArgs<ExtArgs>
@@ -6297,12 +6085,12 @@ export namespace Prisma {
   export type StockSummarySelectScalar = {
     id?: boolean
     productId?: boolean
-    lotNumber?: boolean
+    nextToExpire?: boolean
     availableQuantity?: boolean
     lastUpdated?: boolean
   }
 
-  export type StockSummaryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "lotNumber" | "availableQuantity" | "lastUpdated", ExtArgs["result"]["stockSummary"]>
+  export type StockSummaryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "nextToExpire" | "availableQuantity" | "lastUpdated", ExtArgs["result"]["stockSummary"]>
   export type StockSummaryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     product?: boolean | ProductDefaultArgs<ExtArgs>
   }
@@ -6321,7 +6109,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       productId: string
-      lotNumber: string
+      nextToExpire: Date | null
       availableQuantity: number
       lastUpdated: Date
     }, ExtArgs["result"]["stockSummary"]>
@@ -6750,7 +6538,7 @@ export namespace Prisma {
   interface StockSummaryFieldRefs {
     readonly id: FieldRef<"StockSummary", 'String'>
     readonly productId: FieldRef<"StockSummary", 'String'>
-    readonly lotNumber: FieldRef<"StockSummary", 'String'>
+    readonly nextToExpire: FieldRef<"StockSummary", 'DateTime'>
     readonly availableQuantity: FieldRef<"StockSummary", 'Int'>
     readonly lastUpdated: FieldRef<"StockSummary", 'DateTime'>
   }
@@ -8243,1066 +8031,6 @@ export namespace Prisma {
 
 
   /**
-   * Model Lot
-   */
-
-  export type AggregateLot = {
-    _count: LotCountAggregateOutputType | null
-    _min: LotMinAggregateOutputType | null
-    _max: LotMaxAggregateOutputType | null
-  }
-
-  export type LotMinAggregateOutputType = {
-    lotNumber: string | null
-    productId: string | null
-    expirationDate: Date | null
-  }
-
-  export type LotMaxAggregateOutputType = {
-    lotNumber: string | null
-    productId: string | null
-    expirationDate: Date | null
-  }
-
-  export type LotCountAggregateOutputType = {
-    lotNumber: number
-    productId: number
-    expirationDate: number
-    _all: number
-  }
-
-
-  export type LotMinAggregateInputType = {
-    lotNumber?: true
-    productId?: true
-    expirationDate?: true
-  }
-
-  export type LotMaxAggregateInputType = {
-    lotNumber?: true
-    productId?: true
-    expirationDate?: true
-  }
-
-  export type LotCountAggregateInputType = {
-    lotNumber?: true
-    productId?: true
-    expirationDate?: true
-    _all?: true
-  }
-
-  export type LotAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Lot to aggregate.
-     */
-    where?: LotWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Lots to fetch.
-     */
-    orderBy?: LotOrderByWithRelationInput | LotOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: LotWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Lots from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Lots.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Lots
-    **/
-    _count?: true | LotCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: LotMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: LotMaxAggregateInputType
-  }
-
-  export type GetLotAggregateType<T extends LotAggregateArgs> = {
-        [P in keyof T & keyof AggregateLot]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateLot[P]>
-      : GetScalarType<T[P], AggregateLot[P]>
-  }
-
-
-
-
-  export type LotGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: LotWhereInput
-    orderBy?: LotOrderByWithAggregationInput | LotOrderByWithAggregationInput[]
-    by: LotScalarFieldEnum[] | LotScalarFieldEnum
-    having?: LotScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: LotCountAggregateInputType | true
-    _min?: LotMinAggregateInputType
-    _max?: LotMaxAggregateInputType
-  }
-
-  export type LotGroupByOutputType = {
-    lotNumber: string
-    productId: string
-    expirationDate: Date | null
-    _count: LotCountAggregateOutputType | null
-    _min: LotMinAggregateOutputType | null
-    _max: LotMaxAggregateOutputType | null
-  }
-
-  type GetLotGroupByPayload<T extends LotGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<LotGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof LotGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], LotGroupByOutputType[P]>
-            : GetScalarType<T[P], LotGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type LotSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    lotNumber?: boolean
-    productId?: boolean
-    expirationDate?: boolean
-    purchases?: boolean | Lot$purchasesArgs<ExtArgs>
-    Product?: boolean | ProductDefaultArgs<ExtArgs>
-    _count?: boolean | LotCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["lot"]>
-
-  export type LotSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    lotNumber?: boolean
-    productId?: boolean
-    expirationDate?: boolean
-    Product?: boolean | ProductDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["lot"]>
-
-  export type LotSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    lotNumber?: boolean
-    productId?: boolean
-    expirationDate?: boolean
-    Product?: boolean | ProductDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["lot"]>
-
-  export type LotSelectScalar = {
-    lotNumber?: boolean
-    productId?: boolean
-    expirationDate?: boolean
-  }
-
-  export type LotOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"lotNumber" | "productId" | "expirationDate", ExtArgs["result"]["lot"]>
-  export type LotInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    purchases?: boolean | Lot$purchasesArgs<ExtArgs>
-    Product?: boolean | ProductDefaultArgs<ExtArgs>
-    _count?: boolean | LotCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type LotIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Product?: boolean | ProductDefaultArgs<ExtArgs>
-  }
-  export type LotIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Product?: boolean | ProductDefaultArgs<ExtArgs>
-  }
-
-  export type $LotPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Lot"
-    objects: {
-      purchases: Prisma.$PurchasePayload<ExtArgs>[]
-      Product: Prisma.$ProductPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      lotNumber: string
-      productId: string
-      expirationDate: Date | null
-    }, ExtArgs["result"]["lot"]>
-    composites: {}
-  }
-
-  type LotGetPayload<S extends boolean | null | undefined | LotDefaultArgs> = $Result.GetResult<Prisma.$LotPayload, S>
-
-  type LotCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<LotFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: LotCountAggregateInputType | true
-    }
-
-  export interface LotDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Lot'], meta: { name: 'Lot' } }
-    /**
-     * Find zero or one Lot that matches the filter.
-     * @param {LotFindUniqueArgs} args - Arguments to find a Lot
-     * @example
-     * // Get one Lot
-     * const lot = await prisma.lot.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends LotFindUniqueArgs>(args: SelectSubset<T, LotFindUniqueArgs<ExtArgs>>): Prisma__LotClient<$Result.GetResult<Prisma.$LotPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Lot that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {LotFindUniqueOrThrowArgs} args - Arguments to find a Lot
-     * @example
-     * // Get one Lot
-     * const lot = await prisma.lot.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends LotFindUniqueOrThrowArgs>(args: SelectSubset<T, LotFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LotClient<$Result.GetResult<Prisma.$LotPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Lot that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LotFindFirstArgs} args - Arguments to find a Lot
-     * @example
-     * // Get one Lot
-     * const lot = await prisma.lot.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends LotFindFirstArgs>(args?: SelectSubset<T, LotFindFirstArgs<ExtArgs>>): Prisma__LotClient<$Result.GetResult<Prisma.$LotPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Lot that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LotFindFirstOrThrowArgs} args - Arguments to find a Lot
-     * @example
-     * // Get one Lot
-     * const lot = await prisma.lot.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends LotFindFirstOrThrowArgs>(args?: SelectSubset<T, LotFindFirstOrThrowArgs<ExtArgs>>): Prisma__LotClient<$Result.GetResult<Prisma.$LotPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Lots that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LotFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Lots
-     * const lots = await prisma.lot.findMany()
-     * 
-     * // Get first 10 Lots
-     * const lots = await prisma.lot.findMany({ take: 10 })
-     * 
-     * // Only select the `lotNumber`
-     * const lotWithLotNumberOnly = await prisma.lot.findMany({ select: { lotNumber: true } })
-     * 
-     */
-    findMany<T extends LotFindManyArgs>(args?: SelectSubset<T, LotFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Lot.
-     * @param {LotCreateArgs} args - Arguments to create a Lot.
-     * @example
-     * // Create one Lot
-     * const Lot = await prisma.lot.create({
-     *   data: {
-     *     // ... data to create a Lot
-     *   }
-     * })
-     * 
-     */
-    create<T extends LotCreateArgs>(args: SelectSubset<T, LotCreateArgs<ExtArgs>>): Prisma__LotClient<$Result.GetResult<Prisma.$LotPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Lots.
-     * @param {LotCreateManyArgs} args - Arguments to create many Lots.
-     * @example
-     * // Create many Lots
-     * const lot = await prisma.lot.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends LotCreateManyArgs>(args?: SelectSubset<T, LotCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Lots and returns the data saved in the database.
-     * @param {LotCreateManyAndReturnArgs} args - Arguments to create many Lots.
-     * @example
-     * // Create many Lots
-     * const lot = await prisma.lot.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Lots and only return the `lotNumber`
-     * const lotWithLotNumberOnly = await prisma.lot.createManyAndReturn({
-     *   select: { lotNumber: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends LotCreateManyAndReturnArgs>(args?: SelectSubset<T, LotCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LotPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Lot.
-     * @param {LotDeleteArgs} args - Arguments to delete one Lot.
-     * @example
-     * // Delete one Lot
-     * const Lot = await prisma.lot.delete({
-     *   where: {
-     *     // ... filter to delete one Lot
-     *   }
-     * })
-     * 
-     */
-    delete<T extends LotDeleteArgs>(args: SelectSubset<T, LotDeleteArgs<ExtArgs>>): Prisma__LotClient<$Result.GetResult<Prisma.$LotPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Lot.
-     * @param {LotUpdateArgs} args - Arguments to update one Lot.
-     * @example
-     * // Update one Lot
-     * const lot = await prisma.lot.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends LotUpdateArgs>(args: SelectSubset<T, LotUpdateArgs<ExtArgs>>): Prisma__LotClient<$Result.GetResult<Prisma.$LotPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Lots.
-     * @param {LotDeleteManyArgs} args - Arguments to filter Lots to delete.
-     * @example
-     * // Delete a few Lots
-     * const { count } = await prisma.lot.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends LotDeleteManyArgs>(args?: SelectSubset<T, LotDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Lots.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LotUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Lots
-     * const lot = await prisma.lot.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends LotUpdateManyArgs>(args: SelectSubset<T, LotUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Lots and returns the data updated in the database.
-     * @param {LotUpdateManyAndReturnArgs} args - Arguments to update many Lots.
-     * @example
-     * // Update many Lots
-     * const lot = await prisma.lot.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Lots and only return the `lotNumber`
-     * const lotWithLotNumberOnly = await prisma.lot.updateManyAndReturn({
-     *   select: { lotNumber: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends LotUpdateManyAndReturnArgs>(args: SelectSubset<T, LotUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LotPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Lot.
-     * @param {LotUpsertArgs} args - Arguments to update or create a Lot.
-     * @example
-     * // Update or create a Lot
-     * const lot = await prisma.lot.upsert({
-     *   create: {
-     *     // ... data to create a Lot
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Lot we want to update
-     *   }
-     * })
-     */
-    upsert<T extends LotUpsertArgs>(args: SelectSubset<T, LotUpsertArgs<ExtArgs>>): Prisma__LotClient<$Result.GetResult<Prisma.$LotPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Lots.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LotCountArgs} args - Arguments to filter Lots to count.
-     * @example
-     * // Count the number of Lots
-     * const count = await prisma.lot.count({
-     *   where: {
-     *     // ... the filter for the Lots we want to count
-     *   }
-     * })
-    **/
-    count<T extends LotCountArgs>(
-      args?: Subset<T, LotCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], LotCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Lot.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LotAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends LotAggregateArgs>(args: Subset<T, LotAggregateArgs>): Prisma.PrismaPromise<GetLotAggregateType<T>>
-
-    /**
-     * Group by Lot.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LotGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends LotGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: LotGroupByArgs['orderBy'] }
-        : { orderBy?: LotGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, LotGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLotGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Lot model
-   */
-  readonly fields: LotFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Lot.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__LotClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    purchases<T extends Lot$purchasesArgs<ExtArgs> = {}>(args?: Subset<T, Lot$purchasesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PurchasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    Product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the Lot model
-   */
-  interface LotFieldRefs {
-    readonly lotNumber: FieldRef<"Lot", 'String'>
-    readonly productId: FieldRef<"Lot", 'String'>
-    readonly expirationDate: FieldRef<"Lot", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * Lot findUnique
-   */
-  export type LotFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Lot
-     */
-    select?: LotSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Lot
-     */
-    omit?: LotOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LotInclude<ExtArgs> | null
-    /**
-     * Filter, which Lot to fetch.
-     */
-    where: LotWhereUniqueInput
-  }
-
-  /**
-   * Lot findUniqueOrThrow
-   */
-  export type LotFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Lot
-     */
-    select?: LotSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Lot
-     */
-    omit?: LotOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LotInclude<ExtArgs> | null
-    /**
-     * Filter, which Lot to fetch.
-     */
-    where: LotWhereUniqueInput
-  }
-
-  /**
-   * Lot findFirst
-   */
-  export type LotFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Lot
-     */
-    select?: LotSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Lot
-     */
-    omit?: LotOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LotInclude<ExtArgs> | null
-    /**
-     * Filter, which Lot to fetch.
-     */
-    where?: LotWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Lots to fetch.
-     */
-    orderBy?: LotOrderByWithRelationInput | LotOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Lots.
-     */
-    cursor?: LotWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Lots from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Lots.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Lots.
-     */
-    distinct?: LotScalarFieldEnum | LotScalarFieldEnum[]
-  }
-
-  /**
-   * Lot findFirstOrThrow
-   */
-  export type LotFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Lot
-     */
-    select?: LotSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Lot
-     */
-    omit?: LotOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LotInclude<ExtArgs> | null
-    /**
-     * Filter, which Lot to fetch.
-     */
-    where?: LotWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Lots to fetch.
-     */
-    orderBy?: LotOrderByWithRelationInput | LotOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Lots.
-     */
-    cursor?: LotWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Lots from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Lots.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Lots.
-     */
-    distinct?: LotScalarFieldEnum | LotScalarFieldEnum[]
-  }
-
-  /**
-   * Lot findMany
-   */
-  export type LotFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Lot
-     */
-    select?: LotSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Lot
-     */
-    omit?: LotOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LotInclude<ExtArgs> | null
-    /**
-     * Filter, which Lots to fetch.
-     */
-    where?: LotWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Lots to fetch.
-     */
-    orderBy?: LotOrderByWithRelationInput | LotOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Lots.
-     */
-    cursor?: LotWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Lots from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Lots.
-     */
-    skip?: number
-    distinct?: LotScalarFieldEnum | LotScalarFieldEnum[]
-  }
-
-  /**
-   * Lot create
-   */
-  export type LotCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Lot
-     */
-    select?: LotSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Lot
-     */
-    omit?: LotOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LotInclude<ExtArgs> | null
-    /**
-     * The data needed to create a Lot.
-     */
-    data: XOR<LotCreateInput, LotUncheckedCreateInput>
-  }
-
-  /**
-   * Lot createMany
-   */
-  export type LotCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Lots.
-     */
-    data: LotCreateManyInput | LotCreateManyInput[]
-  }
-
-  /**
-   * Lot createManyAndReturn
-   */
-  export type LotCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Lot
-     */
-    select?: LotSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Lot
-     */
-    omit?: LotOmit<ExtArgs> | null
-    /**
-     * The data used to create many Lots.
-     */
-    data: LotCreateManyInput | LotCreateManyInput[]
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LotIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * Lot update
-   */
-  export type LotUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Lot
-     */
-    select?: LotSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Lot
-     */
-    omit?: LotOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LotInclude<ExtArgs> | null
-    /**
-     * The data needed to update a Lot.
-     */
-    data: XOR<LotUpdateInput, LotUncheckedUpdateInput>
-    /**
-     * Choose, which Lot to update.
-     */
-    where: LotWhereUniqueInput
-  }
-
-  /**
-   * Lot updateMany
-   */
-  export type LotUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Lots.
-     */
-    data: XOR<LotUpdateManyMutationInput, LotUncheckedUpdateManyInput>
-    /**
-     * Filter which Lots to update
-     */
-    where?: LotWhereInput
-    /**
-     * Limit how many Lots to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Lot updateManyAndReturn
-   */
-  export type LotUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Lot
-     */
-    select?: LotSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Lot
-     */
-    omit?: LotOmit<ExtArgs> | null
-    /**
-     * The data used to update Lots.
-     */
-    data: XOR<LotUpdateManyMutationInput, LotUncheckedUpdateManyInput>
-    /**
-     * Filter which Lots to update
-     */
-    where?: LotWhereInput
-    /**
-     * Limit how many Lots to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LotIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * Lot upsert
-   */
-  export type LotUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Lot
-     */
-    select?: LotSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Lot
-     */
-    omit?: LotOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LotInclude<ExtArgs> | null
-    /**
-     * The filter to search for the Lot to update in case it exists.
-     */
-    where: LotWhereUniqueInput
-    /**
-     * In case the Lot found by the `where` argument doesn't exist, create a new Lot with this data.
-     */
-    create: XOR<LotCreateInput, LotUncheckedCreateInput>
-    /**
-     * In case the Lot was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<LotUpdateInput, LotUncheckedUpdateInput>
-  }
-
-  /**
-   * Lot delete
-   */
-  export type LotDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Lot
-     */
-    select?: LotSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Lot
-     */
-    omit?: LotOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LotInclude<ExtArgs> | null
-    /**
-     * Filter which Lot to delete.
-     */
-    where: LotWhereUniqueInput
-  }
-
-  /**
-   * Lot deleteMany
-   */
-  export type LotDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Lots to delete
-     */
-    where?: LotWhereInput
-    /**
-     * Limit how many Lots to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Lot.purchases
-   */
-  export type Lot$purchasesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Purchase
-     */
-    select?: PurchaseSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Purchase
-     */
-    omit?: PurchaseOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PurchaseInclude<ExtArgs> | null
-    where?: PurchaseWhereInput
-    orderBy?: PurchaseOrderByWithRelationInput | PurchaseOrderByWithRelationInput[]
-    cursor?: PurchaseWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: PurchaseScalarFieldEnum | PurchaseScalarFieldEnum[]
-  }
-
-  /**
-   * Lot without action
-   */
-  export type LotDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Lot
-     */
-    select?: LotSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Lot
-     */
-    omit?: LotOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LotInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Enums
    */
 
@@ -9339,7 +8067,6 @@ export namespace Prisma {
     id: 'id',
     productId: 'productId',
     supplierId: 'supplierId',
-    lotNumber: 'lotNumber',
     quantity: 'quantity',
     unitCost: 'unitCost',
     expirationDate: 'expirationDate',
@@ -9353,7 +8080,6 @@ export namespace Prisma {
   export const SaleScalarFieldEnum: {
     id: 'id',
     productId: 'productId',
-    lotNumber: 'lotNumber',
     quantity: 'quantity',
     soldAt: 'soldAt',
     updatedAt: 'updatedAt'
@@ -9365,7 +8091,7 @@ export namespace Prisma {
   export const StockSummaryScalarFieldEnum: {
     id: 'id',
     productId: 'productId',
-    lotNumber: 'lotNumber',
+    nextToExpire: 'nextToExpire',
     availableQuantity: 'availableQuantity',
     lastUpdated: 'lastUpdated'
   };
@@ -9381,15 +8107,6 @@ export namespace Prisma {
   };
 
   export type ProductPriceScalarFieldEnum = (typeof ProductPriceScalarFieldEnum)[keyof typeof ProductPriceScalarFieldEnum]
-
-
-  export const LotScalarFieldEnum: {
-    lotNumber: 'lotNumber',
-    productId: 'productId',
-    expirationDate: 'expirationDate'
-  };
-
-  export type LotScalarFieldEnum = (typeof LotScalarFieldEnum)[keyof typeof LotScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -9463,7 +8180,6 @@ export namespace Prisma {
     purchases?: PurchaseListRelationFilter
     sales?: SaleListRelationFilter
     prices?: ProductPriceListRelationFilter
-    lots?: LotListRelationFilter
     StockSummary?: StockSummaryListRelationFilter
   }
 
@@ -9476,7 +8192,6 @@ export namespace Prisma {
     purchases?: PurchaseOrderByRelationAggregateInput
     sales?: SaleOrderByRelationAggregateInput
     prices?: ProductPriceOrderByRelationAggregateInput
-    lots?: LotOrderByRelationAggregateInput
     StockSummary?: StockSummaryOrderByRelationAggregateInput
   }
 
@@ -9492,7 +8207,6 @@ export namespace Prisma {
     purchases?: PurchaseListRelationFilter
     sales?: SaleListRelationFilter
     prices?: ProductPriceListRelationFilter
-    lots?: LotListRelationFilter
     StockSummary?: StockSummaryListRelationFilter
   }, "id">
 
@@ -9580,7 +8294,6 @@ export namespace Prisma {
     id?: StringFilter<"Purchase"> | string
     productId?: StringFilter<"Purchase"> | string
     supplierId?: StringFilter<"Purchase"> | string
-    lotNumber?: StringFilter<"Purchase"> | string
     quantity?: IntFilter<"Purchase"> | number
     unitCost?: DecimalFilter<"Purchase"> | Decimal | DecimalJsLike | number | string
     expirationDate?: DateTimeNullableFilter<"Purchase"> | Date | string | null
@@ -9588,14 +8301,12 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Purchase"> | Date | string
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
     supplier?: XOR<SupplierScalarRelationFilter, SupplierWhereInput>
-    lot?: XOR<LotNullableScalarRelationFilter, LotWhereInput> | null
   }
 
   export type PurchaseOrderByWithRelationInput = {
     id?: SortOrder
     productId?: SortOrder
     supplierId?: SortOrder
-    lotNumber?: SortOrder
     quantity?: SortOrder
     unitCost?: SortOrder
     expirationDate?: SortOrderInput | SortOrder
@@ -9603,7 +8314,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
     product?: ProductOrderByWithRelationInput
     supplier?: SupplierOrderByWithRelationInput
-    lot?: LotOrderByWithRelationInput
   }
 
   export type PurchaseWhereUniqueInput = Prisma.AtLeast<{
@@ -9613,7 +8323,6 @@ export namespace Prisma {
     NOT?: PurchaseWhereInput | PurchaseWhereInput[]
     productId?: StringFilter<"Purchase"> | string
     supplierId?: StringFilter<"Purchase"> | string
-    lotNumber?: StringFilter<"Purchase"> | string
     quantity?: IntFilter<"Purchase"> | number
     unitCost?: DecimalFilter<"Purchase"> | Decimal | DecimalJsLike | number | string
     expirationDate?: DateTimeNullableFilter<"Purchase"> | Date | string | null
@@ -9621,14 +8330,12 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Purchase"> | Date | string
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
     supplier?: XOR<SupplierScalarRelationFilter, SupplierWhereInput>
-    lot?: XOR<LotNullableScalarRelationFilter, LotWhereInput> | null
   }, "id">
 
   export type PurchaseOrderByWithAggregationInput = {
     id?: SortOrder
     productId?: SortOrder
     supplierId?: SortOrder
-    lotNumber?: SortOrder
     quantity?: SortOrder
     unitCost?: SortOrder
     expirationDate?: SortOrderInput | SortOrder
@@ -9648,7 +8355,6 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Purchase"> | string
     productId?: StringWithAggregatesFilter<"Purchase"> | string
     supplierId?: StringWithAggregatesFilter<"Purchase"> | string
-    lotNumber?: StringWithAggregatesFilter<"Purchase"> | string
     quantity?: IntWithAggregatesFilter<"Purchase"> | number
     unitCost?: DecimalWithAggregatesFilter<"Purchase"> | Decimal | DecimalJsLike | number | string
     expirationDate?: DateTimeNullableWithAggregatesFilter<"Purchase"> | Date | string | null
@@ -9662,7 +8368,6 @@ export namespace Prisma {
     NOT?: SaleWhereInput | SaleWhereInput[]
     id?: StringFilter<"Sale"> | string
     productId?: StringFilter<"Sale"> | string
-    lotNumber?: StringNullableFilter<"Sale"> | string | null
     quantity?: IntFilter<"Sale"> | number
     soldAt?: DateTimeFilter<"Sale"> | Date | string
     updatedAt?: DateTimeFilter<"Sale"> | Date | string
@@ -9672,7 +8377,6 @@ export namespace Prisma {
   export type SaleOrderByWithRelationInput = {
     id?: SortOrder
     productId?: SortOrder
-    lotNumber?: SortOrderInput | SortOrder
     quantity?: SortOrder
     soldAt?: SortOrder
     updatedAt?: SortOrder
@@ -9685,7 +8389,6 @@ export namespace Prisma {
     OR?: SaleWhereInput[]
     NOT?: SaleWhereInput | SaleWhereInput[]
     productId?: StringFilter<"Sale"> | string
-    lotNumber?: StringNullableFilter<"Sale"> | string | null
     quantity?: IntFilter<"Sale"> | number
     soldAt?: DateTimeFilter<"Sale"> | Date | string
     updatedAt?: DateTimeFilter<"Sale"> | Date | string
@@ -9695,7 +8398,6 @@ export namespace Prisma {
   export type SaleOrderByWithAggregationInput = {
     id?: SortOrder
     productId?: SortOrder
-    lotNumber?: SortOrderInput | SortOrder
     quantity?: SortOrder
     soldAt?: SortOrder
     updatedAt?: SortOrder
@@ -9712,7 +8414,6 @@ export namespace Prisma {
     NOT?: SaleScalarWhereWithAggregatesInput | SaleScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Sale"> | string
     productId?: StringWithAggregatesFilter<"Sale"> | string
-    lotNumber?: StringNullableWithAggregatesFilter<"Sale"> | string | null
     quantity?: IntWithAggregatesFilter<"Sale"> | number
     soldAt?: DateTimeWithAggregatesFilter<"Sale"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Sale"> | Date | string
@@ -9724,7 +8425,7 @@ export namespace Prisma {
     NOT?: StockSummaryWhereInput | StockSummaryWhereInput[]
     id?: StringFilter<"StockSummary"> | string
     productId?: StringFilter<"StockSummary"> | string
-    lotNumber?: StringFilter<"StockSummary"> | string
+    nextToExpire?: DateTimeNullableFilter<"StockSummary"> | Date | string | null
     availableQuantity?: IntFilter<"StockSummary"> | number
     lastUpdated?: DateTimeFilter<"StockSummary"> | Date | string
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
@@ -9733,7 +8434,7 @@ export namespace Prisma {
   export type StockSummaryOrderByWithRelationInput = {
     id?: SortOrder
     productId?: SortOrder
-    lotNumber?: SortOrder
+    nextToExpire?: SortOrderInput | SortOrder
     availableQuantity?: SortOrder
     lastUpdated?: SortOrder
     product?: ProductOrderByWithRelationInput
@@ -9741,21 +8442,20 @@ export namespace Prisma {
 
   export type StockSummaryWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    productId_lotNumber?: StockSummaryProductIdLotNumberCompoundUniqueInput
+    productId?: string
     AND?: StockSummaryWhereInput | StockSummaryWhereInput[]
     OR?: StockSummaryWhereInput[]
     NOT?: StockSummaryWhereInput | StockSummaryWhereInput[]
-    productId?: StringFilter<"StockSummary"> | string
-    lotNumber?: StringFilter<"StockSummary"> | string
+    nextToExpire?: DateTimeNullableFilter<"StockSummary"> | Date | string | null
     availableQuantity?: IntFilter<"StockSummary"> | number
     lastUpdated?: DateTimeFilter<"StockSummary"> | Date | string
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
-  }, "id" | "productId_lotNumber">
+  }, "id" | "productId">
 
   export type StockSummaryOrderByWithAggregationInput = {
     id?: SortOrder
     productId?: SortOrder
-    lotNumber?: SortOrder
+    nextToExpire?: SortOrderInput | SortOrder
     availableQuantity?: SortOrder
     lastUpdated?: SortOrder
     _count?: StockSummaryCountOrderByAggregateInput
@@ -9771,7 +8471,7 @@ export namespace Prisma {
     NOT?: StockSummaryScalarWhereWithAggregatesInput | StockSummaryScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"StockSummary"> | string
     productId?: StringWithAggregatesFilter<"StockSummary"> | string
-    lotNumber?: StringWithAggregatesFilter<"StockSummary"> | string
+    nextToExpire?: DateTimeNullableWithAggregatesFilter<"StockSummary"> | Date | string | null
     availableQuantity?: IntWithAggregatesFilter<"StockSummary"> | number
     lastUpdated?: DateTimeWithAggregatesFilter<"StockSummary"> | Date | string
   }
@@ -9828,55 +8528,6 @@ export namespace Prisma {
     effectiveAt?: DateTimeWithAggregatesFilter<"ProductPrice"> | Date | string
   }
 
-  export type LotWhereInput = {
-    AND?: LotWhereInput | LotWhereInput[]
-    OR?: LotWhereInput[]
-    NOT?: LotWhereInput | LotWhereInput[]
-    lotNumber?: StringFilter<"Lot"> | string
-    productId?: StringFilter<"Lot"> | string
-    expirationDate?: DateTimeNullableFilter<"Lot"> | Date | string | null
-    purchases?: PurchaseListRelationFilter
-    Product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
-  }
-
-  export type LotOrderByWithRelationInput = {
-    lotNumber?: SortOrder
-    productId?: SortOrder
-    expirationDate?: SortOrderInput | SortOrder
-    purchases?: PurchaseOrderByRelationAggregateInput
-    Product?: ProductOrderByWithRelationInput
-  }
-
-  export type LotWhereUniqueInput = Prisma.AtLeast<{
-    lotNumber_productId?: LotLotNumberProductIdCompoundUniqueInput
-    AND?: LotWhereInput | LotWhereInput[]
-    OR?: LotWhereInput[]
-    NOT?: LotWhereInput | LotWhereInput[]
-    lotNumber?: StringFilter<"Lot"> | string
-    productId?: StringFilter<"Lot"> | string
-    expirationDate?: DateTimeNullableFilter<"Lot"> | Date | string | null
-    purchases?: PurchaseListRelationFilter
-    Product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
-  }, "lotNumber_productId">
-
-  export type LotOrderByWithAggregationInput = {
-    lotNumber?: SortOrder
-    productId?: SortOrder
-    expirationDate?: SortOrderInput | SortOrder
-    _count?: LotCountOrderByAggregateInput
-    _max?: LotMaxOrderByAggregateInput
-    _min?: LotMinOrderByAggregateInput
-  }
-
-  export type LotScalarWhereWithAggregatesInput = {
-    AND?: LotScalarWhereWithAggregatesInput | LotScalarWhereWithAggregatesInput[]
-    OR?: LotScalarWhereWithAggregatesInput[]
-    NOT?: LotScalarWhereWithAggregatesInput | LotScalarWhereWithAggregatesInput[]
-    lotNumber?: StringWithAggregatesFilter<"Lot"> | string
-    productId?: StringWithAggregatesFilter<"Lot"> | string
-    expirationDate?: DateTimeNullableWithAggregatesFilter<"Lot"> | Date | string | null
-  }
-
   export type ProductCreateInput = {
     id?: string
     name: string
@@ -9886,7 +8537,6 @@ export namespace Prisma {
     purchases?: PurchaseCreateNestedManyWithoutProductInput
     sales?: SaleCreateNestedManyWithoutProductInput
     prices?: ProductPriceCreateNestedManyWithoutProductInput
-    lots?: LotCreateNestedManyWithoutProductInput
     StockSummary?: StockSummaryCreateNestedManyWithoutProductInput
   }
 
@@ -9899,7 +8549,6 @@ export namespace Prisma {
     purchases?: PurchaseUncheckedCreateNestedManyWithoutProductInput
     sales?: SaleUncheckedCreateNestedManyWithoutProductInput
     prices?: ProductPriceUncheckedCreateNestedManyWithoutProductInput
-    lots?: LotUncheckedCreateNestedManyWithoutProductInput
     StockSummary?: StockSummaryUncheckedCreateNestedManyWithoutProductInput
   }
 
@@ -9912,7 +8561,6 @@ export namespace Prisma {
     purchases?: PurchaseUpdateManyWithoutProductNestedInput
     sales?: SaleUpdateManyWithoutProductNestedInput
     prices?: ProductPriceUpdateManyWithoutProductNestedInput
-    lots?: LotUpdateManyWithoutProductNestedInput
     StockSummary?: StockSummaryUpdateManyWithoutProductNestedInput
   }
 
@@ -9925,7 +8573,6 @@ export namespace Prisma {
     purchases?: PurchaseUncheckedUpdateManyWithoutProductNestedInput
     sales?: SaleUncheckedUpdateManyWithoutProductNestedInput
     prices?: ProductPriceUncheckedUpdateManyWithoutProductNestedInput
-    lots?: LotUncheckedUpdateManyWithoutProductNestedInput
     StockSummary?: StockSummaryUncheckedUpdateManyWithoutProductNestedInput
   }
 
@@ -10022,14 +8669,12 @@ export namespace Prisma {
     updatedAt?: Date | string
     product: ProductCreateNestedOneWithoutPurchasesInput
     supplier: SupplierCreateNestedOneWithoutPurchasesInput
-    lot?: LotCreateNestedOneWithoutPurchasesInput
   }
 
   export type PurchaseUncheckedCreateInput = {
     id?: string
     productId: string
     supplierId: string
-    lotNumber: string
     quantity: number
     unitCost: Decimal | DecimalJsLike | number | string
     expirationDate?: Date | string | null
@@ -10046,14 +8691,12 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     product?: ProductUpdateOneRequiredWithoutPurchasesNestedInput
     supplier?: SupplierUpdateOneRequiredWithoutPurchasesNestedInput
-    lot?: LotUpdateOneWithoutPurchasesNestedInput
   }
 
   export type PurchaseUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
     supplierId?: StringFieldUpdateOperationsInput | string
-    lotNumber?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     unitCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -10065,7 +8708,6 @@ export namespace Prisma {
     id?: string
     productId: string
     supplierId: string
-    lotNumber: string
     quantity: number
     unitCost: Decimal | DecimalJsLike | number | string
     expirationDate?: Date | string | null
@@ -10086,7 +8728,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
     supplierId?: StringFieldUpdateOperationsInput | string
-    lotNumber?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     unitCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -10096,7 +8737,6 @@ export namespace Prisma {
 
   export type SaleCreateInput = {
     id?: string
-    lotNumber?: string | null
     quantity: number
     soldAt?: Date | string
     updatedAt?: Date | string
@@ -10106,7 +8746,6 @@ export namespace Prisma {
   export type SaleUncheckedCreateInput = {
     id?: string
     productId: string
-    lotNumber?: string | null
     quantity: number
     soldAt?: Date | string
     updatedAt?: Date | string
@@ -10114,7 +8753,6 @@ export namespace Prisma {
 
   export type SaleUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     soldAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10124,7 +8762,6 @@ export namespace Prisma {
   export type SaleUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
-    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     soldAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10133,7 +8770,6 @@ export namespace Prisma {
   export type SaleCreateManyInput = {
     id?: string
     productId: string
-    lotNumber?: string | null
     quantity: number
     soldAt?: Date | string
     updatedAt?: Date | string
@@ -10141,7 +8777,6 @@ export namespace Prisma {
 
   export type SaleUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     soldAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10150,7 +8785,6 @@ export namespace Prisma {
   export type SaleUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
-    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     soldAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10158,7 +8792,7 @@ export namespace Prisma {
 
   export type StockSummaryCreateInput = {
     id?: string
-    lotNumber: string
+    nextToExpire?: Date | string | null
     availableQuantity: number
     lastUpdated?: Date | string
     product: ProductCreateNestedOneWithoutStockSummaryInput
@@ -10167,14 +8801,14 @@ export namespace Prisma {
   export type StockSummaryUncheckedCreateInput = {
     id?: string
     productId: string
-    lotNumber: string
+    nextToExpire?: Date | string | null
     availableQuantity: number
     lastUpdated?: Date | string
   }
 
   export type StockSummaryUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    lotNumber?: StringFieldUpdateOperationsInput | string
+    nextToExpire?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     availableQuantity?: IntFieldUpdateOperationsInput | number
     lastUpdated?: DateTimeFieldUpdateOperationsInput | Date | string
     product?: ProductUpdateOneRequiredWithoutStockSummaryNestedInput
@@ -10183,7 +8817,7 @@ export namespace Prisma {
   export type StockSummaryUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
-    lotNumber?: StringFieldUpdateOperationsInput | string
+    nextToExpire?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     availableQuantity?: IntFieldUpdateOperationsInput | number
     lastUpdated?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10191,14 +8825,14 @@ export namespace Prisma {
   export type StockSummaryCreateManyInput = {
     id?: string
     productId: string
-    lotNumber: string
+    nextToExpire?: Date | string | null
     availableQuantity: number
     lastUpdated?: Date | string
   }
 
   export type StockSummaryUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    lotNumber?: StringFieldUpdateOperationsInput | string
+    nextToExpire?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     availableQuantity?: IntFieldUpdateOperationsInput | number
     lastUpdated?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10206,7 +8840,7 @@ export namespace Prisma {
   export type StockSummaryUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
-    lotNumber?: StringFieldUpdateOperationsInput | string
+    nextToExpire?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     availableQuantity?: IntFieldUpdateOperationsInput | number
     lastUpdated?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10257,51 +8891,6 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     effectiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type LotCreateInput = {
-    lotNumber: string
-    expirationDate?: Date | string | null
-    purchases?: PurchaseCreateNestedManyWithoutLotInput
-    Product: ProductCreateNestedOneWithoutLotsInput
-  }
-
-  export type LotUncheckedCreateInput = {
-    lotNumber: string
-    productId: string
-    expirationDate?: Date | string | null
-    purchases?: PurchaseUncheckedCreateNestedManyWithoutLotInput
-  }
-
-  export type LotUpdateInput = {
-    lotNumber?: StringFieldUpdateOperationsInput | string
-    expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    purchases?: PurchaseUpdateManyWithoutLotNestedInput
-    Product?: ProductUpdateOneRequiredWithoutLotsNestedInput
-  }
-
-  export type LotUncheckedUpdateInput = {
-    lotNumber?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
-    expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    purchases?: PurchaseUncheckedUpdateManyWithoutLotNestedInput
-  }
-
-  export type LotCreateManyInput = {
-    lotNumber: string
-    productId: string
-    expirationDate?: Date | string | null
-  }
-
-  export type LotUpdateManyMutationInput = {
-    lotNumber?: StringFieldUpdateOperationsInput | string
-    expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type LotUncheckedUpdateManyInput = {
-    lotNumber?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
-    expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -10361,12 +8950,6 @@ export namespace Prisma {
     none?: ProductPriceWhereInput
   }
 
-  export type LotListRelationFilter = {
-    every?: LotWhereInput
-    some?: LotWhereInput
-    none?: LotWhereInput
-  }
-
   export type StockSummaryListRelationFilter = {
     every?: StockSummaryWhereInput
     some?: StockSummaryWhereInput
@@ -10387,10 +8970,6 @@ export namespace Prisma {
   }
 
   export type ProductPriceOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type LotOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -10537,16 +9116,10 @@ export namespace Prisma {
     isNot?: SupplierWhereInput
   }
 
-  export type LotNullableScalarRelationFilter = {
-    is?: LotWhereInput | null
-    isNot?: LotWhereInput | null
-  }
-
   export type PurchaseCountOrderByAggregateInput = {
     id?: SortOrder
     productId?: SortOrder
     supplierId?: SortOrder
-    lotNumber?: SortOrder
     quantity?: SortOrder
     unitCost?: SortOrder
     expirationDate?: SortOrder
@@ -10563,7 +9136,6 @@ export namespace Prisma {
     id?: SortOrder
     productId?: SortOrder
     supplierId?: SortOrder
-    lotNumber?: SortOrder
     quantity?: SortOrder
     unitCost?: SortOrder
     expirationDate?: SortOrder
@@ -10575,7 +9147,6 @@ export namespace Prisma {
     id?: SortOrder
     productId?: SortOrder
     supplierId?: SortOrder
-    lotNumber?: SortOrder
     quantity?: SortOrder
     unitCost?: SortOrder
     expirationDate?: SortOrder
@@ -10637,7 +9208,6 @@ export namespace Prisma {
   export type SaleCountOrderByAggregateInput = {
     id?: SortOrder
     productId?: SortOrder
-    lotNumber?: SortOrder
     quantity?: SortOrder
     soldAt?: SortOrder
     updatedAt?: SortOrder
@@ -10650,7 +9220,6 @@ export namespace Prisma {
   export type SaleMaxOrderByAggregateInput = {
     id?: SortOrder
     productId?: SortOrder
-    lotNumber?: SortOrder
     quantity?: SortOrder
     soldAt?: SortOrder
     updatedAt?: SortOrder
@@ -10659,7 +9228,6 @@ export namespace Prisma {
   export type SaleMinOrderByAggregateInput = {
     id?: SortOrder
     productId?: SortOrder
-    lotNumber?: SortOrder
     quantity?: SortOrder
     soldAt?: SortOrder
     updatedAt?: SortOrder
@@ -10669,15 +9237,10 @@ export namespace Prisma {
     quantity?: SortOrder
   }
 
-  export type StockSummaryProductIdLotNumberCompoundUniqueInput = {
-    productId: string
-    lotNumber: string
-  }
-
   export type StockSummaryCountOrderByAggregateInput = {
     id?: SortOrder
     productId?: SortOrder
-    lotNumber?: SortOrder
+    nextToExpire?: SortOrder
     availableQuantity?: SortOrder
     lastUpdated?: SortOrder
   }
@@ -10689,7 +9252,7 @@ export namespace Prisma {
   export type StockSummaryMaxOrderByAggregateInput = {
     id?: SortOrder
     productId?: SortOrder
-    lotNumber?: SortOrder
+    nextToExpire?: SortOrder
     availableQuantity?: SortOrder
     lastUpdated?: SortOrder
   }
@@ -10697,7 +9260,7 @@ export namespace Prisma {
   export type StockSummaryMinOrderByAggregateInput = {
     id?: SortOrder
     productId?: SortOrder
-    lotNumber?: SortOrder
+    nextToExpire?: SortOrder
     availableQuantity?: SortOrder
     lastUpdated?: SortOrder
   }
@@ -10735,29 +9298,6 @@ export namespace Prisma {
     price?: SortOrder
   }
 
-  export type LotLotNumberProductIdCompoundUniqueInput = {
-    lotNumber: string
-    productId: string
-  }
-
-  export type LotCountOrderByAggregateInput = {
-    lotNumber?: SortOrder
-    productId?: SortOrder
-    expirationDate?: SortOrder
-  }
-
-  export type LotMaxOrderByAggregateInput = {
-    lotNumber?: SortOrder
-    productId?: SortOrder
-    expirationDate?: SortOrder
-  }
-
-  export type LotMinOrderByAggregateInput = {
-    lotNumber?: SortOrder
-    productId?: SortOrder
-    expirationDate?: SortOrder
-  }
-
   export type PurchaseCreateNestedManyWithoutProductInput = {
     create?: XOR<PurchaseCreateWithoutProductInput, PurchaseUncheckedCreateWithoutProductInput> | PurchaseCreateWithoutProductInput[] | PurchaseUncheckedCreateWithoutProductInput[]
     connectOrCreate?: PurchaseCreateOrConnectWithoutProductInput | PurchaseCreateOrConnectWithoutProductInput[]
@@ -10777,13 +9317,6 @@ export namespace Prisma {
     connectOrCreate?: ProductPriceCreateOrConnectWithoutProductInput | ProductPriceCreateOrConnectWithoutProductInput[]
     createMany?: ProductPriceCreateManyProductInputEnvelope
     connect?: ProductPriceWhereUniqueInput | ProductPriceWhereUniqueInput[]
-  }
-
-  export type LotCreateNestedManyWithoutProductInput = {
-    create?: XOR<LotCreateWithoutProductInput, LotUncheckedCreateWithoutProductInput> | LotCreateWithoutProductInput[] | LotUncheckedCreateWithoutProductInput[]
-    connectOrCreate?: LotCreateOrConnectWithoutProductInput | LotCreateOrConnectWithoutProductInput[]
-    createMany?: LotCreateManyProductInputEnvelope
-    connect?: LotWhereUniqueInput | LotWhereUniqueInput[]
   }
 
   export type StockSummaryCreateNestedManyWithoutProductInput = {
@@ -10812,13 +9345,6 @@ export namespace Prisma {
     connectOrCreate?: ProductPriceCreateOrConnectWithoutProductInput | ProductPriceCreateOrConnectWithoutProductInput[]
     createMany?: ProductPriceCreateManyProductInputEnvelope
     connect?: ProductPriceWhereUniqueInput | ProductPriceWhereUniqueInput[]
-  }
-
-  export type LotUncheckedCreateNestedManyWithoutProductInput = {
-    create?: XOR<LotCreateWithoutProductInput, LotUncheckedCreateWithoutProductInput> | LotCreateWithoutProductInput[] | LotUncheckedCreateWithoutProductInput[]
-    connectOrCreate?: LotCreateOrConnectWithoutProductInput | LotCreateOrConnectWithoutProductInput[]
-    createMany?: LotCreateManyProductInputEnvelope
-    connect?: LotWhereUniqueInput | LotWhereUniqueInput[]
   }
 
   export type StockSummaryUncheckedCreateNestedManyWithoutProductInput = {
@@ -10882,20 +9408,6 @@ export namespace Prisma {
     deleteMany?: ProductPriceScalarWhereInput | ProductPriceScalarWhereInput[]
   }
 
-  export type LotUpdateManyWithoutProductNestedInput = {
-    create?: XOR<LotCreateWithoutProductInput, LotUncheckedCreateWithoutProductInput> | LotCreateWithoutProductInput[] | LotUncheckedCreateWithoutProductInput[]
-    connectOrCreate?: LotCreateOrConnectWithoutProductInput | LotCreateOrConnectWithoutProductInput[]
-    upsert?: LotUpsertWithWhereUniqueWithoutProductInput | LotUpsertWithWhereUniqueWithoutProductInput[]
-    createMany?: LotCreateManyProductInputEnvelope
-    set?: LotWhereUniqueInput | LotWhereUniqueInput[]
-    disconnect?: LotWhereUniqueInput | LotWhereUniqueInput[]
-    delete?: LotWhereUniqueInput | LotWhereUniqueInput[]
-    connect?: LotWhereUniqueInput | LotWhereUniqueInput[]
-    update?: LotUpdateWithWhereUniqueWithoutProductInput | LotUpdateWithWhereUniqueWithoutProductInput[]
-    updateMany?: LotUpdateManyWithWhereWithoutProductInput | LotUpdateManyWithWhereWithoutProductInput[]
-    deleteMany?: LotScalarWhereInput | LotScalarWhereInput[]
-  }
-
   export type StockSummaryUpdateManyWithoutProductNestedInput = {
     create?: XOR<StockSummaryCreateWithoutProductInput, StockSummaryUncheckedCreateWithoutProductInput> | StockSummaryCreateWithoutProductInput[] | StockSummaryUncheckedCreateWithoutProductInput[]
     connectOrCreate?: StockSummaryCreateOrConnectWithoutProductInput | StockSummaryCreateOrConnectWithoutProductInput[]
@@ -10950,20 +9462,6 @@ export namespace Prisma {
     update?: ProductPriceUpdateWithWhereUniqueWithoutProductInput | ProductPriceUpdateWithWhereUniqueWithoutProductInput[]
     updateMany?: ProductPriceUpdateManyWithWhereWithoutProductInput | ProductPriceUpdateManyWithWhereWithoutProductInput[]
     deleteMany?: ProductPriceScalarWhereInput | ProductPriceScalarWhereInput[]
-  }
-
-  export type LotUncheckedUpdateManyWithoutProductNestedInput = {
-    create?: XOR<LotCreateWithoutProductInput, LotUncheckedCreateWithoutProductInput> | LotCreateWithoutProductInput[] | LotUncheckedCreateWithoutProductInput[]
-    connectOrCreate?: LotCreateOrConnectWithoutProductInput | LotCreateOrConnectWithoutProductInput[]
-    upsert?: LotUpsertWithWhereUniqueWithoutProductInput | LotUpsertWithWhereUniqueWithoutProductInput[]
-    createMany?: LotCreateManyProductInputEnvelope
-    set?: LotWhereUniqueInput | LotWhereUniqueInput[]
-    disconnect?: LotWhereUniqueInput | LotWhereUniqueInput[]
-    delete?: LotWhereUniqueInput | LotWhereUniqueInput[]
-    connect?: LotWhereUniqueInput | LotWhereUniqueInput[]
-    update?: LotUpdateWithWhereUniqueWithoutProductInput | LotUpdateWithWhereUniqueWithoutProductInput[]
-    updateMany?: LotUpdateManyWithWhereWithoutProductInput | LotUpdateManyWithWhereWithoutProductInput[]
-    deleteMany?: LotScalarWhereInput | LotScalarWhereInput[]
   }
 
   export type StockSummaryUncheckedUpdateManyWithoutProductNestedInput = {
@@ -11034,12 +9532,6 @@ export namespace Prisma {
     connect?: SupplierWhereUniqueInput
   }
 
-  export type LotCreateNestedOneWithoutPurchasesInput = {
-    create?: XOR<LotCreateWithoutPurchasesInput, LotUncheckedCreateWithoutPurchasesInput>
-    connectOrCreate?: LotCreateOrConnectWithoutPurchasesInput
-    connect?: LotWhereUniqueInput
-  }
-
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -11074,16 +9566,6 @@ export namespace Prisma {
     upsert?: SupplierUpsertWithoutPurchasesInput
     connect?: SupplierWhereUniqueInput
     update?: XOR<XOR<SupplierUpdateToOneWithWhereWithoutPurchasesInput, SupplierUpdateWithoutPurchasesInput>, SupplierUncheckedUpdateWithoutPurchasesInput>
-  }
-
-  export type LotUpdateOneWithoutPurchasesNestedInput = {
-    create?: XOR<LotCreateWithoutPurchasesInput, LotUncheckedCreateWithoutPurchasesInput>
-    connectOrCreate?: LotCreateOrConnectWithoutPurchasesInput
-    upsert?: LotUpsertWithoutPurchasesInput
-    disconnect?: LotWhereInput | boolean
-    delete?: LotWhereInput | boolean
-    connect?: LotWhereUniqueInput
-    update?: XOR<XOR<LotUpdateToOneWithWhereWithoutPurchasesInput, LotUpdateWithoutPurchasesInput>, LotUncheckedUpdateWithoutPurchasesInput>
   }
 
   export type ProductCreateNestedOneWithoutSalesInput = {
@@ -11126,62 +9608,6 @@ export namespace Prisma {
     upsert?: ProductUpsertWithoutPricesInput
     connect?: ProductWhereUniqueInput
     update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutPricesInput, ProductUpdateWithoutPricesInput>, ProductUncheckedUpdateWithoutPricesInput>
-  }
-
-  export type PurchaseCreateNestedManyWithoutLotInput = {
-    create?: XOR<PurchaseCreateWithoutLotInput, PurchaseUncheckedCreateWithoutLotInput> | PurchaseCreateWithoutLotInput[] | PurchaseUncheckedCreateWithoutLotInput[]
-    connectOrCreate?: PurchaseCreateOrConnectWithoutLotInput | PurchaseCreateOrConnectWithoutLotInput[]
-    createMany?: PurchaseCreateManyLotInputEnvelope
-    connect?: PurchaseWhereUniqueInput | PurchaseWhereUniqueInput[]
-  }
-
-  export type ProductCreateNestedOneWithoutLotsInput = {
-    create?: XOR<ProductCreateWithoutLotsInput, ProductUncheckedCreateWithoutLotsInput>
-    connectOrCreate?: ProductCreateOrConnectWithoutLotsInput
-    connect?: ProductWhereUniqueInput
-  }
-
-  export type PurchaseUncheckedCreateNestedManyWithoutLotInput = {
-    create?: XOR<PurchaseCreateWithoutLotInput, PurchaseUncheckedCreateWithoutLotInput> | PurchaseCreateWithoutLotInput[] | PurchaseUncheckedCreateWithoutLotInput[]
-    connectOrCreate?: PurchaseCreateOrConnectWithoutLotInput | PurchaseCreateOrConnectWithoutLotInput[]
-    createMany?: PurchaseCreateManyLotInputEnvelope
-    connect?: PurchaseWhereUniqueInput | PurchaseWhereUniqueInput[]
-  }
-
-  export type PurchaseUpdateManyWithoutLotNestedInput = {
-    create?: XOR<PurchaseCreateWithoutLotInput, PurchaseUncheckedCreateWithoutLotInput> | PurchaseCreateWithoutLotInput[] | PurchaseUncheckedCreateWithoutLotInput[]
-    connectOrCreate?: PurchaseCreateOrConnectWithoutLotInput | PurchaseCreateOrConnectWithoutLotInput[]
-    upsert?: PurchaseUpsertWithWhereUniqueWithoutLotInput | PurchaseUpsertWithWhereUniqueWithoutLotInput[]
-    createMany?: PurchaseCreateManyLotInputEnvelope
-    set?: PurchaseWhereUniqueInput | PurchaseWhereUniqueInput[]
-    disconnect?: PurchaseWhereUniqueInput | PurchaseWhereUniqueInput[]
-    delete?: PurchaseWhereUniqueInput | PurchaseWhereUniqueInput[]
-    connect?: PurchaseWhereUniqueInput | PurchaseWhereUniqueInput[]
-    update?: PurchaseUpdateWithWhereUniqueWithoutLotInput | PurchaseUpdateWithWhereUniqueWithoutLotInput[]
-    updateMany?: PurchaseUpdateManyWithWhereWithoutLotInput | PurchaseUpdateManyWithWhereWithoutLotInput[]
-    deleteMany?: PurchaseScalarWhereInput | PurchaseScalarWhereInput[]
-  }
-
-  export type ProductUpdateOneRequiredWithoutLotsNestedInput = {
-    create?: XOR<ProductCreateWithoutLotsInput, ProductUncheckedCreateWithoutLotsInput>
-    connectOrCreate?: ProductCreateOrConnectWithoutLotsInput
-    upsert?: ProductUpsertWithoutLotsInput
-    connect?: ProductWhereUniqueInput
-    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutLotsInput, ProductUpdateWithoutLotsInput>, ProductUncheckedUpdateWithoutLotsInput>
-  }
-
-  export type PurchaseUncheckedUpdateManyWithoutLotNestedInput = {
-    create?: XOR<PurchaseCreateWithoutLotInput, PurchaseUncheckedCreateWithoutLotInput> | PurchaseCreateWithoutLotInput[] | PurchaseUncheckedCreateWithoutLotInput[]
-    connectOrCreate?: PurchaseCreateOrConnectWithoutLotInput | PurchaseCreateOrConnectWithoutLotInput[]
-    upsert?: PurchaseUpsertWithWhereUniqueWithoutLotInput | PurchaseUpsertWithWhereUniqueWithoutLotInput[]
-    createMany?: PurchaseCreateManyLotInputEnvelope
-    set?: PurchaseWhereUniqueInput | PurchaseWhereUniqueInput[]
-    disconnect?: PurchaseWhereUniqueInput | PurchaseWhereUniqueInput[]
-    delete?: PurchaseWhereUniqueInput | PurchaseWhereUniqueInput[]
-    connect?: PurchaseWhereUniqueInput | PurchaseWhereUniqueInput[]
-    update?: PurchaseUpdateWithWhereUniqueWithoutLotInput | PurchaseUpdateWithWhereUniqueWithoutLotInput[]
-    updateMany?: PurchaseUpdateManyWithWhereWithoutLotInput | PurchaseUpdateManyWithWhereWithoutLotInput[]
-    deleteMany?: PurchaseScalarWhereInput | PurchaseScalarWhereInput[]
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -11380,13 +9806,11 @@ export namespace Prisma {
     purchasedAt?: Date | string
     updatedAt?: Date | string
     supplier: SupplierCreateNestedOneWithoutPurchasesInput
-    lot?: LotCreateNestedOneWithoutPurchasesInput
   }
 
   export type PurchaseUncheckedCreateWithoutProductInput = {
     id?: string
     supplierId: string
-    lotNumber: string
     quantity: number
     unitCost: Decimal | DecimalJsLike | number | string
     expirationDate?: Date | string | null
@@ -11405,7 +9829,6 @@ export namespace Prisma {
 
   export type SaleCreateWithoutProductInput = {
     id?: string
-    lotNumber?: string | null
     quantity: number
     soldAt?: Date | string
     updatedAt?: Date | string
@@ -11413,7 +9836,6 @@ export namespace Prisma {
 
   export type SaleUncheckedCreateWithoutProductInput = {
     id?: string
-    lotNumber?: string | null
     quantity: number
     soldAt?: Date | string
     updatedAt?: Date | string
@@ -11449,37 +9871,16 @@ export namespace Prisma {
     data: ProductPriceCreateManyProductInput | ProductPriceCreateManyProductInput[]
   }
 
-  export type LotCreateWithoutProductInput = {
-    lotNumber: string
-    expirationDate?: Date | string | null
-    purchases?: PurchaseCreateNestedManyWithoutLotInput
-  }
-
-  export type LotUncheckedCreateWithoutProductInput = {
-    lotNumber: string
-    expirationDate?: Date | string | null
-    purchases?: PurchaseUncheckedCreateNestedManyWithoutLotInput
-  }
-
-  export type LotCreateOrConnectWithoutProductInput = {
-    where: LotWhereUniqueInput
-    create: XOR<LotCreateWithoutProductInput, LotUncheckedCreateWithoutProductInput>
-  }
-
-  export type LotCreateManyProductInputEnvelope = {
-    data: LotCreateManyProductInput | LotCreateManyProductInput[]
-  }
-
   export type StockSummaryCreateWithoutProductInput = {
     id?: string
-    lotNumber: string
+    nextToExpire?: Date | string | null
     availableQuantity: number
     lastUpdated?: Date | string
   }
 
   export type StockSummaryUncheckedCreateWithoutProductInput = {
     id?: string
-    lotNumber: string
+    nextToExpire?: Date | string | null
     availableQuantity: number
     lastUpdated?: Date | string
   }
@@ -11516,7 +9917,6 @@ export namespace Prisma {
     id?: StringFilter<"Purchase"> | string
     productId?: StringFilter<"Purchase"> | string
     supplierId?: StringFilter<"Purchase"> | string
-    lotNumber?: StringFilter<"Purchase"> | string
     quantity?: IntFilter<"Purchase"> | number
     unitCost?: DecimalFilter<"Purchase"> | Decimal | DecimalJsLike | number | string
     expirationDate?: DateTimeNullableFilter<"Purchase"> | Date | string | null
@@ -11546,7 +9946,6 @@ export namespace Prisma {
     NOT?: SaleScalarWhereInput | SaleScalarWhereInput[]
     id?: StringFilter<"Sale"> | string
     productId?: StringFilter<"Sale"> | string
-    lotNumber?: StringNullableFilter<"Sale"> | string | null
     quantity?: IntFilter<"Sale"> | number
     soldAt?: DateTimeFilter<"Sale"> | Date | string
     updatedAt?: DateTimeFilter<"Sale"> | Date | string
@@ -11578,31 +9977,6 @@ export namespace Prisma {
     effectiveAt?: DateTimeFilter<"ProductPrice"> | Date | string
   }
 
-  export type LotUpsertWithWhereUniqueWithoutProductInput = {
-    where: LotWhereUniqueInput
-    update: XOR<LotUpdateWithoutProductInput, LotUncheckedUpdateWithoutProductInput>
-    create: XOR<LotCreateWithoutProductInput, LotUncheckedCreateWithoutProductInput>
-  }
-
-  export type LotUpdateWithWhereUniqueWithoutProductInput = {
-    where: LotWhereUniqueInput
-    data: XOR<LotUpdateWithoutProductInput, LotUncheckedUpdateWithoutProductInput>
-  }
-
-  export type LotUpdateManyWithWhereWithoutProductInput = {
-    where: LotScalarWhereInput
-    data: XOR<LotUpdateManyMutationInput, LotUncheckedUpdateManyWithoutProductInput>
-  }
-
-  export type LotScalarWhereInput = {
-    AND?: LotScalarWhereInput | LotScalarWhereInput[]
-    OR?: LotScalarWhereInput[]
-    NOT?: LotScalarWhereInput | LotScalarWhereInput[]
-    lotNumber?: StringFilter<"Lot"> | string
-    productId?: StringFilter<"Lot"> | string
-    expirationDate?: DateTimeNullableFilter<"Lot"> | Date | string | null
-  }
-
   export type StockSummaryUpsertWithWhereUniqueWithoutProductInput = {
     where: StockSummaryWhereUniqueInput
     update: XOR<StockSummaryUpdateWithoutProductInput, StockSummaryUncheckedUpdateWithoutProductInput>
@@ -11625,7 +9999,7 @@ export namespace Prisma {
     NOT?: StockSummaryScalarWhereInput | StockSummaryScalarWhereInput[]
     id?: StringFilter<"StockSummary"> | string
     productId?: StringFilter<"StockSummary"> | string
-    lotNumber?: StringFilter<"StockSummary"> | string
+    nextToExpire?: DateTimeNullableFilter<"StockSummary"> | Date | string | null
     availableQuantity?: IntFilter<"StockSummary"> | number
     lastUpdated?: DateTimeFilter<"StockSummary"> | Date | string
   }
@@ -11638,13 +10012,11 @@ export namespace Prisma {
     purchasedAt?: Date | string
     updatedAt?: Date | string
     product: ProductCreateNestedOneWithoutPurchasesInput
-    lot?: LotCreateNestedOneWithoutPurchasesInput
   }
 
   export type PurchaseUncheckedCreateWithoutSupplierInput = {
     id?: string
     productId: string
-    lotNumber: string
     quantity: number
     unitCost: Decimal | DecimalJsLike | number | string
     expirationDate?: Date | string | null
@@ -11685,7 +10057,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     sales?: SaleCreateNestedManyWithoutProductInput
     prices?: ProductPriceCreateNestedManyWithoutProductInput
-    lots?: LotCreateNestedManyWithoutProductInput
     StockSummary?: StockSummaryCreateNestedManyWithoutProductInput
   }
 
@@ -11697,7 +10068,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     sales?: SaleUncheckedCreateNestedManyWithoutProductInput
     prices?: ProductPriceUncheckedCreateNestedManyWithoutProductInput
-    lots?: LotUncheckedCreateNestedManyWithoutProductInput
     StockSummary?: StockSummaryUncheckedCreateNestedManyWithoutProductInput
   }
 
@@ -11727,23 +10097,6 @@ export namespace Prisma {
     create: XOR<SupplierCreateWithoutPurchasesInput, SupplierUncheckedCreateWithoutPurchasesInput>
   }
 
-  export type LotCreateWithoutPurchasesInput = {
-    lotNumber: string
-    expirationDate?: Date | string | null
-    Product: ProductCreateNestedOneWithoutLotsInput
-  }
-
-  export type LotUncheckedCreateWithoutPurchasesInput = {
-    lotNumber: string
-    productId: string
-    expirationDate?: Date | string | null
-  }
-
-  export type LotCreateOrConnectWithoutPurchasesInput = {
-    where: LotWhereUniqueInput
-    create: XOR<LotCreateWithoutPurchasesInput, LotUncheckedCreateWithoutPurchasesInput>
-  }
-
   export type ProductUpsertWithoutPurchasesInput = {
     update: XOR<ProductUpdateWithoutPurchasesInput, ProductUncheckedUpdateWithoutPurchasesInput>
     create: XOR<ProductCreateWithoutPurchasesInput, ProductUncheckedCreateWithoutPurchasesInput>
@@ -11763,7 +10116,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sales?: SaleUpdateManyWithoutProductNestedInput
     prices?: ProductPriceUpdateManyWithoutProductNestedInput
-    lots?: LotUpdateManyWithoutProductNestedInput
     StockSummary?: StockSummaryUpdateManyWithoutProductNestedInput
   }
 
@@ -11775,7 +10127,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sales?: SaleUncheckedUpdateManyWithoutProductNestedInput
     prices?: ProductPriceUncheckedUpdateManyWithoutProductNestedInput
-    lots?: LotUncheckedUpdateManyWithoutProductNestedInput
     StockSummary?: StockSummaryUncheckedUpdateManyWithoutProductNestedInput
   }
 
@@ -11806,29 +10157,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type LotUpsertWithoutPurchasesInput = {
-    update: XOR<LotUpdateWithoutPurchasesInput, LotUncheckedUpdateWithoutPurchasesInput>
-    create: XOR<LotCreateWithoutPurchasesInput, LotUncheckedCreateWithoutPurchasesInput>
-    where?: LotWhereInput
-  }
-
-  export type LotUpdateToOneWithWhereWithoutPurchasesInput = {
-    where?: LotWhereInput
-    data: XOR<LotUpdateWithoutPurchasesInput, LotUncheckedUpdateWithoutPurchasesInput>
-  }
-
-  export type LotUpdateWithoutPurchasesInput = {
-    lotNumber?: StringFieldUpdateOperationsInput | string
-    expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    Product?: ProductUpdateOneRequiredWithoutLotsNestedInput
-  }
-
-  export type LotUncheckedUpdateWithoutPurchasesInput = {
-    lotNumber?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
-    expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
   export type ProductCreateWithoutSalesInput = {
     id?: string
     name: string
@@ -11837,7 +10165,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     purchases?: PurchaseCreateNestedManyWithoutProductInput
     prices?: ProductPriceCreateNestedManyWithoutProductInput
-    lots?: LotCreateNestedManyWithoutProductInput
     StockSummary?: StockSummaryCreateNestedManyWithoutProductInput
   }
 
@@ -11849,7 +10176,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     purchases?: PurchaseUncheckedCreateNestedManyWithoutProductInput
     prices?: ProductPriceUncheckedCreateNestedManyWithoutProductInput
-    lots?: LotUncheckedCreateNestedManyWithoutProductInput
     StockSummary?: StockSummaryUncheckedCreateNestedManyWithoutProductInput
   }
 
@@ -11877,7 +10203,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     purchases?: PurchaseUpdateManyWithoutProductNestedInput
     prices?: ProductPriceUpdateManyWithoutProductNestedInput
-    lots?: LotUpdateManyWithoutProductNestedInput
     StockSummary?: StockSummaryUpdateManyWithoutProductNestedInput
   }
 
@@ -11889,7 +10214,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     purchases?: PurchaseUncheckedUpdateManyWithoutProductNestedInput
     prices?: ProductPriceUncheckedUpdateManyWithoutProductNestedInput
-    lots?: LotUncheckedUpdateManyWithoutProductNestedInput
     StockSummary?: StockSummaryUncheckedUpdateManyWithoutProductNestedInput
   }
 
@@ -11902,7 +10226,6 @@ export namespace Prisma {
     purchases?: PurchaseCreateNestedManyWithoutProductInput
     sales?: SaleCreateNestedManyWithoutProductInput
     prices?: ProductPriceCreateNestedManyWithoutProductInput
-    lots?: LotCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutStockSummaryInput = {
@@ -11914,7 +10237,6 @@ export namespace Prisma {
     purchases?: PurchaseUncheckedCreateNestedManyWithoutProductInput
     sales?: SaleUncheckedCreateNestedManyWithoutProductInput
     prices?: ProductPriceUncheckedCreateNestedManyWithoutProductInput
-    lots?: LotUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutStockSummaryInput = {
@@ -11942,7 +10264,6 @@ export namespace Prisma {
     purchases?: PurchaseUpdateManyWithoutProductNestedInput
     sales?: SaleUpdateManyWithoutProductNestedInput
     prices?: ProductPriceUpdateManyWithoutProductNestedInput
-    lots?: LotUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutStockSummaryInput = {
@@ -11954,7 +10275,6 @@ export namespace Prisma {
     purchases?: PurchaseUncheckedUpdateManyWithoutProductNestedInput
     sales?: SaleUncheckedUpdateManyWithoutProductNestedInput
     prices?: ProductPriceUncheckedUpdateManyWithoutProductNestedInput
-    lots?: LotUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductCreateWithoutPricesInput = {
@@ -11965,7 +10285,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     purchases?: PurchaseCreateNestedManyWithoutProductInput
     sales?: SaleCreateNestedManyWithoutProductInput
-    lots?: LotCreateNestedManyWithoutProductInput
     StockSummary?: StockSummaryCreateNestedManyWithoutProductInput
   }
 
@@ -11977,7 +10296,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     purchases?: PurchaseUncheckedCreateNestedManyWithoutProductInput
     sales?: SaleUncheckedCreateNestedManyWithoutProductInput
-    lots?: LotUncheckedCreateNestedManyWithoutProductInput
     StockSummary?: StockSummaryUncheckedCreateNestedManyWithoutProductInput
   }
 
@@ -12005,7 +10323,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     purchases?: PurchaseUpdateManyWithoutProductNestedInput
     sales?: SaleUpdateManyWithoutProductNestedInput
-    lots?: LotUpdateManyWithoutProductNestedInput
     StockSummary?: StockSummaryUpdateManyWithoutProductNestedInput
   }
 
@@ -12017,124 +10334,12 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     purchases?: PurchaseUncheckedUpdateManyWithoutProductNestedInput
     sales?: SaleUncheckedUpdateManyWithoutProductNestedInput
-    lots?: LotUncheckedUpdateManyWithoutProductNestedInput
-    StockSummary?: StockSummaryUncheckedUpdateManyWithoutProductNestedInput
-  }
-
-  export type PurchaseCreateWithoutLotInput = {
-    id?: string
-    quantity: number
-    unitCost: Decimal | DecimalJsLike | number | string
-    expirationDate?: Date | string | null
-    purchasedAt?: Date | string
-    updatedAt?: Date | string
-    product: ProductCreateNestedOneWithoutPurchasesInput
-    supplier: SupplierCreateNestedOneWithoutPurchasesInput
-  }
-
-  export type PurchaseUncheckedCreateWithoutLotInput = {
-    id?: string
-    supplierId: string
-    quantity: number
-    unitCost: Decimal | DecimalJsLike | number | string
-    expirationDate?: Date | string | null
-    purchasedAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type PurchaseCreateOrConnectWithoutLotInput = {
-    where: PurchaseWhereUniqueInput
-    create: XOR<PurchaseCreateWithoutLotInput, PurchaseUncheckedCreateWithoutLotInput>
-  }
-
-  export type PurchaseCreateManyLotInputEnvelope = {
-    data: PurchaseCreateManyLotInput | PurchaseCreateManyLotInput[]
-  }
-
-  export type ProductCreateWithoutLotsInput = {
-    id?: string
-    name: string
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    purchases?: PurchaseCreateNestedManyWithoutProductInput
-    sales?: SaleCreateNestedManyWithoutProductInput
-    prices?: ProductPriceCreateNestedManyWithoutProductInput
-    StockSummary?: StockSummaryCreateNestedManyWithoutProductInput
-  }
-
-  export type ProductUncheckedCreateWithoutLotsInput = {
-    id?: string
-    name: string
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    purchases?: PurchaseUncheckedCreateNestedManyWithoutProductInput
-    sales?: SaleUncheckedCreateNestedManyWithoutProductInput
-    prices?: ProductPriceUncheckedCreateNestedManyWithoutProductInput
-    StockSummary?: StockSummaryUncheckedCreateNestedManyWithoutProductInput
-  }
-
-  export type ProductCreateOrConnectWithoutLotsInput = {
-    where: ProductWhereUniqueInput
-    create: XOR<ProductCreateWithoutLotsInput, ProductUncheckedCreateWithoutLotsInput>
-  }
-
-  export type PurchaseUpsertWithWhereUniqueWithoutLotInput = {
-    where: PurchaseWhereUniqueInput
-    update: XOR<PurchaseUpdateWithoutLotInput, PurchaseUncheckedUpdateWithoutLotInput>
-    create: XOR<PurchaseCreateWithoutLotInput, PurchaseUncheckedCreateWithoutLotInput>
-  }
-
-  export type PurchaseUpdateWithWhereUniqueWithoutLotInput = {
-    where: PurchaseWhereUniqueInput
-    data: XOR<PurchaseUpdateWithoutLotInput, PurchaseUncheckedUpdateWithoutLotInput>
-  }
-
-  export type PurchaseUpdateManyWithWhereWithoutLotInput = {
-    where: PurchaseScalarWhereInput
-    data: XOR<PurchaseUpdateManyMutationInput, PurchaseUncheckedUpdateManyWithoutLotInput>
-  }
-
-  export type ProductUpsertWithoutLotsInput = {
-    update: XOR<ProductUpdateWithoutLotsInput, ProductUncheckedUpdateWithoutLotsInput>
-    create: XOR<ProductCreateWithoutLotsInput, ProductUncheckedCreateWithoutLotsInput>
-    where?: ProductWhereInput
-  }
-
-  export type ProductUpdateToOneWithWhereWithoutLotsInput = {
-    where?: ProductWhereInput
-    data: XOR<ProductUpdateWithoutLotsInput, ProductUncheckedUpdateWithoutLotsInput>
-  }
-
-  export type ProductUpdateWithoutLotsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    purchases?: PurchaseUpdateManyWithoutProductNestedInput
-    sales?: SaleUpdateManyWithoutProductNestedInput
-    prices?: ProductPriceUpdateManyWithoutProductNestedInput
-    StockSummary?: StockSummaryUpdateManyWithoutProductNestedInput
-  }
-
-  export type ProductUncheckedUpdateWithoutLotsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    purchases?: PurchaseUncheckedUpdateManyWithoutProductNestedInput
-    sales?: SaleUncheckedUpdateManyWithoutProductNestedInput
-    prices?: ProductPriceUncheckedUpdateManyWithoutProductNestedInput
     StockSummary?: StockSummaryUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type PurchaseCreateManyProductInput = {
     id?: string
     supplierId: string
-    lotNumber: string
     quantity: number
     unitCost: Decimal | DecimalJsLike | number | string
     expirationDate?: Date | string | null
@@ -12144,7 +10349,6 @@ export namespace Prisma {
 
   export type SaleCreateManyProductInput = {
     id?: string
-    lotNumber?: string | null
     quantity: number
     soldAt?: Date | string
     updatedAt?: Date | string
@@ -12156,14 +10360,9 @@ export namespace Prisma {
     effectiveAt?: Date | string
   }
 
-  export type LotCreateManyProductInput = {
-    lotNumber: string
-    expirationDate?: Date | string | null
-  }
-
   export type StockSummaryCreateManyProductInput = {
     id?: string
-    lotNumber: string
+    nextToExpire?: Date | string | null
     availableQuantity: number
     lastUpdated?: Date | string
   }
@@ -12176,13 +10375,11 @@ export namespace Prisma {
     purchasedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     supplier?: SupplierUpdateOneRequiredWithoutPurchasesNestedInput
-    lot?: LotUpdateOneWithoutPurchasesNestedInput
   }
 
   export type PurchaseUncheckedUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
     supplierId?: StringFieldUpdateOperationsInput | string
-    lotNumber?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     unitCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -12193,7 +10390,6 @@ export namespace Prisma {
   export type PurchaseUncheckedUpdateManyWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
     supplierId?: StringFieldUpdateOperationsInput | string
-    lotNumber?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     unitCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -12203,7 +10399,6 @@ export namespace Prisma {
 
   export type SaleUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
-    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     soldAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12211,7 +10406,6 @@ export namespace Prisma {
 
   export type SaleUncheckedUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
-    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     soldAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12219,7 +10413,6 @@ export namespace Prisma {
 
   export type SaleUncheckedUpdateManyWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
-    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     soldAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12243,40 +10436,23 @@ export namespace Prisma {
     effectiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type LotUpdateWithoutProductInput = {
-    lotNumber?: StringFieldUpdateOperationsInput | string
-    expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    purchases?: PurchaseUpdateManyWithoutLotNestedInput
-  }
-
-  export type LotUncheckedUpdateWithoutProductInput = {
-    lotNumber?: StringFieldUpdateOperationsInput | string
-    expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    purchases?: PurchaseUncheckedUpdateManyWithoutLotNestedInput
-  }
-
-  export type LotUncheckedUpdateManyWithoutProductInput = {
-    lotNumber?: StringFieldUpdateOperationsInput | string
-    expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
   export type StockSummaryUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
-    lotNumber?: StringFieldUpdateOperationsInput | string
+    nextToExpire?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     availableQuantity?: IntFieldUpdateOperationsInput | number
     lastUpdated?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StockSummaryUncheckedUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
-    lotNumber?: StringFieldUpdateOperationsInput | string
+    nextToExpire?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     availableQuantity?: IntFieldUpdateOperationsInput | number
     lastUpdated?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StockSummaryUncheckedUpdateManyWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
-    lotNumber?: StringFieldUpdateOperationsInput | string
+    nextToExpire?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     availableQuantity?: IntFieldUpdateOperationsInput | number
     lastUpdated?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12284,7 +10460,6 @@ export namespace Prisma {
   export type PurchaseCreateManySupplierInput = {
     id?: string
     productId: string
-    lotNumber: string
     quantity: number
     unitCost: Decimal | DecimalJsLike | number | string
     expirationDate?: Date | string | null
@@ -12300,13 +10475,11 @@ export namespace Prisma {
     purchasedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     product?: ProductUpdateOneRequiredWithoutPurchasesNestedInput
-    lot?: LotUpdateOneWithoutPurchasesNestedInput
   }
 
   export type PurchaseUncheckedUpdateWithoutSupplierInput = {
     id?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
-    lotNumber?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     unitCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -12317,48 +10490,6 @@ export namespace Prisma {
   export type PurchaseUncheckedUpdateManyWithoutSupplierInput = {
     id?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
-    lotNumber?: StringFieldUpdateOperationsInput | string
-    quantity?: IntFieldUpdateOperationsInput | number
-    unitCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    purchasedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type PurchaseCreateManyLotInput = {
-    id?: string
-    supplierId: string
-    quantity: number
-    unitCost: Decimal | DecimalJsLike | number | string
-    expirationDate?: Date | string | null
-    purchasedAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type PurchaseUpdateWithoutLotInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    quantity?: IntFieldUpdateOperationsInput | number
-    unitCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    purchasedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    product?: ProductUpdateOneRequiredWithoutPurchasesNestedInput
-    supplier?: SupplierUpdateOneRequiredWithoutPurchasesNestedInput
-  }
-
-  export type PurchaseUncheckedUpdateWithoutLotInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    supplierId?: StringFieldUpdateOperationsInput | string
-    quantity?: IntFieldUpdateOperationsInput | number
-    unitCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    purchasedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type PurchaseUncheckedUpdateManyWithoutLotInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    supplierId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     unitCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
