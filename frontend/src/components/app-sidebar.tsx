@@ -17,8 +17,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const data = {
   user: {
-    name: 'shadcn',
-    email: 'm@example.com',
+    name: 'Cedelphie',
+    email: 'ced@example.com',
     avatar: '/avatars/shadcn.jpg',
   },
   navSecondary: [
@@ -68,7 +68,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                   <Avatar>
                     <AvatarImage src={logo} />
-                    <AvatarFallback>CN</AvatarFallback>
+                    <AvatarFallback>CD</AvatarFallback>
                   </Avatar>
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">

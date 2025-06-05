@@ -1,5 +1,5 @@
-import { createBrowserRouter } from "react-router";
-import App from "./App";
+import { createBrowserRouter } from 'react-router';
+import { Layout } from './layout';
 // import Layout from './routes/layout';
 // import Dashboard from './routes/dashboard';
 // import Login from './routes/login';
@@ -13,6 +13,6 @@ import App from "./App";
 //   )
 // );
 
-const router = createBrowserRouter([{ path: "/", Component: App }]);
+const router = createBrowserRouter([{ path: '/', Component: Layout }]);
 
 export { router };
