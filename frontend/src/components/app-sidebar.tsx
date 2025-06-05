@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Command, Frame, LifeBuoy, Map, PieChart, Send } from 'lucide-react';
-
+import { LayoutDashboard, PackageSearch, Store, BadgeDollarSign, NotebookPen, Settings } from 'lucide-react';
 import { NavProjects } from '@/components/nav-projects';
 import { NavSecondary } from '@/components/nav-secondary';
 import { NavUser } from '@/components/nav-user';
@@ -14,7 +13,7 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import logo from '../assets/logo.png';
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const data = {
   user: {
@@ -24,31 +23,36 @@ const data = {
   },
   navSecondary: [
     {
-      title: 'Support',
+      title: 'Paramètres',
       url: '#',
-      icon: LifeBuoy,
-    },
-    {
-      title: 'Feedback',
-      url: '#',
-      icon: Send,
+      icon: Settings,
     },
   ],
   projects: [
     {
-      name: 'Design Engineering',
+      title: 'Tableau de Bord',
       url: '#',
-      icon: Frame,
+      icon: LayoutDashboard,
     },
     {
-      name: 'Sales & Marketing',
+      title: 'Produits',
       url: '#',
-      icon: PieChart,
+      icon: PackageSearch,
     },
     {
-      name: 'Travel',
+      title: 'Fournisseurs',
       url: '#',
-      icon: Map,
+      icon: Store,
+    },
+    {
+      title: 'Achats et Vente',
+      url: '#',
+      icon: BadgeDollarSign,
+    },
+    {
+      title: 'Rapports',
+      url: '#',
+      icon: NotebookPen,
     },
   ],
 };
@@ -62,16 +66,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenuButton size="lg" asChild>
               <a href="#">
                 <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                  {/* <Command className="size-4" /> */}
-                  {/* <img src={logo} alt="Logo" /> */}
                   <Avatar>
                     <AvatarImage src={logo} />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">Acme Inc</span>
-                  <span className="truncate text-xs">Enterprise</span>
+                  <span className="truncate font-medium">Soleil Shop Air</span>
+                  <span className="truncate text-xs">Stock</span>
                 </div>
               </a>
             </SidebarMenuButton>
