@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router';
 import { Layout } from './layout';
-import { Dashboard } from './pages';
+import { Dashboard, LoginForm, P404 } from './pages';
 // import Layout from './routes/layout';
 // import Dashboard from './routes/dashboard';
 // import Login from './routes/login';
@@ -26,8 +26,8 @@ const router = createBrowserRouter([
       { path: '/reports', Component: Dashboard },
     ],
   },
-  { path: '/login', Component: Layout },
-  { path: '/404', Component: Layout },
+  { path: '/login', Component: LoginForm },
+  { path: '*', Component: P404 },
 ]);
 
 export { router };
