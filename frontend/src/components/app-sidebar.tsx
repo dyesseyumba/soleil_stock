@@ -31,12 +31,12 @@ const data = {
   projects: [
     {
       title: 'Tableau de Bord',
-      url: '#',
+      url: '/',
       icon: LayoutDashboard,
     },
     {
       title: 'Produits',
-      url: '#',
+      url: '/products',
       icon: PackageSearch,
     },
     {
@@ -64,7 +64,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <a href="#">
+              <a href="/">
                 <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                   <Avatar>
                     <AvatarImage src={logo} />
