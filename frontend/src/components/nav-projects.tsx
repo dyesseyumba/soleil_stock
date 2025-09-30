@@ -9,6 +9,7 @@ export function NavProjects({
     title: string;
     url: string;
     icon: LucideIcon;
+    isActive: boolean;
   }[];
 }) {
   return (
@@ -16,8 +17,8 @@ export function NavProjects({
       <SidebarMenu>
         {projects.map((item) => (
           <SidebarMenuItem key={item.title}>
-            <SidebarMenuButton asChild>
-              <a href={item.url}>
+            <SidebarMenuButton asChild className={item.isActive ? 'bg-gray-100 font-bold' : ''}>
+              <a href={item.url} >
                 <item.icon />
                 <span>{item.title}</span>
               </a>

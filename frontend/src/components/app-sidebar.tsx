@@ -14,50 +14,58 @@ import {
 } from '@/components/ui/sidebar';
 import logo from '../assets/logo.png';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-
-const data = {
-  user: {
-    name: 'Cedelphie',
-    email: 'ced@example.com',
-    avatar: '/avatars/shadcn.jpg',
-  },
-  navSecondary: [
-    {
-      title: 'Paramètres',
-      url: '#',
-      icon: Settings,
-    },
-  ],
-  projects: [
-    {
-      title: 'Tableau de Bord',
-      url: '/',
-      icon: LayoutDashboard,
-    },
-    {
-      title: 'Produits',
-      url: '/products',
-      icon: PackageSearch,
-    },
-    {
-      title: 'Fournisseurs',
-      url: '#',
-      icon: Store,
-    },
-    {
-      title: 'Achats et Vente',
-      url: '#',
-      icon: BadgeDollarSign,
-    },
-    {
-      title: 'Rapports',
-      url: '#',
-      icon: NotebookPen,
-    },
-  ],
-};
+import { useLocation } from 'react-router';
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const location = useLocation();
+
+  const data = {
+    user: {
+      name: 'Cedelphie',
+      email: 'ced@example.com',
+      avatar: '/avatars/shadcn.jpg',
+    },
+    navSecondary: [
+      {
+        title: 'Paramètres',
+        url: '#',
+        icon: Settings,
+      },
+    ],
+    projects: [
+      {
+        title: 'Tableau de Bord',
+        url: '/',
+        icon: LayoutDashboard,
+        isActive: location.pathname === '/' ? true : false,
+      },
+      {
+        title: 'Produits',
+        url: '/products',
+        icon: PackageSearch,
+        isActive: location.pathname === '/products' ? true : false,
+      },
+      {
+        title: 'Fournisseurs',
+        url: '/providers',
+        icon: Store,
+        isActive: location.pathname === '/providers' ? true : false,
+      },
+      {
+        title: 'Achats et Vente',
+        url: '/sales',
+        icon: BadgeDollarSign,
+        isActive: location.pathname === '/sales' ? true : false,
+      },
+      {
+        title: 'Rapports',
+        url: '/reports',
+        icon: NotebookPen,
+        isActive: location.pathname === '/reports' ? true : false,
+      },
+    ],
+  };
+
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
@@ -65,7 +73,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <a href="/">
-                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                   <Avatar>
                     <AvatarImage src={logo} />
                     <AvatarFallback>CD</AvatarFallback>
