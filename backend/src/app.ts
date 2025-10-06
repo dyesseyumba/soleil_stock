@@ -13,11 +13,11 @@ app.register(fastifyHelmet);
 // app.register(authRoutes);
 
 // Register routes
-app.register(productRoutes, { prefix: '/products' });
-app.register(supplierRoutes, { prefix: '/suppliers' });
-app.register(purchaseRoutes, { prefix: '/purchases' });
-app.register(salesRoutes, { prefix: '/sales' });
-app.register(stockSummaryRoutes, { prefix: '/stocks' });
+app.register(productRoutes, { prefix: '/api/products' });
+app.register(supplierRoutes, { prefix: '/api/suppliers' });
+app.register(purchaseRoutes, { prefix: '/api/purchases' });
+app.register(salesRoutes, { prefix: '/api/sales' });
+app.register(stockSummaryRoutes, { prefix: '/api/stocks' });
 
 // Central error handler
 app.setErrorHandler((error, request, reply) => {
