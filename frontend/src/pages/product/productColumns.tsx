@@ -34,8 +34,7 @@ const productColumns: ColumnDef<Product>[] = [
     header: "Date d'Expiration",
     cell: ({ getValue }) => {
       const rawDate = getValue<string>();
-      const formatted = format(new Date(rawDate), 'dd MMM yyyy', { locale: fr });
-      return formatted;
+      return rawDate ? format(new Date(rawDate), 'dd MMM yyyy', { locale: fr }) : '';
     },
   },
   {
@@ -43,24 +42,28 @@ const productColumns: ColumnDef<Product>[] = [
     header: 'Quantité disponible',
     cell: ({ getValue }) => {
       const price = getValue<number>();
-      return new Intl.NumberFormat('fr-FR').format(price)
-    }
+      return price ? new Intl.NumberFormat('fr-FR').format(price) : '';
+    },
   },
   {
     accessorKey: 'price',
     header: 'Prix',
     cell: ({ getValue }) => {
       const price = getValue<number>();
-      return new Intl.NumberFormat('fr-FR',{style:'currency', currency:'XAF'}).format(price)
-    }
+      return price
+        ? new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XAF' }).format(price)
+        : '';
+    },
   },
   {
     accessorKey: 'totalValue',
     header: 'Valeur Total',
     cell: ({ getValue }) => {
       const price = getValue<number>();
-      return new Intl.NumberFormat('fr-FR',{style:'currency', currency:'XAF'}).format(price)
-    }
+      return price
+        ? new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XAF' }).format(price)
+        : '';
+    },
   },
 ];
 

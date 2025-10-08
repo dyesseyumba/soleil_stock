@@ -6,13 +6,14 @@
     "dev:backend": "pnpm --filter backend dev",
     "build:backend": "pnpm --filter backend build",
     "test:backend": "pnpm --filter backend test",
-
     "start:frontend": "pnpm --filter frontend dev",
     "build:frontend": "pnpm --filter frontend build",
     "test:frontend": "pnpm --filter frontend test",
-
     "start": "pnpm start:backend & pnpm start:frontend",
     "build": "pnpm build:backend && pnpm build:frontend",
     "test": "pnpm test:backend && pnpm test:frontend"
+  },
+  "dependencies": {
+    "axios": "^1.12.2"
   }
 }
