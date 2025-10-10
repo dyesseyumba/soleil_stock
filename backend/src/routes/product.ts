@@ -26,8 +26,32 @@ const productRoutes = (app: FastifyInstance) => {
   });
 
   app.get('/', async (_, reply) => {
-    const products = await prisma.product.findMany();
-    return reply.send(products);
+    const products = await prisma.product.findMany({
+      include: {
+        prices: { orderBy: { effectiveAt: 'desc' }, take: 1 },
+        StockSummary: true,
+        // purchases: true,
+        // sales: true,
+      },
+    });
+
+    const result = products.map((p) => {
+      const latestPrice = p.prices[0]?.price ?? 0;
+      const stock = p.StockSummary?.[0];
+
+      return {
+        id: p.id,
+        name: p.name,
+        description: p.description,
+        price: latestPrice,
+        availableQuantity: stock?.availableQuantity ?? 0,
+        nextToExpire: stock?.nextToExpire ?? null,
+        totalValue: Number(latestPrice) * (stock?.availableQuantity ?? 0),
+        createdAt: p.createdAt,
+        updatedAt: p.updatedAt,
+      };
+    });
+    return reply.send(result);
   });
 
   app.get('/:id', async (request, reply) => {
