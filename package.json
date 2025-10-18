@@ -14,6 +14,9 @@
     "test": "pnpm test:backend && pnpm test:frontend"
   },
   "dependencies": {
-    "axios": "^1.12.2"
+    "@hookform/resolvers": "^5.2.2",
+    "axios": "^1.12.2",
+    "react-hook-form": "^7.65.0",
+    "zod": "^4.1.12"
   }
 }

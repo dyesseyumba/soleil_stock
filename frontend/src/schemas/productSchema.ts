@@ -1,0 +1,11 @@
+import { z } from 'zod';
+
+const productCreateSchema = z.object({
+  name: z.string().min(2, 'Name is required'),
+  description: z.string().optional().nullable(),
+});
+
+type CreateProductInput = z.infer<typeof productCreateSchema>;
+
+export type { CreateProductInput };
+export { productCreateSchema };

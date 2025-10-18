@@ -10,16 +10,26 @@ interface ProductState {
   reset: () => void;
 }
 
-const useProductStore = create<ProductState>(
-  (set) => ({
-    products: [],
-    searchQuery: '',
-    selectedProductId: undefined,
-    setSearchQuery: (query) => set({ searchQuery: query }),
-    setSelectedProduct: (id) => set({ selectedProductId: id }),
-    reset: () => set({ searchQuery: '', selectedProductId: undefined }),
-  })
-);
+interface ProductModalState {
+  isOpen: boolean;
+  open: () => void;
+  close: () => void;
+}
 
-export { useProductStore };
-export type { ProductState };
+const useProductStore = create<ProductState>((set) => ({
+  products: [],
+  searchQuery: '',
+  selectedProductId: undefined,
+  setSearchQuery: (query) => set({ searchQuery: query }),
+  setSelectedProduct: (id) => set({ selectedProductId: id }),
+  reset: () => set({ searchQuery: '', selectedProductId: undefined }),
+}));
+
+const useProductModalStore = create<ProductModalState>((set) => ({
+  isOpen: false,
+  open: () => set({ isOpen: true }),
+  close: () => set({ isOpen: false }),
+}));
+
+export { useProductStore, useProductModalStore };
+export type { ProductState, ProductModalState };
