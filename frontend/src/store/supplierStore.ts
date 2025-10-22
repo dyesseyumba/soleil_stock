@@ -1,22 +1,13 @@
+import type { Product } from '@/pages';
 import { create } from 'zustand';
 
-interface Product {
+interface Supplier {
   id: string;
   name: string;
-  description?: string;
-  price?: number;
-  availableQuantity?: number;
-  nextToExpire?: Date;
-  totalValue?: number;
-  createdAt?: Date;
-  updatedAt?: Date;
-  purchases?: [];
-  sales?: [];
-  prices?: [];
-  StockSummary?: [];
+  contactInfo: string;
 }
 
-interface ProductModalState {
+interface SupplierModalState {
   isOpen: boolean;
   mode: 'add' | 'edit';
   editingProduct?: Product | null;
@@ -25,7 +16,7 @@ interface ProductModalState {
   close: () => void;
 }
 
-const useProductModalStore = create<ProductModalState>((set) => ({
+const useSupplierModalStore = create<SupplierModalState>((set) => ({
   isOpen: false,
   mode: 'add',
   editingProduct: null,
@@ -34,5 +25,5 @@ const useProductModalStore = create<ProductModalState>((set) => ({
   close: () => set({ isOpen: false, editingProduct: null }),
 }));
 
-export { useProductModalStore };
-export type { ProductModalState, Product };
+export { useSupplierModalStore };
+export type { SupplierModalState, Supplier };

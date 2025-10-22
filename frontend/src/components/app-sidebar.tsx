@@ -40,22 +40,22 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         isActive: location.pathname === '/' ? true : false,
       },
       {
-        title: 'Produits',
-        url: '/products',
-        icon: PackageSearch,
-        isActive: location.pathname === '/products' ? true : false,
-      },
-      {
-        title: 'Fournisseurs',
-        url: '/providers',
-        icon: Store,
-        isActive: location.pathname === '/providers' ? true : false,
-      },
-      {
         title: 'Achats et Vente',
         url: '/sales',
         icon: BadgeDollarSign,
         isActive: location.pathname === '/sales' ? true : false,
+      },
+      {
+        title: 'Fournisseurs',
+        url: '/suppliers',
+        icon: Store,
+        isActive: location.pathname === '/suppliers' ? true : false,
+      },
+      {
+        title: 'Produits',
+        url: '/products',
+        icon: PackageSearch,
+        isActive: location.pathname === '/products' ? true : false,
       },
       {
         title: 'Rapports',

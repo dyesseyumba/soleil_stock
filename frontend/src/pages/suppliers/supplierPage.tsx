@@ -2,30 +2,29 @@ import { useState } from 'react';
 import { PageHeader } from '@/components/page-header';
 import { BreadcrumbItem, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { DataTable } from '../../components/data-table';
-import { productColumns, type Product } from './';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { Alert, AlertTitle } from '@/components/ui/alert';
 import { AlertCircleIcon, PlusCircleIcon, SearchIcon } from 'lucide-react';
-import { useProducts } from '@/hooks';
-import { useProductModalStore } from '@/store';
-import { ProductForm } from './ProductForm';
+import { useSupplierModalStore, type Supplier } from '@/store';
+import { useSuppliers } from '@/hooks';
+import { supplierColumns } from './supplierColumns';
 
-const ProductPage = () => {
-  const { data: products, isLoading, isError } = useProducts();
-  const { openAdd, openEdit } = useProductModalStore();
+const SupplierPage = () => {
+  const { data: suppliers, isLoading, isError } = useSuppliers();
+  const { openAdd, openEdit } = useSupplierModalStore();
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredProducts = (products ?? []).filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.description?.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredSuppliers = (suppliers ?? []).filter((supplier) =>
+    supplier.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    supplier.contactInfo?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleEdit = (product: Product) => {
-    openEdit(product);
+  const handleEdit = (supplier: Supplier) => {
+    openEdit(supplier);
   };
 
-  const columns = productColumns(handleEdit);
+  const columns = supplierColumns(handleEdit);
 
   if (isLoading)
     return (
@@ -73,7 +72,7 @@ const ProductPage = () => {
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
         <div className="grid auto-rows-min gap-4">
           <h3 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-            Product
+            Supplier
           </h3>
         </div>
         <div className="mt-2 flex items-center justify-between">
@@ -89,13 +88,13 @@ const ProductPage = () => {
 
           <Button className="flex cursor-pointer items-center gap-2" onClick={() => openAdd()}>
             <PlusCircleIcon className="h-4 w-4" />
-            Ajouter un produit
+            Ajouter un Fournisseur
           </Button>
         </div>
-        <ProductForm />
+        {/* <SupplierForm /> */}
         <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min">
           <div className="w-full flex-1 p-2 md:p-4">
-            <DataTable columns={columns} data={filteredProducts} />
+            <DataTable columns={columns} data={filteredSuppliers} />
           </div>
         </div>
       </div>
@@ -103,4 +102,4 @@ const ProductPage = () => {
   );
 };
 
-export { ProductPage };
+export { SupplierPage };

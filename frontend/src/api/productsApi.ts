@@ -1,4 +1,4 @@
-import type { Product } from '@/pages';
+import type { Product } from '@/store';
 import { axiosClient } from './axiosClient';
 
 async function fetchProducts(): Promise<Product[]> {

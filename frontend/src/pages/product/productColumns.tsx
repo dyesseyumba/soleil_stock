@@ -1,26 +1,11 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import type { Product } from '@/store';
 import type { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { Pencil } from 'lucide-react';
-
-interface Product {
-  id: string;
-  name: string;
-  description?: string;
-  price?: number;
-  availableQuantity?: number;
-  nextToExpire?: Date;
-  totalValue?: number;
-  createdAt?: Date;
-  updatedAt?: Date;
-  purchases?: [];
-  sales?: [];
-  prices?: [];
-  StockSummary?: [];
-}
 
 const productColumns = (onEdit: (product: Product) => void): ColumnDef<Product>[] => [
   {
