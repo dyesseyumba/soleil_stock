@@ -1,7 +1,7 @@
 import { PageHeader } from '@/components/page-header';
 import { BreadcrumbItem, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { DataTable } from '../../components/data-table';
-import { productColumns } from './';
+import { productColumns, type Product } from './';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { Alert, AlertTitle } from '@/components/ui/alert';
@@ -12,7 +12,12 @@ import { ProductForm } from './ProductForm';
 
 const ProductPage = () => {
   const { data: products, isLoading, isError } = useProducts();
-  const { open } = useProductModalStore();
+  const { openAdd, openEdit } = useProductModalStore();
+  const handleEdit = (product: Product) => {
+    openEdit(product);
+  };
+
+  const columns = productColumns(handleEdit);
 
   if (isLoading)
     return (
@@ -73,7 +78,7 @@ const ProductPage = () => {
             />
           </div>
 
-          <Button className="flex items-center gap-2" onClick={() => open()}>
+          <Button className="flex cursor-pointer items-center gap-2" onClick={() => openAdd()}>
             <PlusCircleIcon className="h-4 w-4" />
             Add Product
           </Button>
@@ -81,7 +86,7 @@ const ProductPage = () => {
         <ProductForm />
         <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min">
           <div className="w-full flex-1 p-2 md:p-4">
-            <DataTable columns={productColumns} data={products ?? []} />
+            <DataTable columns={columns} data={products ?? []} />
           </div>
         </div>
       </div>

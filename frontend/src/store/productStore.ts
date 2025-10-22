@@ -1,35 +1,23 @@
 import type { Product } from '@/pages';
 import { create } from 'zustand';
 
-interface ProductState {
-  products: Product[];
-  searchQuery: string;
-  selectedProductId?: string;
-  setSearchQuery: (query: string) => void;
-  setSelectedProduct: (id: string | undefined) => void;
-  reset: () => void;
-}
-
 interface ProductModalState {
   isOpen: boolean;
-  open: () => void;
+  mode: 'add' | 'edit';
+  editingProduct?: Product | null;
+  openAdd: () => void;
+  openEdit: (product: Product) => void;
   close: () => void;
 }
 
-const useProductStore = create<ProductState>((set) => ({
-  products: [],
-  searchQuery: '',
-  selectedProductId: undefined,
-  setSearchQuery: (query) => set({ searchQuery: query }),
-  setSelectedProduct: (id) => set({ selectedProductId: id }),
-  reset: () => set({ searchQuery: '', selectedProductId: undefined }),
-}));
-
 const useProductModalStore = create<ProductModalState>((set) => ({
   isOpen: false,
-  open: () => set({ isOpen: true }),
-  close: () => set({ isOpen: false }),
+  mode: 'add',
+  editingProduct: null,
+  openAdd: () => set({ isOpen: true, mode: 'add', editingProduct: null }),
+  openEdit: (product) => set({ isOpen: true, mode: 'edit', editingProduct: product }),
+  close: () => set({ isOpen: false, editingProduct: null }),
 }));
 
-export { useProductStore, useProductModalStore };
-export type { ProductState, ProductModalState };
+export { useProductModalStore };
+export type { ProductModalState };

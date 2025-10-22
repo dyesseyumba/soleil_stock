@@ -6,7 +6,12 @@ import { productRoutes, purchaseRoutes, salesRoutes, stockSummaryRoutes, supplie
 const app = Fastify({ logger: true });
 
 // Register plugins
-app.register(fastifyCors);
+app.register(fastifyCors, {
+  origin: true,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+});
 // app.register(fastifyJwt, { secret: process.env.JWT_SECRET! });
 // app.register(fastifyBcrypt);
 app.register(fastifyHelmet);

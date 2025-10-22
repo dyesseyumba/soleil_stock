@@ -6,11 +6,14 @@ import { useProductModalStore } from '@/store';
 import { productCreateSchema, type CreateProductInput } from '@/schemas';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
-import { useCreateProduct } from '@/hooks';
+import { useCreateProduct, useUpdateProduct } from '@/hooks';
+import { Spinner } from '@/components/ui/spinner';
+import { useEffect } from 'react';
 
-export function ProductForm() {
-  const { isOpen, close } = useProductModalStore();
+const ProductForm = () => {
+  const { isOpen, close, mode, editingProduct } = useProductModalStore();
   const createProduct = useCreateProduct();
+  const updateProduct = useUpdateProduct();
 
   const {
     register,
@@ -25,13 +28,30 @@ export function ProductForm() {
     },
   });
 
+  useEffect(() => {
+    if (mode === 'edit' && editingProduct) {
+      reset({
+        name: editingProduct.name ?? '',
+        description: editingProduct.description ?? '',
+      });
+    } else {
+      reset({ name: '', description: '' });
+    }
+  }, [mode, editingProduct, reset]);
+
   const onSubmit = async (data: CreateProductInput) => {
     try {
       const payload = {
         ...data,
         description: data.description ?? undefined,
       };
-      await createProduct.mutateAsync(payload);
+
+      if (mode === 'add') {
+        await createProduct.mutateAsync(payload);
+      } else if (mode === 'edit' && editingProduct) {
+        await updateProduct.mutateAsync({ id: editingProduct.id, product: payload });
+      }
+
       reset();
       close();
     } catch (err) {
@@ -43,7 +63,7 @@ export function ProductForm() {
     <Dialog open={isOpen} onOpenChange={(open) => !open && close()}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>Add Product</DialogTitle>
+          <DialogTitle>{mode === 'add' ? 'Add Product' : 'Edit Product'}</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -69,10 +89,17 @@ export function ProductForm() {
               }}
               disabled={isSubmitting}
             >
-              Cancel
+              Annuler
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Saving...' : 'Save Product'}
+            <Button type="submit" className="cursor-pointer" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <span>
+                  <Spinner />
+                  Enregistrement...
+                </span>
+              ) : (
+                'Enregistrer'
+              )}
             </Button>
           </div>
         </form>
@@ -81,4 +108,6 @@ export function ProductForm() {
       </DialogContent>
     </Dialog>
   );
-}
+};
+
+export { ProductForm };

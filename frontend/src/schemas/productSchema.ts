@@ -6,6 +6,7 @@ const productCreateSchema = z.object({
 });
 
 type CreateProductInput = z.infer<typeof productCreateSchema>;
+type UpdateProductInput = Partial<CreateProductInput>;
 
-export type { CreateProductInput };
+export type { CreateProductInput, UpdateProductInput };
 export { productCreateSchema };

@@ -1,8 +1,10 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import type { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { Pencil } from 'lucide-react';
 
 interface Product {
   id: string;
@@ -20,7 +22,7 @@ interface Product {
   StockSummary?: [];
 }
 
-const productColumns: ColumnDef<Product>[] = [
+const productColumns = (onEdit: (product: Product) => void): ColumnDef<Product>[] => [
   {
     accessorKey: 'name',
     header: 'Nom',
@@ -63,6 +65,19 @@ const productColumns: ColumnDef<Product>[] = [
       return price
         ? new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XAF' }).format(price)
         : '';
+    },
+  },
+  {
+    id: 'actions',
+    header: 'Actions',
+    cell: ({ row }) => {
+      const product = row.original;
+
+      return (
+        <Button variant="link" size="sm" className="cursor-pointer" onClick={() => onEdit(product)}>
+          <Pencil className="h-4 w-4" />
+        </Button>
+      );
     },
   },
 ];
