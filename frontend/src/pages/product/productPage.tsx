@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { PageHeader } from '@/components/page-header';
 import { BreadcrumbItem, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { DataTable } from '../../components/data-table';
@@ -13,6 +14,13 @@ import { ProductForm } from './ProductForm';
 const ProductPage = () => {
   const { data: products, isLoading, isError } = useProducts();
   const { openAdd, openEdit } = useProductModalStore();
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredProducts = (products ?? []).filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    product.description?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const handleEdit = (product: Product) => {
     openEdit(product);
   };
@@ -73,7 +81,8 @@ const ProductPage = () => {
             <SearchIcon className="absolute top-2.5 left-2 h-4 w-4 text-gray-400" />
             <input
               type="text"
-              placeholder="Search product..."
+              placeholder="Rechercher..."
+              onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full rounded-md border py-2 pr-3 pl-8 focus:ring-2 focus:ring-primary focus:outline-none"
             />
           </div>
@@ -86,7 +95,7 @@ const ProductPage = () => {
         <ProductForm />
         <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min">
           <div className="w-full flex-1 p-2 md:p-4">
-            <DataTable columns={columns} data={products ?? []} />
+            <DataTable columns={columns} data={filteredProducts} />
           </div>
         </div>
       </div>

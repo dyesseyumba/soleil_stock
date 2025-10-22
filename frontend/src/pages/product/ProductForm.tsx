@@ -94,8 +94,7 @@ const ProductForm = () => {
             <Button type="submit" className="cursor-pointer" disabled={isSubmitting}>
               {isSubmitting ? (
                 <span>
-                  <Spinner />
-                  Enregistrement...
+                  <Spinner /> Enregistrement...
                 </span>
               ) : (
                 'Enregistrer'
