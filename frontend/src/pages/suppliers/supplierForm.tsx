@@ -2,29 +2,28 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { useProductModalStore } from '@/store';
-import { productCreateSchema, type CreateProductInput } from '@/schemas';
+import { useSupplierModalStore } from '@/store';
+import { supplierCreateSchema, type CreateSupplierInput } from '@/schemas';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Textarea } from '@/components/ui/textarea';
-import { useCreateProduct, useUpdateProduct } from '@/hooks';
+import { useCreateSupplier, useUpdateSupplier } from '@/hooks';
 import { Spinner } from '@/components/ui/spinner';
 import { useEffect } from 'react';
 
-const ProductForm = () => {
-  const { isOpen, close, mode, editingItem } = useProductModalStore();
-  const createProduct = useCreateProduct();
-  const updateProduct = useUpdateProduct();
+const SupplierForm = () => {
+  const { isOpen, close, mode, editingItem } = useSupplierModalStore();
+  const createSupplier = useCreateSupplier();
+  const updateSupplier = useUpdateSupplier();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<CreateProductInput>({
-    resolver: zodResolver(productCreateSchema),
+  } = useForm<CreateSupplierInput>({
+    resolver: zodResolver(supplierCreateSchema),
     defaultValues: {
       name: '',
-      description: '',
+      contactInfo: '',
     },
   });
 
@@ -32,24 +31,19 @@ const ProductForm = () => {
     if (mode === 'edit' && editingItem) {
       reset({
         name: editingItem.name ?? '',
-        description: editingItem.description ?? '',
+        contactInfo: editingItem.contactInfo ?? '',
       });
     } else {
-      reset({ name: '', description: '' });
+      reset({ name: '', contactInfo: '' });
     }
   }, [mode, editingItem, reset]);
 
-  const onSubmit = async (data: CreateProductInput) => {
+  const onSubmit = async (data: CreateSupplierInput) => {
     try {
-      const payload = {
-        ...data,
-        description: data.description ?? undefined,
-      };
-
       if (mode === 'add') {
-        await createProduct.mutateAsync(payload);
+        await createSupplier.mutateAsync(data);
       } else if (mode === 'edit' && editingItem) {
-        await updateProduct.mutateAsync({ id: editingItem.id, product: payload });
+        await updateSupplier.mutateAsync({ id: editingItem.id, supplier: data });
       }
 
       reset();
@@ -63,20 +57,20 @@ const ProductForm = () => {
     <Dialog open={isOpen} onOpenChange={(open) => !open && close()}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>{mode === 'add' ? 'Add Product' : 'Edit Product'}</DialogTitle>
+          <DialogTitle>{mode === 'add' ? 'Add Supplier' : 'Edit Supplier'}</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label className="mb-1 block text-sm font-medium">Nom du produit</label>
+            <label className="mb-1 block text-sm font-medium">Nom du fournisseurs</label>
             <Input {...register('name')} />
             {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium">Description</label>
-            <Textarea {...register('description')} />
-            {errors.description && <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>}
+            <label className="mb-1 block text-sm font-medium">Contact</label>
+            <Input {...register('contactInfo')} />
+            {errors.contactInfo && <p className="mt-1 text-sm text-red-600">{errors.contactInfo.message}</p>}
           </div>
 
           <div className="flex justify-end gap-2">
@@ -109,4 +103,4 @@ const ProductForm = () => {
   );
 };
 
-export { ProductForm };
+export { SupplierForm };

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const productCreateSchema = z.object({
-  name: z.string().min(2, 'Name is required'),
+  name: z.string().min(2, 'Le nom est obligatoire'),
   description: z.string().optional().nullable(),
 });
 
