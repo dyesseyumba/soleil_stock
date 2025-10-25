@@ -7,19 +7,34 @@ import { AlertCircleIcon, PlusCircleIcon, SearchIcon } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
 import type { ColumnDef } from '@tanstack/react-table';
 import type { ReactNode } from 'react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 interface EntityPageLayoutProps<T> {
   title: string;
   breadcrumb: string;
   isLoading: boolean;
   isError: boolean;
+  isDeleteOpen?: boolean;
   onAdd: () => void;
+  close?: () => void;
   searchTerm: string;
   setSearchTerm: (value: string) => void;
   data: T[];
   columns: ColumnDef<T>[];
   addLabel: string;
   errorMessage: string;
+  detailDeletion?: string;
+  onDelete?: () => void;
   children?: ReactNode;
 }
 
@@ -28,14 +43,18 @@ function EntityPageLayout<T>({
   breadcrumb,
   isLoading,
   isError,
+  isDeleteOpen,
   onAdd,
+  close,
   searchTerm,
   setSearchTerm,
   data,
   columns,
   addLabel,
   errorMessage,
+  detailDeletion,
   children,
+  onDelete
 }: EntityPageLayoutProps<T>) {
   if (isLoading)
     return (
@@ -107,6 +126,24 @@ function EntityPageLayout<T>({
         </div>
 
         {children}
+
+        <AlertDialog open={isDeleteOpen} onOpenChange={(open) => !open && close?.()}>
+          <AlertDialogTrigger asChild>
+            <Button variant="outline">Suppression</Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Êtes-vous sûre de vouloir supprimer ce {detailDeletion}?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Cette action ne peut pas être annulée. Cela supprimera définitivement ces données.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel className="cursor-pointer"  onClick={close}>Annuler</AlertDialogCancel>
+              <AlertDialogAction className="cursor-pointer bg-red-700" onClick={onDelete}>Supprimer</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
 
         <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min">
           <div className="w-full flex-1 p-2 md:p-4">
