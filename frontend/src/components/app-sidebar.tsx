@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { LayoutDashboard, PackageSearch, Store, BadgeDollarSign, NotebookPen, Settings } from 'lucide-react';
+import { LayoutDashboard, PackageSearch, Store, BadgeDollarSign, NotebookPen, Settings, TruckElectric } from 'lucide-react';
 import { NavProjects } from '@/components/nav-projects';
 import { NavSecondary } from '@/components/nav-secondary';
 import { NavUser } from '@/components/nav-user';
@@ -40,10 +40,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         isActive: location.pathname === '/' ? true : false,
       },
       {
-        title: 'Achats et Vente',
+        title: 'Vente',
         url: '/sales',
         icon: BadgeDollarSign,
         isActive: location.pathname === '/sales' ? true : false,
+      },
+      {
+        title: 'Commandes',
+        url: '/purchases',
+        icon: TruckElectric,
+        isActive: location.pathname === '/purchases' ? true : false,
       },
       {
         title: 'Fournisseurs',

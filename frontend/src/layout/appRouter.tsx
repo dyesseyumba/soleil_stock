@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router';
 import { Layout } from '../layout';
 import { Dashboard, LoginForm, P404, ProductPage } from '../pages';
 import { SupplierPage } from '@/pages/suppliers';
+import { PurchasePage } from '@/pages/purchases';
 // import Layout from './routes/layout';
 // import Dashboard from './routes/dashboard';
 // import Login from './routes/login';
@@ -23,7 +24,8 @@ const router = createBrowserRouter([
       { index: true, Component: Dashboard },
       { path: '/products', Component: ProductPage },
       { path: '/suppliers', Component: SupplierPage },
-      { path: '/sales-purchases', Component: Dashboard },
+      { path: '/sales', Component: Dashboard },
+      { path: '/purchases', Component: PurchasePage },
       { path: '/reports', Component: Dashboard },
     ],
   },
