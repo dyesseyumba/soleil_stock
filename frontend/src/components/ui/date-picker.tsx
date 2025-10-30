@@ -33,12 +33,15 @@ export function DatePicker({ value, onChange, placeholder = 'Choisir une date' }
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           mode="single"
+           captionLayout="dropdown"
+          startMonth={new Date(Date.now() - 2 * 365 * 24 * 60 * 60 * 1000)}
+          endMonth={new Date(Date.now() + 10 * 365 * 24 * 60 * 60 * 1000)}
           selected={value}
           onSelect={(selected) => {
             onChange(selected);
             setOpen(false);
           }}
-          autoFocus
+          // autoFocus
         />
       </PopoverContent>
     </Popover>

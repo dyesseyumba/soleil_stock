@@ -15,7 +15,7 @@ const stockSummaryRoutes = (app: FastifyInstance) => {
 
   // Get stock summary by product ID
   app.get('/:productId', async (request, reply) => {
-    const { productId } = z.object({ productId: z.string().uuid() }).parse(request.params);
+    const { productId } = z.object({ productId: z.uuid() }).parse(request.params);
 
     const summary = await prisma.stockSummary.findUnique({
       where: { productId },
@@ -32,7 +32,7 @@ const stockSummaryRoutes = (app: FastifyInstance) => {
 
     const summaries = await prisma.stockSummary.findMany({
       where: {
-        product: { name: { contains: name} },
+        product: { name: { contains: name } },
       },
       include: { product: true },
     });

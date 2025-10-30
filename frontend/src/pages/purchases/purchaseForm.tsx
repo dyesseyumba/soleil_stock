@@ -140,7 +140,7 @@ export const PurchaseForm = () => {
               render={({ field }) => (
                 <DatePicker
                   value={field.value ? new Date(field.value) : undefined}
-                  onChange={(date) => field.onChange(date?.toISOString() ?? '')}
+                  onChange={(date) => field.onChange(date ?? undefined)}
                 />
               )}
             />

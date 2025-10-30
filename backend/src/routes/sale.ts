@@ -5,7 +5,7 @@ import { PrismaClient } from '../generated';
 const prisma = new PrismaClient();
 
 const saleSchema = z.object({
-  productId: z.string().uuid(),
+  productId: z.uuid(),
   quantity: z.number().int().positive(),
 });
 
@@ -38,7 +38,7 @@ const saleRoutes = (app: FastifyInstance) => {
           availableQuantity: {
             decrement: quantity,
           },
-        }
+        },
       });
 
       return createdSale;
@@ -57,7 +57,7 @@ const saleRoutes = (app: FastifyInstance) => {
 
   // Get sale by ID
   app.get('/:id', async (request, reply) => {
-    const { id } = z.object({ id: z.string().uuid() }).parse(request.params);
+    const { id } = z.object({ id: z.uuid() }).parse(request.params);
     const sale = await prisma.sale.findUnique({
       where: { id },
       include: { product: true },
@@ -93,8 +93,8 @@ const saleRoutes = (app: FastifyInstance) => {
         data: {
           availableQuantity: {
             increment: sale.quantity,
-          }
-        }
+          },
+        },
       });
     });
 
@@ -103,4 +103,3 @@ const saleRoutes = (app: FastifyInstance) => {
 };
 
 export { saleRoutes as salesRoutes, saleSchema as CreateSaleSchema };
-
