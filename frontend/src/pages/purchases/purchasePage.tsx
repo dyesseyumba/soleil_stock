@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { purchaseColumns } from './';
+import { purchaseColumns, PurchaseForm } from './';
 import { useDeletePurchase, usePurchases } from '@/hooks';
 import { usePurchaseModalStore, type Purchase } from '@/store';
 import { EntityPageLayout } from '../entityPageLayout';
@@ -13,7 +13,7 @@ const PurchasePage = () => {
 
   const filteredPurchases = (purchases ?? []).filter(
     (purchase) =>
-      purchase.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      purchase.productName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       purchase.supplierName?.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
@@ -48,7 +48,7 @@ const PurchasePage = () => {
       addLabel="Ajouter une commande"
       errorMessage="Une erreur s'est produite lors du chargement des commandes."
     >
-      {/* <PurchaseForm /> */}
+      <PurchaseForm />
     </EntityPageLayout>
   );
 };

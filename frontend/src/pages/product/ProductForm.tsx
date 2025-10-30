@@ -49,7 +49,7 @@ const ProductForm = () => {
       if (mode === 'add') {
         await createProduct.mutateAsync(payload);
       } else if (mode === 'edit' && editingItem) {
-        await updateProduct.mutateAsync({ id: editingItem.id, product: payload });
+        await updateProduct.mutateAsync({ id: editingItem.id, data: payload });
       }
 
       reset();

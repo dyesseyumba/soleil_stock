@@ -43,7 +43,7 @@ const SupplierForm = () => {
       if (mode === 'add') {
         await createSupplier.mutateAsync(data);
       } else if (mode === 'edit' && editingItem) {
-        await updateSupplier.mutateAsync({ id: editingItem.id, supplier: data });
+        await updateSupplier.mutateAsync({ id: editingItem.id, data });
       }
 
       reset();

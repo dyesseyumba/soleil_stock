@@ -5,8 +5,8 @@ import { PrismaClient } from '../generated';
 const prisma = new PrismaClient();
 
 const purchaseSchema = z.object({
-  productId: z.string().uuid(),
-  supplierId: z.string().uuid(),
+  productId: z.uuid(),
+  supplierId: z.uuid(),
   quantity: z.number().int().positive(),
   unitCost: z.number().positive(),
   expirationDate: z.date().optional(),
@@ -62,7 +62,16 @@ const purchaseRoutes = (app: FastifyInstance) => {
         supplier: true,
       },
     });
-    return reply.send(purchases);
+
+    const result = purchases.map(p => {
+      return {
+        ...p,
+        productName: p.product?.name,
+        supplierName : p.supplier?.name
+      }
+    })
+
+    return reply.send(result);
   });
 
   // Get purchase by ID

@@ -3,9 +3,9 @@ import { modalStore } from './modalStore';
 interface Purchase {
   id: string;
   productId: string;
-  productName: string;
+  productName?: string;
   supplierId: string;
-  supplierName: string;
+  supplierName?: string;
   quantity: number;
   unitCost: number;
   expirationDate?: Date;
