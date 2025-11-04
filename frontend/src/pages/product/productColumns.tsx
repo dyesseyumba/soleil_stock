@@ -5,12 +5,21 @@ import type { Product } from '@/store';
 import type { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { Pencil } from 'lucide-react';
+import { FileText, Pencil } from 'lucide-react';
 
 const productColumns = (onEdit: (product: Product) => void): ColumnDef<Product>[] => [
   {
-    accessorKey: 'name',
+    id: 'name',
     header: 'Nom',
+    cell: ({ row }) => {
+      const product = row.original;
+
+      return (
+        <Button variant="link">
+          <a href={`products/${product?.id}`}>{product?.name}</a>
+        </Button>
+      );
+    },
   },
   {
     accessorKey: 'description',
@@ -59,9 +68,15 @@ const productColumns = (onEdit: (product: Product) => void): ColumnDef<Product>[
       const product = row.original;
 
       return (
-        <Button variant="link" size="sm" className="cursor-pointer" onClick={() => onEdit(product)}>
-          <Pencil className="h-4 w-4" />
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="link" size="sm" className="cursor-pointer" onClick={() => onEdit(product)}>
+            <Pencil className="h-4 w-4" />
+          </Button>
+
+          <Button variant="link" size="sm" className="cursor-pointer text-blue-800">
+            <a href={`products/${product?.id}`}><FileText className="h-4 w-4" /></a>
+          </Button>
+        </div>
       );
     },
   },
