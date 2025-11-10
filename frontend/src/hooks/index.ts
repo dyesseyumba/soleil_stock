@@ -3,3 +3,4 @@ export * from './useSupplier';
 export * from './createCrudHooks';
 export * from './usePurchase';
 export * from './useSale';
+export * from './useProductPrice';

@@ -1,7 +1,7 @@
 import Fastify from 'fastify';
 import fastifyCors from '@fastify/cors';
 import fastifyHelmet from '@fastify/helmet';
-import { productRoutes, purchaseRoutes, salesRoutes, stockSummaryRoutes, supplierRoutes } from './routes';
+import { productPriceRoutes, productRoutes, purchaseRoutes, salesRoutes, stockSummaryRoutes, supplierRoutes } from './routes';
 
 const app = Fastify({ logger: true });
 
@@ -23,6 +23,7 @@ app.register(supplierRoutes, { prefix: '/api/suppliers' });
 app.register(purchaseRoutes, { prefix: '/api/purchases' });
 app.register(salesRoutes, { prefix: '/api/sales' });
 app.register(stockSummaryRoutes, { prefix: '/api/stocks' });
+app.register(productPriceRoutes, { prefix: '/api/productPrices' });
 
 // Central error handler
 app.setErrorHandler((error, request, reply) => {

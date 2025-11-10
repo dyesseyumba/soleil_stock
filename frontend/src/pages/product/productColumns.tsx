@@ -37,8 +37,8 @@ const productColumns = (onEdit: (product: Product) => void): ColumnDef<Product>[
     accessorKey: 'availableQuantity',
     header: 'Quantité disponible',
     cell: ({ getValue }) => {
-      const price = getValue<number>();
-      return price ? new Intl.NumberFormat('fr-FR').format(price) : '';
+      const quantity = getValue<number>();
+      return quantity ? new Intl.NumberFormat('fr-FR').format(quantity) : '';
     },
   },
   {
