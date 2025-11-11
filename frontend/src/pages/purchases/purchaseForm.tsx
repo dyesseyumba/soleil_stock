@@ -64,7 +64,6 @@ export const PurchaseForm = () => {
   }, [mode, editingItem, reset]);
 
   const onSubmit = async (data: CreatePurchaseInput) => {
-    console.log(data)
     try {
       if (mode === 'add') {
         await createPurchase.mutateAsync(data);

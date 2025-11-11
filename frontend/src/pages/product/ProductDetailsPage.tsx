@@ -13,8 +13,8 @@ import { Spinner } from '@/components/ui/spinner';
 import { Alert, AlertTitle } from '@/components/ui/alert';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import type { ProductPrice } from '@/store';
-import { productPricesColumns } from '.';
+import { useProductPriceModalStore, type ProductPrice } from '@/store';
+import { productPricesColumns, SupplierForm } from '.';
 import { DataTable } from '@/components/data-table';
 
 function ProductDetailsPage() {
@@ -22,9 +22,10 @@ function ProductDetailsPage() {
 
   const { data: product, isLoading: loadingProduct, isError: errorProduct } = useProduct(id!);
   const { data: prices = [], isLoading: loadingPrices, isError: errorPrices } = usePricesByProductId(id!);
+  const { openAdd, openEdit } = useProductPriceModalStore();
 
   const handleEdit = (productPrice: ProductPrice) => {
-    // openEdit(product);
+    openEdit(productPrice);
   };
 
   const columns = productPricesColumns(handleEdit);
@@ -141,12 +142,14 @@ function ProductDetailsPage() {
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold text-gray-800">Historique des prix</h2>
 
-          <Button size="sm" onClick={() => console.log('open add price modal')}>
+          <Button size="sm" className="cursor-pointer" onClick={openAdd}>
             <PlusCircle className="mr-1 h-4 w-4" /> Nouveau prix
           </Button>
         </div>
 
         <DataTable columns={columns} data={prices} />
+
+        <SupplierForm />
       </div>
     </>
   );

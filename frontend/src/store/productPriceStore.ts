@@ -1,3 +1,5 @@
+import { modalStore } from "./modalStore";
+
 interface ProductPrice {
   id: string;
   productId: string;
@@ -7,4 +9,7 @@ interface ProductPrice {
   effectiveAt: Date;
 }
 
+const useProductPriceModalStore = modalStore<ProductPrice>();
+
+export { useProductPriceModalStore };
 export type { ProductPrice };

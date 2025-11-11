@@ -6,7 +6,6 @@ const prisma = new PrismaClient();
 
 const productPriceSchema = z.object({
   productId: z.uuid('The format must be a CRUD'),
-  name: z.string().min(2, 'Name is required'),
   price: z.number('The price must be a number').positive('The price must be positive'),
   effectiveAt: z
     .string()
