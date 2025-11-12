@@ -1,14 +1,28 @@
 'use client';
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import type { ProductPrice } from '@/store';
 import type { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { Pencil } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 
-const productPricesColumns = (onEdit: (productPrice: ProductPrice) => void): ColumnDef<ProductPrice>[] => [
+const productPricesColumns = (
+  onEdit: (productPrice: ProductPrice) => void,
+  onDelete: (productPrice: ProductPrice) => void,
+): ColumnDef<ProductPrice>[] => [
   {
     accessorKey: 'price',
     header: 'Prix',
@@ -52,9 +66,32 @@ const productPricesColumns = (onEdit: (productPrice: ProductPrice) => void): Col
       const productPrice = row.original;
 
       return (
-        <Button variant="link" size="sm" className="cursor-pointer" onClick={() => onEdit(productPrice)}>
-          <Pencil className="h-4 w-4" />
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="link" size="sm" className="cursor-pointer" onClick={() => onEdit(productPrice)}>
+            <Pencil className="h-4 w-4" />
+          </Button>
+
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="link" size="sm" className="cursor-pointer text-red-600">
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Supprimer le prix</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Voulez-vous vraiment supprimer prix <strong>{productPrice.price}</strong> ? Cette action est
+                  irréversible.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Annuler</AlertDialogCancel>
+                <AlertDialogAction onClick={() => onDelete(productPrice)}>Supprimer</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
       );
     },
   },

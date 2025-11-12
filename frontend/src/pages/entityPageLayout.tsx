@@ -7,6 +7,7 @@ import { AlertCircleIcon, PlusCircleIcon, SearchIcon } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
 import type { ColumnDef } from '@tanstack/react-table';
 import type { ReactNode } from 'react';
+import { Toaster } from 'sonner';
 
 interface EntityPageLayoutProps<T> {
   title: string;
@@ -79,6 +80,7 @@ function EntityPageLayout<T>({
 
   return (
     <>
+      <Toaster />
       <PageHeader>
         <BreadcrumbSeparator className="hidden md:block" />
         <BreadcrumbItem>

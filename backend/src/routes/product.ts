@@ -61,7 +61,7 @@ const productRoutes = (app: FastifyInstance) => {
     const p = await prisma.product.findUnique({
       where: { id },
       include: {
-        prices: { orderBy: { effectiveAt: 'desc' }, take: 1 },
+        prices: { orderBy: { effectiveAt: 'desc' } },
         StockSummary: true,
       },
     });

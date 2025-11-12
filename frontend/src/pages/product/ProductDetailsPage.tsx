@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { AlertCircleIcon, Pencil, PlusCircle } from 'lucide-react';
+import { AlertCircleIcon, PlusCircle } from 'lucide-react';
 import { PageHeader } from '@/components/page-header';
 import {
   BreadcrumbItem,
@@ -8,7 +8,7 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { useParams } from 'react-router';
-import { usePricesByProductId, useProduct } from '@/hooks';
+import { useDeleteProductPrice, usePricesByProductId, useProduct } from '@/hooks';
 import { Spinner } from '@/components/ui/spinner';
 import { Alert, AlertTitle } from '@/components/ui/alert';
 import { format } from 'date-fns';
@@ -16,19 +16,33 @@ import { fr } from 'date-fns/locale';
 import { useProductPriceModalStore, type ProductPrice } from '@/store';
 import { productPricesColumns, SupplierForm } from '.';
 import { DataTable } from '@/components/data-table';
+import { toast, Toaster } from 'sonner';
 
 function ProductDetailsPage() {
   const { id } = useParams();
 
   const { data: product, isLoading: loadingProduct, isError: errorProduct } = useProduct(id!);
-  const { data: prices = [], isLoading: loadingPrices, isError: errorPrices } = usePricesByProductId(id!);
+  const { data: prices = [], isLoading: loadingPrices, isError: errorPrices, refetch } = usePricesByProductId(id!);
   const { openAdd, openEdit } = useProductPriceModalStore();
+
+  const deleteProductPrice = useDeleteProductPrice();
 
   const handleEdit = (productPrice: ProductPrice) => {
     openEdit(productPrice);
   };
 
-  const columns = productPricesColumns(handleEdit);
+  const handleDelete = async (productPrice: ProductPrice) => {
+    try {
+      await deleteProductPrice.mutateAsync(productPrice.id);
+      toast.success(`Le prix '${productPrice.price}' a été supprimé.`);
+      refetch();
+    } catch (err) {
+      console.error(err);
+      toast.error(`Impossible de supprimer le prix ${productPrice.price}.`);
+    }
+  };
+
+  const columns = productPricesColumns(handleEdit, handleDelete);
 
   if (loadingProduct || loadingPrices)
     return (
@@ -76,6 +90,7 @@ function ProductDetailsPage() {
 
   return (
     <>
+      <Toaster />
       <PageHeader>
         <BreadcrumbSeparator className="hidden md:block" />
         <BreadcrumbItem>
@@ -90,9 +105,7 @@ function ProductDetailsPage() {
       <div className="flex flex-col gap-6 p-4">
         <div className="flex items-center justify-between border-b pb-2">
           <h3 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">{product?.name}</h3>
-          <Button>
-            <Pencil className="mr-1 h-4 w-4" /> Modifier le produit
-          </Button>
+
         </div>
 
         <div className="grid grid-cols-4 gap-4">
