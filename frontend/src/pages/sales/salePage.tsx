@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { saleColumns } from './';
+import { saleColumns, SaleForm } from './';
 import { useDeleteSale, useSales } from '@/hooks';
 import { useSaleModalStore, type Sale } from '@/store';
 import { EntityPageLayout } from '../entityPageLayout';
@@ -46,7 +46,7 @@ const SalePage = () => {
       addLabel="Ajouter une vente"
       errorMessage="Une erreur s'est produite lors du chargement des ventes."
     >
-      {/* <SaleForm /> */}
+      <SaleForm />
     </EntityPageLayout>
   );
 };
