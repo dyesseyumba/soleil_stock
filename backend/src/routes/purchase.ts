@@ -5,11 +5,11 @@ import { PrismaClient } from '../generated';
 const prisma = new PrismaClient();
 
 const purchaseSchema = z.object({
-  productId: z.string().uuid(),
-  supplierId: z.string().uuid(),
+  productId: z.uuid(),
+  supplierId: z.uuid(),
   quantity: z.number().int().positive(),
   unitCost: z.number().positive(),
-  expirationDate: z.date().optional(),
+  expirationDate: z.string().optional().transform((val) => (val ? new Date(val) : undefined))
 });
 
 // type CreatePurchaseDTO = z.infer<typeof CreatePurchaseSchema>;
@@ -62,12 +62,21 @@ const purchaseRoutes = (app: FastifyInstance) => {
         supplier: true,
       },
     });
-    return reply.send(purchases);
+
+    const result = purchases.map((p) => {
+      return {
+        ...p,
+        productName: p.product?.name,
+        supplierName: p.supplier?.name,
+      };
+    });
+
+    return reply.send(result);
   });
 
   // Get purchase by ID
   app.get('/:id', async (request, reply) => {
-    const paramsSchema = z.object({ id: z.string().uuid() });
+    const paramsSchema = z.object({ id: z.uuid() });
     const { id } = paramsSchema.parse(request.params);
 
     const purchase = await prisma.purchase.findUnique({

@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { PrismaClient } from '../generated';
+import { PrismaClient, ProductPrice } from '../generated';
 import { z } from 'zod';
 // import { PrismaClient } from '@prisma/client';
 
@@ -13,9 +13,11 @@ const productSchema = z.object({
 
 const productUpdateSchema = productSchema.partial();
 
-// TypeScript types inferred from Zod
-// export type ProductInput = z.infer<typeof productSchema>
-// export type ProductUpdateInput = z.infer<typeof productUpdateSchema>
+function getActivePriceFromArray(prices: ProductPrice[]): ProductPrice | undefined {
+  return prices
+    .filter((p) => p.effectiveAt <= new Date())
+    .sort((a, b) => b.effectiveAt.getTime() - a.effectiveAt.getTime())[0];
+}
 
 const productRoutes = (app: FastifyInstance) => {
   app.post('/', async (request, reply) => {
@@ -26,16 +28,61 @@ const productRoutes = (app: FastifyInstance) => {
   });
 
   app.get('/', async (_, reply) => {
-    const products = await prisma.product.findMany();
-    return reply.send(products);
+    const products = await prisma.product.findMany({
+      include: {
+        prices: { orderBy: { effectiveAt: 'desc' }, take: 1 },
+        StockSummary: true,
+      },
+    });
+
+    const result = products.map((p) => {
+      // const latestPrice = p.prices[0]?.price ?? 0;
+      const activePrice = p?.prices ? getActivePriceFromArray(p.prices)?.price : 0;
+      const stock = p.StockSummary?.[0];
+
+      return {
+        id: p.id,
+        name: p.name,
+        description: p.description,
+        price: activePrice,
+        availableQuantity: stock?.availableQuantity ?? 0,
+        nextToExpire: stock?.nextToExpire ?? null,
+        totalValue: Number(activePrice) * (stock?.availableQuantity ?? 0),
+        createdAt: p.createdAt,
+        updatedAt: p.updatedAt,
+      };
+    });
+    return reply.send(result);
   });
 
   app.get('/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
 
-    const product = await prisma.product.findUnique({ where: { id } });
-    if (!product) return reply.code(404).send({ error: 'Not found' });
-    return reply.send(product);
+    const p = await prisma.product.findUnique({
+      where: { id },
+      include: {
+        prices: { orderBy: { effectiveAt: 'desc' } },
+        StockSummary: true,
+      },
+    });
+
+    const activePrice = p?.prices ? getActivePriceFromArray(p.prices)?.price : 0;
+    const stock = p?.StockSummary?.[0];
+
+    const result = {
+      id: p?.id,
+      name: p?.name,
+      description: p?.description,
+      price: activePrice,
+      availableQuantity: stock?.availableQuantity ?? 0,
+      nextToExpire: stock?.nextToExpire ?? null,
+      totalValue: Number(activePrice) * (stock?.availableQuantity ?? 0),
+      createdAt: p?.createdAt,
+      updatedAt: p?.updatedAt,
+    };
+
+    if (!p) return reply.code(404).send({ error: 'Not found' });
+    return reply.send(result);
   });
 
   // Get product
@@ -73,4 +120,4 @@ const productRoutes = (app: FastifyInstance) => {
   });
 };
 
-export { productRoutes, productSchema, productUpdateSchema };
+export { productRoutes, productSchema, productUpdateSchema, getActivePriceFromArray };

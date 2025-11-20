@@ -1,23 +1,29 @@
 import Fastify from 'fastify';
 import fastifyCors from '@fastify/cors';
 import fastifyHelmet from '@fastify/helmet';
-import { productRoutes, purchaseRoutes, salesRoutes, stockSummaryRoutes, supplierRoutes } from './routes';
+import { productPriceRoutes, productRoutes, purchaseRoutes, salesRoutes, stockSummaryRoutes, supplierRoutes } from './routes';
 
 const app = Fastify({ logger: true });
 
 // Register plugins
-app.register(fastifyCors);
+app.register(fastifyCors, {
+  origin: true,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+});
 // app.register(fastifyJwt, { secret: process.env.JWT_SECRET! });
 // app.register(fastifyBcrypt);
 app.register(fastifyHelmet);
 // app.register(authRoutes);
 
 // Register routes
-app.register(productRoutes, { prefix: '/products' });
-app.register(supplierRoutes, { prefix: '/suppliers' });
-app.register(purchaseRoutes, { prefix: '/purchases' });
-app.register(salesRoutes, { prefix: '/sales' });
-app.register(stockSummaryRoutes, { prefix: '/stocks' });
+app.register(productRoutes, { prefix: '/api/products' });
+app.register(supplierRoutes, { prefix: '/api/suppliers' });
+app.register(purchaseRoutes, { prefix: '/api/purchases' });
+app.register(salesRoutes, { prefix: '/api/sales' });
+app.register(stockSummaryRoutes, { prefix: '/api/stocks' });
+app.register(productPriceRoutes, { prefix: '/api/productPrices' });
 
 // Central error handler
 app.setErrorHandler((error, request, reply) => {
