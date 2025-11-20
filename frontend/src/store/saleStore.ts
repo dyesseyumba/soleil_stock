@@ -4,7 +4,7 @@ interface Sale {
   id: string;
   productId: string;
   productName?: string;
-  productUnitPrice?: number;
+  activePrice?: number;
   quantity: number;
   soldAt?: Date;
 }

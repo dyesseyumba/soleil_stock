@@ -120,4 +120,4 @@ const productRoutes = (app: FastifyInstance) => {
   });
 };
 
-export { productRoutes, productSchema, productUpdateSchema };
+export { productRoutes, productSchema, productUpdateSchema, getActivePriceFromArray };

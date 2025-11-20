@@ -1,6 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { PrismaClient } from '../generated';
+import { getActivePriceFromArray } from './product';
 
 const prisma = new PrismaClient();
 
@@ -50,9 +51,24 @@ const saleRoutes = (app: FastifyInstance) => {
   // Get all sales
   app.get('/', async (_, reply) => {
     const sales = await prisma.sale.findMany({
-      include: { product: true },
+      include: { product: { include: { prices: { orderBy: { effectiveAt: 'desc' } } } } },
     });
-    return reply.send(sales);
+
+    const result = sales.map((s) => {
+      const activePrice = s.product?.prices ? getActivePriceFromArray(s.product.prices)?.price : 0;
+
+      return {
+        id: s.id,
+        productId: s.productId,
+        productName: s.product?.name,
+        quantity: s.quantity,
+        soldAt: s.soldAt,
+        updatedAt: s.updatedAt,
+        activePrice,
+      };
+    });
+
+    return reply.send(result);
   });
 
   // Get sale by ID
@@ -60,10 +76,24 @@ const saleRoutes = (app: FastifyInstance) => {
     const { id } = z.object({ id: z.uuid() }).parse(request.params);
     const sale = await prisma.sale.findUnique({
       where: { id },
-      include: { product: true },
+      include: { product: { include: { prices: { orderBy: { effectiveAt: 'desc' } } } } },
     });
+
     if (!sale) return reply.code(404).send({ error: 'Sale not found' });
-    return reply.send(sale);
+
+    const activePrice = sale.product?.prices ? getActivePriceFromArray(sale.product.prices)?.price : 0;
+
+    const result = {
+      id: sale.id,
+      productId: sale.productId,
+      productName: sale.product?.name,
+      quantity: sale.quantity,
+      soldAt: sale.soldAt,
+      updatedAt: sale.updatedAt,
+      activePrice,
+    };
+
+    return reply.send(result);
   });
 
   // Get sales by product name
@@ -73,9 +103,35 @@ const saleRoutes = (app: FastifyInstance) => {
       where: {
         product: { name },
       },
-      include: { product: true },
+      include: { product: { include: { prices: { orderBy: { effectiveAt: 'desc' } } } } },
     });
-    return reply.send(sales);
+
+    const result = sales.map((s) => {
+      const activePrice = s.product?.prices ? getActivePriceFromArray(s.product.prices)?.price : 0;
+
+      return {
+        id: s.id,
+        productId: s.productId,
+        productName: s.product?.name,
+        quantity: s.quantity,
+        soldAt: s.soldAt,
+        updatedAt: s.updatedAt,
+        activePrice,
+      };
+    });
+
+    return reply.send(result);
+  });
+
+  app.put('/:id', async (request, reply) => {
+    const { id } = request.params as { id: string };
+    const data = saleSchema.parse(request.body);
+
+    const existing = await prisma.sale.findUnique({ where: { id } });
+    if (!existing) return reply.code(404).send({ error: 'Not found' });
+
+    const updated = await prisma.sale.update({ where: { id }, data });
+    return reply.send(updated);
   });
 
   // Delete sale

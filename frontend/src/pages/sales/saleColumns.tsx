@@ -24,7 +24,7 @@ const saleColumns = (onEdit: (sale: Sale) => void, onDelete: (sale: Sale) => voi
     header: 'Produit',
   },
   {
-    accessorKey: 'productUnitPrice',
+    accessorKey: 'activePrice',
     header: 'Prix Unitaire',
     cell: ({ getValue }) => {
       const price = getValue<number>();
@@ -46,8 +46,8 @@ const saleColumns = (onEdit: (sale: Sale) => void, onDelete: (sale: Sale) => voi
     id: 'totalCost',
     header: 'Prix Total',
     cell: ({ row }) => {
-      const { quantity, productUnitPrice } = row.original;
-      const total = quantity * Number(productUnitPrice);
+      const { quantity, activePrice } = row.original;
+      const total = quantity * Number(activePrice);
       return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XAF' }).format(total);
     },
   },
