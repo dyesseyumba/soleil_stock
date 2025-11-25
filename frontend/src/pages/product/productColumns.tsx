@@ -38,7 +38,7 @@ const productColumns = (onEdit: (product: Product) => void): ColumnDef<Product>[
     header: 'Quantité disponible',
     cell: ({ getValue }) => {
       const quantity = getValue<number>();
-      return quantity ? new Intl.NumberFormat('fr-FR').format(quantity) : '';
+      return quantity ? new Intl.NumberFormat('fr-FR').format(quantity) : 0;
     },
   },
   {
@@ -48,7 +48,7 @@ const productColumns = (onEdit: (product: Product) => void): ColumnDef<Product>[
       const price = getValue<number>();
       return price
         ? new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XAF' }).format(price)
-        : '';
+        : 0;
     },
   },
   {
@@ -58,7 +58,7 @@ const productColumns = (onEdit: (product: Product) => void): ColumnDef<Product>[
       const price = getValue<number>();
       return price
         ? new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XAF' }).format(price)
-        : '';
+        : 0;
     },
   },
   {
