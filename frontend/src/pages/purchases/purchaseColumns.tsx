@@ -35,7 +35,7 @@ const purchaseColumns = (
     header: 'Quantité',
     cell: ({ getValue }) => {
       const price = getValue<number>();
-      return price ? new Intl.NumberFormat('fr-FR').format(price) : '';
+      return price ? new Intl.NumberFormat('fr-FR').format(price) : 0;
     },
   },
   {

@@ -30,7 +30,7 @@ const saleColumns = (onEdit: (sale: Sale) => void, onDelete: (sale: Sale) => voi
       const price = getValue<number>();
       return price
         ? new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XAF' }).format(price)
-        : '';
+        : 0;
     },
   },
   {
@@ -38,7 +38,7 @@ const saleColumns = (onEdit: (sale: Sale) => void, onDelete: (sale: Sale) => voi
     header: 'Quantité',
     cell: ({ getValue }) => {
       const price = getValue<number>();
-      return price ? new Intl.NumberFormat('fr-FR').format(price) : '';
+      return price ? new Intl.NumberFormat('fr-FR').format(price) : 0;
     },
   },
 
