@@ -1,7 +1,15 @@
 import { PageHeader } from '@/components/page-header';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
-import { useTotalExpiring, useTotalOutOfStock, useTotalStocks, useTotalValue } from '@/hooks';
+import {
+  useMonthlySales,
+  usePurchasesSales,
+  useTopSales,
+  useTotalExpiring,
+  useTotalOutOfStock,
+  useTotalStocks,
+  useTotalValue,
+} from '@/hooks';
 import {
   LineChart,
   Line,
@@ -20,41 +28,9 @@ export function Dashboard() {
   const { data: value, isLoading: loadingTotalValue } = useTotalValue();
   const { data: outStock, isLoading: loadingTotalOutOfStock } = useTotalOutOfStock();
   const { data: expired, isLoading: loadingTotalExpired } = useTotalExpiring();
-
-  // ----------------------
-  // 2a. MONTHLY SALES LINE CHART
-  // ----------------------
-  const salesData = [
-    { month: 'Jan', sales: 1200 },
-    { month: 'Feb', sales: 1800 },
-    { month: 'Mar', sales: 2200 },
-    { month: 'Apr', sales: 1600 },
-    { month: 'May', sales: 2400 },
-    { month: 'Jun', sales: 2100 },
-  ];
-
-  // ----------------------
-  // 2b. PURCHASES VS SALES BAR CHART
-  // ----------------------
-  const purchaseSales = [
-    { month: 'Jan', purchases: 1500, sales: 1200 },
-    { month: 'Feb', purchases: 2100, sales: 1800 },
-    { month: 'Mar', purchases: 2500, sales: 2200 },
-    { month: 'Apr', purchases: 1700, sales: 1600 },
-    { month: 'May', purchases: 2600, sales: 2400 },
-    { month: 'Jun', purchases: 2300, sales: 2100 },
-  ];
-
-  // ----------------------
-  // 2c. TOP PRODUCTS SOLD
-  // ----------------------
-  const topProducts = [
-    { name: 'Rice', sold: 540 },
-    { name: 'Sugar', sold: 420 },
-    { name: 'Oil', sold: 390 },
-    { name: 'Flour', sold: 350 },
-    { name: 'Milk', sold: 240 },
-  ];
+  const { data: monthlySales, isLoading: loadingMonthlySales } = useMonthlySales();
+  const { data: purchasesSales, isLoading: loadingPurchasesSales } = usePurchasesSales();
+  const { data: topSales, isLoading: loadingTopSales } = useTopSales();
 
   // ----------------------
   // 3. OPERATIONAL ALERTS
@@ -110,7 +86,15 @@ export function Dashboard() {
     'Price update: Oil – New unit price applied (Nov 17)',
   ];
 
-  if (loadingTotalStocks || loadingTotalValue || loadingTotalOutOfStock || loadingTotalExpired)
+  if (
+    loadingTotalStocks ||
+    loadingTotalValue ||
+    loadingTotalOutOfStock ||
+    loadingTotalExpired ||
+    loadingMonthlySales ||
+    loadingPurchasesSales ||
+    loadingTopSales
+  )
     return (
       <>
         <PageHeader />
@@ -169,31 +153,31 @@ export function Dashboard() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
           {/* Monthly Sales Line Chart */}
           <div className="rounded-xl border bg-white p-4 shadow">
-            <h2 className="mb-4 text-lg font-semibold">Monthly Sales</h2>
+            <h2 className="mb-4 text-lg font-semibold">Vente Mensuelle</h2>
             <ResponsiveContainer width="100%" height={250}>
-              <LineChart data={salesData}>
+              <LineChart data={monthlySales}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="month" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Line type="monotone" dataKey="sales" stroke="#8884d8" />
+                <Line type="monotone" dataKey="Ventes" stroke="#8884d8" />
               </LineChart>
             </ResponsiveContainer>
           </div>
 
           {/* Purchases vs Sales */}
           <div className="rounded-xl border bg-white p-4 shadow">
-            <h2 className="mb-4 text-lg font-semibold">Purchases vs Sales</h2>
+            <h2 className="mb-4 text-lg font-semibold">Approvisionnement vs Ventes</h2>
             <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={purchaseSales}>
+              <BarChart data={purchasesSales}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="month" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="purchases" fill="#82ca9d" />
-                <Bar dataKey="sales" fill="#8884d8" />
+                <Bar dataKey="approvisionnement" fill="#82ca9d" />
+                <Bar dataKey="ventes" fill="#8884d8" />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -201,9 +185,9 @@ export function Dashboard() {
 
         {/* TOP PRODUCTS SOLD */}
         <div className="rounded-xl border bg-white p-4 shadow">
-          <h2 className="mb-4 text-lg font-semibold">Top Products Sold</h2>
+          <h2 className="mb-4 text-lg font-semibold">Top des Ventes</h2>
           <ResponsiveContainer width="100%" height={300}>
-            <BarChart layout="vertical" data={topProducts}>
+            <BarChart layout="vertical" data={topSales}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis type="number" />
               <YAxis type="category" dataKey="name" />
