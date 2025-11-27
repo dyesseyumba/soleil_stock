@@ -156,6 +156,97 @@ const saleRoutes = (app: FastifyInstance) => {
 
     reply.code(204).send();
   });
+
+  app.get('/monthly-sales', async (_, reply) => {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    // Fetch all sales without prices for now (simple version)
+    const sales = await prisma.sale.findMany();
+
+    // Init monthly totals
+    const monthlyTotals: Record<string, number> = {};
+    months.forEach((m) => (monthlyTotals[m] = 0));
+
+    // Sum quantities per month
+    for (const s of sales) {
+      const monthIndex = s.soldAt.getMonth(); // 0–11
+      const monthLabel = months[monthIndex];
+      monthlyTotals[monthLabel] += s.quantity;
+    }
+
+    // Convert to array for frontend
+    const result = months.map((m) => ({
+      month: m,
+      sales: monthlyTotals[m],
+    }));
+
+    return reply.send(result);
+  });
+
+  app.get('/purchases-vs-sales', async (_, reply) => {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    // Initialize structure
+    const monthlyData: Record<string, { purchases: number; sales: number }> = {};
+    months.forEach((m) => {
+      monthlyData[m] = { purchases: 0, sales: 0 };
+    });
+
+    // Fetch all purchases and sales
+    const purchases = await prisma.purchase.findMany();
+    const sales = await prisma.sale.findMany();
+
+    // Aggregate purchases
+    for (const p of purchases) {
+      const monthIndex = p.purchasedAt.getMonth(); // 0–11
+      const monthLabel = months[monthIndex];
+      monthlyData[monthLabel].purchases += p.quantity;
+    }
+
+    // Aggregate sales
+    for (const s of sales) {
+      const monthIndex = s.soldAt.getMonth();
+      const monthLabel = months[monthIndex];
+      monthlyData[monthLabel].sales += s.quantity;
+    }
+
+    // Convert into your required output array
+    const result = months.map((m) => ({
+      month: m,
+      purchases: monthlyData[m].purchases,
+      sales: monthlyData[m].sales,
+    }));
+
+    return reply.send(result);
+  });
+
+  app.get('/top-products-sold', async (_, reply) => {
+  // Group sales by productId
+  const grouped = await prisma.sale.groupBy({
+    by: ['productId'],
+    _sum: { quantity: true },
+    orderBy: { _sum: { quantity: 'desc' } },
+    take: 5, // top 5 products
+  });
+
+  // Attach product names
+  const results = await Promise.all(
+    grouped.map(async (g) => {
+      const product = await prisma.product.findUnique({
+        where: { id: g.productId },
+        select: { name: true },
+      });
+
+      return {
+        name: product?.name ?? 'Unknown',
+        sold: g._sum.quantity,
+      };
+    })
+  );
+
+  return reply.send(results);
+});
+
 };
 
 export { saleRoutes as salesRoutes, saleSchema as CreateSaleSchema };

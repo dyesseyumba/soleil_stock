@@ -1,6 +1,37 @@
 import type { Sale } from '@/store';
 import { createCrudHooks } from '.';
-import { createSale, deleteSale, fetchSale, fetchSales, updateSale } from '@/api';
+import {
+  createSale,
+  deleteSale,
+  fetchMonthlySales,
+  fetchPurchasesSales,
+  fetchSale,
+  fetchSales,
+  fetchTopSales,
+  updateSale,
+} from '@/api';
+import { useQuery } from '@tanstack/react-query';
+
+function useMonthlySales() {
+  return useQuery<{ month: string; sales: number }[], Error>({
+    queryKey: ['monthlySales'],
+    queryFn: () => fetchMonthlySales(),
+  });
+}
+
+function usePurchasesSales() {
+  return useQuery<{ month: string; purchases: string; sales: number }[], Error>({
+    queryKey: ['purchasesSales'],
+    queryFn: () => fetchPurchasesSales(),
+  });
+}
+
+function useTopSales() {
+  return useQuery<{ name: string; sold: number }[], Error>({
+    queryKey: ['topSales'],
+    queryFn: () => fetchTopSales(),
+  });
+}
 
 export const {
   useList: useSales,
@@ -16,3 +47,5 @@ export const {
   update: (id, data) => updateSale(id, data), // expects Partial<Sale>
   remove: deleteSale,
 });
+
+export { useMonthlySales, usePurchasesSales, useTopSales };
