@@ -2,6 +2,8 @@ import { PageHeader } from '@/components/page-header';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import {
+  useActivities,
+  useAlerts,
   useMonthlySales,
   usePurchasesSales,
   useTopSales,
@@ -31,61 +33,20 @@ export function Dashboard() {
   const { data: monthlySales, isLoading: loadingMonthlySales } = useMonthlySales();
   const { data: purchasesSales, isLoading: loadingPurchasesSales } = usePurchasesSales();
   const { data: topSales, isLoading: loadingTopSales } = useTopSales();
+  const { data: alerts, isLoading: loadingAlerts } = useAlerts();
+  const { data: recentActivity, isLoading: loadingActivities } = useActivities();
 
   // ----------------------
-  // 3. OPERATIONAL ALERTS
+  // 4. RECENT ACTIVITY
   // ----------------------
-  const alerts = [
-    'Product: Oil – Out of Stock',
-    'Product: Milk – Below minimum threshold',
-    'Product: Sugar – Expiring in 18 days',
-    'Stock variation anomaly detected for Flour (+50 units)',
-  ];
-
-  // ----------------------
-  // 4. STOCK TABLE (DETAILED)
-  // ----------------------
-  const stockTable = [
-    {
-      product: 'Rice',
-      available: 3200,
-      lastUpdate: '2025-11-20',
-      nextExpiring: '2025-12-10',
-      value: '$12,800',
-    },
-    {
-      product: 'Sugar',
-      available: 1200,
-      lastUpdate: '2025-11-18',
-      nextExpiring: '2025-12-02',
-      value: '$3,600',
-    },
-    {
-      product: 'Oil',
-      available: 0,
-      lastUpdate: '2025-11-21',
-      nextExpiring: '2025-12-15',
-      value: '$0',
-    },
-    {
-      product: 'Flour',
-      available: 780,
-      lastUpdate: '2025-11-19',
-      nextExpiring: '2026-01-14',
-      value: '$1,560',
-    },
-  ];
-
-  // ----------------------
-  // 5. RECENT ACTIVITY
-  // ----------------------
-  const recentActivity = [
-    'Sale recorded: 45 units of Sugar (Nov 19)',
-    'New purchase: 200 units of Rice (Nov 18)',
-    'Stock update: Flour adjusted to 780 units (Nov 18)',
-    'Price update: Oil – New unit price applied (Nov 17)',
-  ];
-
+  // const recentActivity = [
+  //   'Sale recorded: 45 units of Sugar (Nov 19)',
+  //   'New purchase: 200 units of Rice (Nov 18)',
+  //   'Stock update: Flour adjusted to 780 units (Nov 18)',
+  //   'Price update: Oil – New unit price applied (Nov 17)',
+  // ];
+  console.log(recentActivity);
+  console.log(alerts);
   if (
     loadingTotalStocks ||
     loadingTotalValue ||
@@ -93,7 +54,9 @@ export function Dashboard() {
     loadingTotalExpired ||
     loadingMonthlySales ||
     loadingPurchasesSales ||
-    loadingTopSales
+    loadingTopSales ||
+    loadingAlerts ||
+    loadingActivities
   )
     return (
       <>
@@ -161,7 +124,7 @@ export function Dashboard() {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Line type="monotone" dataKey="Ventes" stroke="#8884d8" />
+                <Line type="monotone" dataKey="sales" stroke="#8884d8" />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -176,8 +139,8 @@ export function Dashboard() {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="approvisionnement" fill="#82ca9d" />
-                <Bar dataKey="ventes" fill="#8884d8" />
+                <Bar dataKey="purchases" fill="#82ca9d" />
+                <Bar dataKey="sales" fill="#8884d8" />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -203,7 +166,7 @@ export function Dashboard() {
         <div className="rounded-xl border bg-white p-4 shadow">
           <h2 className="mb-4 text-lg font-semibold">Operational Alerts</h2>
           <ul className="space-y-2">
-            {alerts.map((a, i) => (
+            {alerts?.map((a, i) => (
               <li key={i} className="text-sm text-red-600">
                 • {a}
               </li>
@@ -212,41 +175,12 @@ export function Dashboard() {
         </div>
 
         {/* ---------------------- */}
-        {/* 4. STOCK TABLE */}
-        {/* ---------------------- */}
-        <div className="rounded-xl border bg-white p-4 shadow">
-          <h2 className="mb-4 text-lg font-semibold">Stock Overview</h2>
-          <table className="w-full text-sm">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="p-2 text-left">Product</th>
-                <th className="p-2 text-left">Available</th>
-                <th className="p-2 text-left">Last Update</th>
-                <th className="p-2 text-left">Next Expiring Batch</th>
-                <th className="p-2 text-left">Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              {stockTable.map((row, i) => (
-                <tr key={i} className="border-b">
-                  <td className="p-2">{row.product}</td>
-                  <td className="p-2">{row.available}</td>
-                  <td className="p-2">{row.lastUpdate}</td>
-                  <td className="p-2">{row.nextExpiring}</td>
-                  <td className="p-2">{row.value}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* ---------------------- */}
-        {/* 5. RECENT ACTIVITY */}
+        {/* 4. RECENT ACTIVITY */}
         {/* ---------------------- */}
         <div className="rounded-xl border bg-white p-4 shadow">
           <h2 className="mb-4 text-lg font-semibold">Recent Activity</h2>
           <ul className="space-y-1 text-sm">
-            {recentActivity.map((item, i) => (
+            {recentActivity?.map((item, i) => (
               <li key={i}>• {item}</li>
             ))}
           </ul>

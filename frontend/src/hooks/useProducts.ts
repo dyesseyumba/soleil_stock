@@ -8,6 +8,8 @@ import {
   fetchTotalValue,
   fetchTotalOutOfStock,
   fetchTotalExpiring,
+  fetchAlerts,
+  fetchActivities,
 } from '@/api';
 import type { Product } from '@/store';
 import { createCrudHooks } from '.';
@@ -41,6 +43,20 @@ function useTotalExpiring() {
   });
 }
 
+function useAlerts() {
+  return useQuery<string[], Error>({
+    queryKey: ['stockAlert'],
+    queryFn: () => fetchAlerts(),
+  });
+}
+
+function useActivities() {
+  return useQuery<string[], Error>({
+    queryKey: ['stockActivities'],
+    queryFn: () => fetchActivities(),
+  });
+}
+
 export const {
   useList: useProducts,
   useItem: useProduct,
@@ -56,4 +72,4 @@ export const {
   remove: deleteProduct,
 });
 
-export { useTotalStocks, useTotalValue, useTotalOutOfStock, useTotalExpiring };
+export { useTotalStocks, useTotalValue, useTotalOutOfStock, useTotalExpiring, useAlerts, useActivities };
