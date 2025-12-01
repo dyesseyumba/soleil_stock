@@ -24,6 +24,16 @@ async function fetchTotalExpiring(): Promise<{ totalExpiring: number }> {
   return data;
 }
 
+async function fetchAlerts(): Promise<string[]> {
+  const { data } = await axiosClient.get<string[]>('/stocks/alerts');
+  return data;
+}
+
+async function fetchActivities(): Promise<string[]> {
+  const { data } = await axiosClient.get<string[]>('/stocks/recent-activity');
+  return data;
+}
+
 export const {
   fetchAll: fetchProducts,
   fetchOne: fetchProduct,
@@ -32,4 +42,11 @@ export const {
   remove: deleteProduct,
 } = productApi;
 
-export { fetchTotalStock, fetchTotalValue, fetchTotalOutOfStock, fetchTotalExpiring };
+export {
+  fetchTotalStock,
+  fetchTotalValue,
+  fetchTotalOutOfStock,
+  fetchTotalExpiring,
+  fetchAlerts,
+  fetchActivities,
+};
