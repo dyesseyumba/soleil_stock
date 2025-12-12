@@ -1,90 +1,127 @@
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useReport } from '@/hooks';
+import { PageHeader } from '@/components/page-header';
+import { BreadcrumbItem, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
+import { Toaster } from 'sonner';
+import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/spinner';
+import { Alert, AlertTitle } from '@/components/ui/alert';
+import { AlertCircleIcon } from 'lucide-react';
+import { DataTable } from '@/components/data-table';
+import { reportColumn } from './reportColumns';
+import type { ReportRow } from '@/store';
 
 function ReportPage() {
   const [product, setProduct] = useState('');
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
 
-  // Temporary dummy data — backend will replace this
-  const reportData = [
-    { product: 'Sugar', sold: 45, revenue: 900 },
-    { product: 'Rice', sold: 60, revenue: 1200 },
-  ];
+  const { data: reports, isLoading: isLoadingReport, isError: isErrorReport } = useReport();
 
-  const handleGeneratePdf = () => {
-    // TODO: Implement later
-    console.log('Generate PDF clicked');
+  const totalRow: ReportRow = {
+    id: undefined,
+    product: 'Total',
+    sold: reports?.reduce((sum, r) => sum + r.sold, 0) || 0,
+    revenue: reports?.reduce((sum, r) => sum + r.revenue, 0) || 0,
+    cost: reports?.reduce((sum, r) => sum + r.cost, 0) || 0,
+    profit: reports?.reduce((sum, r) => sum + r.profit, 0) || 0,
   };
 
-  return (
-    <div className="space-y-6 p-6">
-      <Card className="rounded-xl border shadow-sm">
-        <CardHeader>
-          <CardTitle className="text-lg">Reports</CardTitle>
-        </CardHeader>
+  const dataWithTotal = [...(reports ?? []), totalRow];
 
-        <CardContent className="space-y-4">
-          {/* Filters */}
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            <div className="space-y-1">
-              <Label>Product</Label>
-              <Select onValueChange={setProduct}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select product" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Sugar">Sugar</SelectItem>
-                  <SelectItem value="Rice">Rice</SelectItem>
-                  <SelectItem value="Flour">Flour</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+  const columns = reportColumn();
 
-            <div className="space-y-1">
-              <Label>From</Label>
-              <Input type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
-            </div>
-
-            <div className="space-y-1">
-              <Label>To</Label>
-              <Input type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} />
-            </div>
-          </div>
-
-          {/* Table */}
-          <div className="mt-4 overflow-hidden rounded-lg border">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="p-3 text-left">Product</th>
-                  <th className="p-3 text-left">Units Sold</th>
-                  <th className="p-3 text-left">Revenue</th>
-                </tr>
-              </thead>
-              <tbody>
-                {reportData.map((row, i) => (
-                  <tr key={i} className="border-t">
-                    <td className="p-3">{row.product}</td>
-                    <td className="p-3">{row.sold}</td>
-                    <td className="p-3">{row.revenue} USD</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* PDF button */}
-          <Button className="mt-4" onClick={handleGeneratePdf}>
-            Generate PDF
+  if (isLoadingReport)
+    return (
+      <>
+        <PageHeader>
+          <BreadcrumbSeparator className="hidden md:block" />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Rapport</BreadcrumbPage>
+          </BreadcrumbItem>
+        </PageHeader>
+        <div className="flex h-screen items-center justify-center">
+          <Button disabled>
+            <Spinner />
+            Chargement...
           </Button>
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+      </>
+    );
+
+  if (isErrorReport)
+    return (
+      <>
+        <PageHeader>
+          <BreadcrumbSeparator className="hidden md:block" />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Rapport</BreadcrumbPage>
+          </BreadcrumbItem>
+        </PageHeader>
+        <div className="flex h-screen items-center justify-center">
+          <Alert variant="destructive" className="mx-auto max-w-md">
+            <AlertCircleIcon />
+            <AlertTitle>Une erreur s'est produite lors du chargement</AlertTitle>
+          </Alert>
+        </div>
+      </>
+    );
+
+  return (
+    <>
+      <Toaster />
+      <PageHeader>
+        <BreadcrumbSeparator className="hidden md:block" />
+        <BreadcrumbItem>
+          <BreadcrumbPage>Rapport</BreadcrumbPage>
+        </BreadcrumbItem>
+      </PageHeader>
+      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <div className="grid auto-rows-min gap-4">
+          <h3 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+            Rapport
+          </h3>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="space-y-1">
+            <Label>Product</Label>
+            <Select onValueChange={setProduct}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select product" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Sugar">Sugar</SelectItem>
+                <SelectItem value="Rice">Rice</SelectItem>
+                <SelectItem value="Flour">Flour</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-1">
+            <Label>From</Label>
+            <Input type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
+          </div>
+
+          <div className="space-y-1">
+            <Label>To</Label>
+            <Input type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} />
+          </div>
+        </div>
+
+        {/* {children} */}
+
+        <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min">
+          <div className="w-full flex-1 p-2 md:p-4">
+            <DataTable columns={columns} data={dataWithTotal ?? []} />
+          </div>
+        </div>
+      </div>
+      {/* </div> */}
+    </>
   );
 }
 

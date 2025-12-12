@@ -19,6 +19,12 @@ function getActivePriceFromArray(prices: ProductPrice[]): ProductPrice | undefin
     .sort((a, b) => b.effectiveAt.getTime() - a.effectiveAt.getTime())[0];
 }
 
+function getPriceAtSaleDate(prices: ProductPrice[], saleDate: Date): ProductPrice | undefined {
+  return prices
+    .filter((p) => p.effectiveAt <= saleDate)
+    .sort((a, b) => b.effectiveAt.getTime() - a.effectiveAt.getTime())[0];
+}
+
 const productRoutes = (app: FastifyInstance) => {
   app.post('/', async (request, reply) => {
     const body = productSchema.parse(request.body);
@@ -118,6 +124,62 @@ const productRoutes = (app: FastifyInstance) => {
     await prisma.product.delete({ where: { id } });
     return reply.code(204).send();
   });
+
+  app.get('/report', async (_, reply) => {
+    const products = await prisma.product.findMany({
+      include: {
+        sales: true,
+        purchases: true,
+        prices: { orderBy: { effectiveAt: 'desc' } },
+      },
+    });
+
+    const result = products.map((p) => {
+      let totalSold = 0;
+      let totalRevenue = 0;
+      let totalCost = 0;
+
+      for (const sale of p.sales) {
+        totalSold += sale.quantity;
+
+        // Get the correct sale price
+        const priceObj = getPriceAtSaleDate(p.prices, sale.soldAt);
+        const salePrice = priceObj ? Number(priceObj.price) : 0;
+        totalRevenue += sale.quantity * salePrice;
+
+        // Compute average purchase price up to sale date
+        const relevantPurchases = p.purchases
+          .filter((pu) => pu.purchasedAt <= sale.soldAt)
+          .sort((a, b) => a.purchasedAt.getTime() - b.purchasedAt.getTime());
+
+        let remainingQty = sale.quantity;
+        let saleCost = 0;
+
+        for (const purchase of relevantPurchases) {
+          if (remainingQty <= 0) break;
+
+          const qtyUsed = Math.min(remainingQty, purchase.quantity);
+          saleCost += qtyUsed * Number(purchase.unitCost);
+          remainingQty -= qtyUsed;
+        }
+
+        totalCost += saleCost;
+      }
+
+      const profit = totalRevenue - totalCost;
+
+      return {
+        id: p.id,
+        product: p.name,
+        sold: totalSold,
+        revenue: totalRevenue,
+        cost: totalCost,
+        profit,
+      };
+    });
+
+    return reply.send(result);
+  });
 };
 
-export { productRoutes, productSchema, productUpdateSchema, getActivePriceFromArray };
+export { productRoutes, productSchema, productUpdateSchema, getActivePriceFromArray, getPriceAtSaleDate };
