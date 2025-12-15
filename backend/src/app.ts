@@ -1,4 +1,4 @@
-import Fastify from 'fastify';
+import Fastify, { FastifyError } from 'fastify';
 import fastifyCors from '@fastify/cors';
 import fastifyHelmet from '@fastify/helmet';
 import { productPriceRoutes, productRoutes, purchaseRoutes, salesRoutes, stockSummaryRoutes, supplierRoutes } from './routes';
@@ -26,7 +26,7 @@ app.register(stockSummaryRoutes, { prefix: '/api/stocks' });
 app.register(productPriceRoutes, { prefix: '/api/productPrices' });
 
 // Central error handler
-app.setErrorHandler((error, request, reply) => {
+app.setErrorHandler((error: FastifyError, request, reply) => {
   request.log.error(error);
 
   if (error.validation) {

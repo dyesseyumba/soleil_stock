@@ -4,12 +4,10 @@
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
-  // output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
 }
 
 model Product {
@@ -79,3 +77,13 @@ model ProductPrice {
 
   product Product @relation(fields: [productId], references: [id])
 }
+
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  passwordHash  String
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
