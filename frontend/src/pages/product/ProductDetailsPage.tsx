@@ -14,7 +14,7 @@ import { Alert, AlertTitle } from '@/components/ui/alert';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { useProductPriceModalStore, type ProductPrice } from '@/store';
-import { productPricesColumns, SupplierForm } from '.';
+import { productPricesColumns, ProductDetailsForm } from '.';
 import { DataTable } from '@/components/data-table';
 import { toast, Toaster } from 'sonner';
 
@@ -162,7 +162,7 @@ function ProductDetailsPage() {
 
         <DataTable columns={columns} data={prices} />
 
-        <SupplierForm />
+        <ProductDetailsForm />
       </div>
     </>
   );

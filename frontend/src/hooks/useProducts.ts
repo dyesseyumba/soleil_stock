@@ -10,8 +10,9 @@ import {
   fetchTotalExpiring,
   fetchAlerts,
   fetchActivities,
+  fetchReport,
 } from '@/api';
-import type { Product } from '@/store';
+import type { Product, ReportFilters, ReportRow } from '@/store';
 import { createCrudHooks } from '.';
 import { useQuery } from '@tanstack/react-query';
 
@@ -57,6 +58,14 @@ function useActivities() {
   });
 }
 
+function useReport(filters: ReportFilters = {}) {
+  return useQuery<ReportRow[], Error>({
+    queryKey: ['report', filters],
+    queryFn: () => fetchReport(filters),
+    // placeholderData: (previousData) => previousData, // smooth UX when changing filters
+  });
+}
+
 export const {
   useList: useProducts,
   useItem: useProduct,
@@ -72,4 +81,12 @@ export const {
   remove: deleteProduct,
 });
 
-export { useTotalStocks, useTotalValue, useTotalOutOfStock, useTotalExpiring, useAlerts, useActivities };
+export {
+  useTotalStocks,
+  useTotalValue,
+  useTotalOutOfStock,
+  useTotalExpiring,
+  useAlerts,
+  useActivities,
+  useReport,
+};

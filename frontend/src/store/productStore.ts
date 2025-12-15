@@ -16,7 +16,22 @@ interface Product {
   StockSummary?: [];
 }
 
+type ReportRow = {
+  id?: string;
+  product: string;
+  sold: number;
+  revenue: number;
+  cost: number;
+  profit: number;
+};
+
+type ReportFilters = {
+  product?: string;
+  fromDate?: string; // ISO string e.g. "2025-12-01"
+  toDate?: string; // ISO string e.g. "2025-12-31"
+};
+
 const useProductModalStore = modalStore<Product>();
 
 export { useProductModalStore };
-export type { Product };
+export type { Product, ReportRow, ReportFilters };

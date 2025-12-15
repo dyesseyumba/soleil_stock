@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { PrismaClient, ProductPrice } from '../generated';
+import { Prisma, PrismaClient, ProductPrice } from '../generated';
 import { z } from 'zod';
 // import { PrismaClient } from '@prisma/client';
 
@@ -11,11 +11,29 @@ const productSchema = z.object({
   // sellingPrice: z.number().positive('Price must be greater than zero'),
 });
 
+const querySchema = z.object({
+  product: z.string().optional(),
+  fromDate: z
+    .string()
+    .optional()
+    .transform((val) => (val ? new Date(val) : undefined)),
+  toDate: z
+    .string()
+    .optional()
+    .transform((val) => (val ? new Date(val) : undefined)),
+});
+
 const productUpdateSchema = productSchema.partial();
 
 function getActivePriceFromArray(prices: ProductPrice[]): ProductPrice | undefined {
   return prices
     .filter((p) => p.effectiveAt <= new Date())
+    .sort((a, b) => b.effectiveAt.getTime() - a.effectiveAt.getTime())[0];
+}
+
+function getPriceAtSaleDate(prices: ProductPrice[], saleDate: Date): ProductPrice | undefined {
+  return prices
+    .filter((p) => p.effectiveAt <= saleDate)
     .sort((a, b) => b.effectiveAt.getTime() - a.effectiveAt.getTime())[0];
 }
 
@@ -118,6 +136,78 @@ const productRoutes = (app: FastifyInstance) => {
     await prisma.product.delete({ where: { id } });
     return reply.code(204).send();
   });
+
+  app.get('/report', async (request, reply) => {
+    const parsed = querySchema.safeParse(request.query);
+    if (!parsed.success) {
+      return reply.status(400).send(z.treeifyError(parsed.error));
+    }
+
+    const { product, fromDate, toDate } = parsed.data;
+
+    // Build date filter for sales
+    const saleFilter: Prisma.SaleWhereInput = {};
+    if (fromDate || toDate) {
+      saleFilter.soldAt = {};
+      if (fromDate) saleFilter.soldAt.gte = new Date(fromDate);
+      if (toDate) saleFilter.soldAt.lte = new Date(toDate); // include the whole day
+    }
+
+    const products = await prisma.product.findMany({
+      where: product ? { name: product } : undefined,
+      include: {
+        sales: { where: saleFilter },
+        purchases: true,
+        prices: { orderBy: { effectiveAt: 'desc' } },
+      },
+    });
+
+    const result = products.map((p) => {
+      let totalSold = 0;
+      let totalRevenue = 0;
+      let totalCost = 0;
+
+      for (const sale of p.sales) {
+        totalSold += sale.quantity;
+
+        // Get the correct sale price
+        const priceObj = getPriceAtSaleDate(p.prices, sale.soldAt);
+        const salePrice = priceObj ? Number(priceObj.price) : 0;
+        totalRevenue += sale.quantity * salePrice;
+
+        // Compute average purchase price up to sale date
+        const relevantPurchases = p.purchases
+          .filter((pu) => pu.purchasedAt <= sale.soldAt)
+          .sort((a, b) => a.purchasedAt.getTime() - b.purchasedAt.getTime());
+
+        let remainingQty = sale.quantity;
+        let saleCost = 0;
+
+        for (const purchase of relevantPurchases) {
+          if (remainingQty <= 0) break;
+
+          const qtyUsed = Math.min(remainingQty, purchase.quantity);
+          saleCost += qtyUsed * Number(purchase.unitCost);
+          remainingQty -= qtyUsed;
+        }
+
+        totalCost += saleCost;
+      }
+
+      const profit = totalRevenue - totalCost;
+
+      return {
+        id: p.id,
+        product: p.name,
+        sold: totalSold,
+        revenue: totalRevenue,
+        cost: totalCost,
+        profit,
+      };
+    });
+
+    return reply.send(result);
+  });
 };
 
-export { productRoutes, productSchema, productUpdateSchema, getActivePriceFromArray };
+export { productRoutes, productSchema, productUpdateSchema, getActivePriceFromArray, getPriceAtSaleDate };

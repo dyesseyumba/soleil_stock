@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router';
 import { Layout } from '../layout';
 import { Dashboard, LoginForm, P404, ProductDetailsPage, ProductPage, PurchasePage, SalePage, SupplierPage } from '../pages';
+import { ReportPage } from '@/pages/report';
 // import Layout from './routes/layout';
 // import Dashboard from './routes/dashboard';
 // import Login from './routes/login';
@@ -25,7 +26,7 @@ const router = createBrowserRouter([
       { path: '/suppliers', Component: SupplierPage },
       { path: '/sales', Component: SalePage },
       { path: '/purchases', Component: PurchasePage },
-      { path: '/reports', Component: Dashboard },
+      { path: '/reports', Component: ReportPage },
     ],
   },
   { path: '/login', Component: LoginForm },

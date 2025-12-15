@@ -1,6 +1,7 @@
-import type { Product } from '@/store';
+import type { Product, ReportFilters, ReportRow } from '@/store';
 import { crudApi } from './crudApi';
 import { axiosClient } from './axiosClient';
+
 
 const productApi = crudApi<Product>('/products');
 
@@ -34,6 +35,16 @@ async function fetchActivities(): Promise<string[]> {
   return data;
 }
 
+async function fetchReport(filters: ReportFilters = {}): Promise<ReportRow[]> {
+  const params: Record<string, string> = {};
+  if (filters.product) params.product = filters.product;
+  if (filters.fromDate) params.fromDate = filters.fromDate;
+  if (filters.toDate) params.toDate = filters.toDate;
+
+  const { data } = await axiosClient.get<ReportRow[]>('/products/report', { params });
+  return data;
+}
+
 export const {
   fetchAll: fetchProducts,
   fetchOne: fetchProduct,
@@ -49,4 +60,6 @@ export {
   fetchTotalExpiring,
   fetchAlerts,
   fetchActivities,
+  fetchReport,
 };
+
