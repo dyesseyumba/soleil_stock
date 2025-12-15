@@ -1,8 +1,7 @@
-import { useState } from 'react';
-import { Input } from '@/components/ui/input';
+import { useEffect, useState } from 'react';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useReport } from '@/hooks';
+import { useProducts, useReport } from '@/hooks';
 import { PageHeader } from '@/components/page-header';
 import { BreadcrumbItem, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { Toaster } from 'sonner';
@@ -13,13 +12,36 @@ import { AlertCircleIcon } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
 import { reportColumn } from './reportColumns';
 import type { ReportRow } from '@/store';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar } from '@/components/ui/calendar';
+import { format } from 'date-fns';
 
 function ReportPage() {
-  const [product, setProduct] = useState('');
-  const [fromDate, setFromDate] = useState('');
-  const [toDate, setToDate] = useState('');
+  const oneYearAgo = new Date();
+  oneYearAgo.setDate(oneYearAgo.getDate() - 365);
 
-  const { data: reports, isLoading: isLoadingReport, isError: isErrorReport } = useReport();
+  const [product, setProduct] = useState<string | undefined>(undefined);
+  const [startDate, setStartDate] = useState<Date>(oneYearAgo);
+  const [endDate, setEndDate] = useState<Date>(new Date());
+
+  const { data: products = [], isLoading: isLoadingProducts } = useProducts();
+
+  const {
+    data: reports,
+    isLoading: isLoadingReport,
+    isError: isErrorReport,
+    refetch,
+  } = useReport({
+    product: product ?? undefined,
+    fromDate: startDate ? startDate.toISOString().split('T')[0] : undefined,
+    toDate: endDate ? endDate.toISOString().split('T')[0] : undefined,
+  });
+
+  useEffect(() => {
+    if (startDate && endDate) {
+      refetch();
+    }
+  }, [product, startDate, endDate, refetch]);
 
   const totalRow: ReportRow = {
     id: undefined,
@@ -34,7 +56,7 @@ function ReportPage() {
 
   const columns = reportColumn();
 
-  if (isLoadingReport)
+  if (isLoadingReport || isLoadingProducts)
     return (
       <>
         <PageHeader>
@@ -89,27 +111,64 @@ function ReportPage() {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <div className="space-y-1">
             <Label>Product</Label>
-            <Select onValueChange={setProduct}>
+            <Select onValueChange={(val) => setProduct(val === 'all' ? undefined : val)} value={product}>
               <SelectTrigger>
                 <SelectValue placeholder="Select product" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Sugar">Sugar</SelectItem>
-                <SelectItem value="Rice">Rice</SelectItem>
-                <SelectItem value="Flour">Flour</SelectItem>
+                <SelectItem value="all">Tous les produits</SelectItem>
+                {products.map((p) => (
+                  <SelectItem key={p.id} value={p.name}>
+                    {p.name}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-1">
-            <Label>From</Label>
-            <Input type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
+            <Label>De</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className="w-full justify-start">
+                  {startDate ? format(startDate, 'yyyy-MM-dd') : 'Select'}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent>
+                <Calendar
+                  mode="single"
+                  required={false}
+                  selected={startDate }
+                  onSelect={(date: Date | undefined) => date && setStartDate(date)}
+                />
+              </PopoverContent>
+            </Popover>
           </div>
 
           <div className="space-y-1">
-            <Label>To</Label>
-            <Input type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} />
+            <Label>A</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className="w-full justify-start">
+                  {endDate ? format(endDate, 'yyyy-MM-dd') : 'Select'}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent>
+                <Calendar
+                  mode="single"
+                  required={false}
+                  selected={endDate ?? undefined}
+                  onSelect={(date: Date | undefined) => date && setEndDate(date)}
+                />
+              </PopoverContent>
+            </Popover>
           </div>
+
+          {/* <div className="flex items-end">
+            <Button className="w-full" onClick={runSearch}>
+              Search
+            </Button>
+          </div> */}
         </div>
 
         {/* {children} */}

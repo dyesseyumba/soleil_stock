@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { PrismaClient, ProductPrice } from '../generated';
+import { Prisma, PrismaClient, ProductPrice } from '../generated';
 import { z } from 'zod';
 // import { PrismaClient } from '@prisma/client';
 
@@ -9,6 +9,18 @@ const productSchema = z.object({
   name: z.string().min(2, 'Name is required'),
   description: z.string().optional(),
   // sellingPrice: z.number().positive('Price must be greater than zero'),
+});
+
+const querySchema = z.object({
+  product: z.string().optional(),
+  fromDate: z
+    .string()
+    .optional()
+    .transform((val) => (val ? new Date(val) : undefined)),
+  toDate: z
+    .string()
+    .optional()
+    .transform((val) => (val ? new Date(val) : undefined)),
 });
 
 const productUpdateSchema = productSchema.partial();
@@ -125,10 +137,26 @@ const productRoutes = (app: FastifyInstance) => {
     return reply.code(204).send();
   });
 
-  app.get('/report', async (_, reply) => {
+  app.get('/report', async (request, reply) => {
+    const parsed = querySchema.safeParse(request.query);
+    if (!parsed.success) {
+      return reply.status(400).send(z.treeifyError(parsed.error));
+    }
+
+    const { product, fromDate, toDate } = parsed.data;
+
+    // Build date filter for sales
+    const saleFilter: Prisma.SaleWhereInput = {};
+    if (fromDate || toDate) {
+      saleFilter.soldAt = {};
+      if (fromDate) saleFilter.soldAt.gte = new Date(fromDate);
+      if (toDate) saleFilter.soldAt.lte = new Date(toDate); // include the whole day
+    }
+
     const products = await prisma.product.findMany({
+      where: product ? { name: product } : undefined,
       include: {
-        sales: true,
+        sales: { where: saleFilter },
         purchases: true,
         prices: { orderBy: { effectiveAt: 'desc' } },
       },

@@ -11,7 +11,7 @@ import { productPriceCreateSchema, type CreateProductPriceInput } from '@/schema
 import { DatePicker } from '@/components/ui/date-picker';
 import { useParams } from 'react-router';
 
-const SupplierForm = () => {
+const ProductDetailsForm = () => {
   const { id } = useParams();
   const { isOpen, close, mode, editingItem } = useProductPriceModalStore();
   const createProductPrice = useCreateProductPrice();
@@ -120,4 +120,4 @@ const SupplierForm = () => {
   );
 };
 
-export { SupplierForm };
+export { ProductDetailsForm };
