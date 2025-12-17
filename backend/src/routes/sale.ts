@@ -1,9 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import { z } from 'zod';
-import { PrismaClient } from '../generated';
 import { getActivePriceFromArray } from './product';
-
-const prisma = new PrismaClient();
+import { prisma } from '../prisma/prisma';
 
 const saleSchema = z.object({
   productId: z.uuid(),
