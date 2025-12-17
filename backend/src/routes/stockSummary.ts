@@ -1,10 +1,8 @@
 import { FastifyInstance } from 'fastify';
-import { PrismaClient } from '../generated';
 import { z } from 'zod';
 import { getActivePriceFromArray } from './product';
 import { format } from 'date-fns';
-
-const prisma = new PrismaClient();
+import { prisma } from '../prisma/prisma';
 
 async function getRecentActivity(): Promise<string[]> {
   const [sales, purchases, priceUpdates, stockUpdates] = await Promise.all([

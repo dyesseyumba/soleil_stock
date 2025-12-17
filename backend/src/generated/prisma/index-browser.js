@@ -167,6 +167,14 @@ exports.Prisma.ProductPriceScalarFieldEnum = {
   effectiveAt: 'effectiveAt'
 };
 
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  passwordHash: 'passwordHash',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -184,7 +192,8 @@ exports.Prisma.ModelName = {
   Purchase: 'Purchase',
   Sale: 'Sale',
   StockSummary: 'StockSummary',
-  ProductPrice: 'ProductPrice'
+  ProductPrice: 'ProductPrice',
+  User: 'User'
 };
 
 /**

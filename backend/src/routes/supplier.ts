@@ -1,8 +1,6 @@
 import { FastifyInstance } from 'fastify';
-import { PrismaClient } from '../generated';
 import { z } from 'zod';
-
-const prisma = new PrismaClient();
+import { prisma } from '../prisma/prisma';
 
 const supplierSchema = z.object({
   name: z.string().min(2, 'Name is required'),
