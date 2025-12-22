@@ -175,6 +175,14 @@ exports.Prisma.UserScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.RefreshTokenScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  revoked: 'revoked',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -193,7 +201,8 @@ exports.Prisma.ModelName = {
   Sale: 'Sale',
   StockSummary: 'StockSummary',
   ProductPrice: 'ProductPrice',
-  User: 'User'
+  User: 'User',
+  RefreshToken: 'RefreshToken'
 };
 
 /**

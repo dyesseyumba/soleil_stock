@@ -9,11 +9,8 @@ const supplierSchema = z.object({
 
 const supplierUpdateSchema = supplierSchema.partial();
 
-// TypeScript types inferred from Zod
-// export type ProductInput = z.infer<typeof supplierSchema>
-// export type ProductUpdateInput = z.infer<typeof supplierUpdateSchema>
-
 const supplierRoutes = (app: FastifyInstance) => {
+
   app.post('/', async (request, reply) => {
     const body = supplierSchema.parse(request.body);
 

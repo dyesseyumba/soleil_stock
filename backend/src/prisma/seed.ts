@@ -14,7 +14,7 @@ async function main() {
   if (!email || !password) {
     throw new Error('ADMIN_EMAIL or ADMIN_PASSWORD missing');
   }
-  const passwordHash = await bcrypt.hash(email, 10);
+  const passwordHash = await bcrypt.hash(password, 10);
 
   await prisma.user.upsert({
     where: { email },
