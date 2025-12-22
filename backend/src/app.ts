@@ -1,7 +1,12 @@
 import Fastify, { FastifyError } from 'fastify';
 import fastifyCors from '@fastify/cors';
 import fastifyHelmet from '@fastify/helmet';
+import fastifyAuth from '@fastify/auth';
+import fastifySecureSession from '@fastify/secure-session';
+import fastifyPassport from '@fastify/passport';
 import { productPriceRoutes, productRoutes, purchaseRoutes, salesRoutes, stockSummaryRoutes, supplierRoutes } from './routes';
+import { jwtStrategy } from './services';
+import { authRoutes } from './routes/auth';
 
 const app = Fastify({ logger: true });
 
@@ -12,18 +17,41 @@ app.register(fastifyCors, {
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 });
-// app.register(fastifyJwt, { secret: process.env.JWT_SECRET! });
-// app.register(fastifyBcrypt);
 app.register(fastifyHelmet);
-// app.register(authRoutes);
 
 // Register routes
-app.register(productRoutes, { prefix: '/api/products' });
-app.register(supplierRoutes, { prefix: '/api/suppliers' });
-app.register(purchaseRoutes, { prefix: '/api/purchases' });
-app.register(salesRoutes, { prefix: '/api/sales' });
-app.register(stockSummaryRoutes, { prefix: '/api/stocks' });
-app.register(productPriceRoutes, { prefix: '/api/productPrices' });
+app.register(authRoutes, { prefix: '/api/auth' });
+// app.register(productRoutes, { prefix: '/api/products' });
+// app.register(supplierRoutes, { prefix: '/api/suppliers' });
+// app.register(purchaseRoutes, { prefix: '/api/purchases' });
+// app.register(salesRoutes, { prefix: '/api/sales' });
+// app.register(stockSummaryRoutes, { prefix: '/api/stocks' });
+// app.register(productPriceRoutes, { prefix: '/api/productPrices' });
+app.register(async (app) => {
+  // This preHandler runs for all routes in this block
+  app.addHook('preHandler', fastifyPassport.authenticate('jwt', { session: false }));
+
+  app.register(productRoutes, { prefix: '/api/products' });
+  app.register(supplierRoutes, { prefix: '/api/suppliers' });
+  app.register(purchaseRoutes, { prefix: '/api/purchases' });
+  app.register(salesRoutes, { prefix: '/api/sales' });
+  app.register(stockSummaryRoutes, { prefix: '/api/stocks' });
+  app.register(productPriceRoutes, { prefix: '/api/productPrices' });
+});
+app.register(fastifyAuth);
+app.register(fastifySecureSession, {
+  key: Buffer.from(process.env.SESSION_SECRET!, 'hex'),
+  cookie: {
+    path: '/',
+    httpOnly: true,
+    secure: 'auto',
+  },
+});
+app.register(fastifyPassport.initialize());
+app.register(fastifyPassport.secureSession());
+
+
+fastifyPassport.use('jwt', jwtStrategy);
 
 // Central error handler
 app.setErrorHandler((error: FastifyError, request, reply) => {
