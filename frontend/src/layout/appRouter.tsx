@@ -1,19 +1,8 @@
 import { createBrowserRouter } from 'react-router';
 import { Layout } from '../layout';
-import { Dashboard, LoginForm, P404, ProductDetailsPage, ProductPage, PurchasePage, SalePage, SupplierPage } from '../pages';
+import { Dashboard,  LoginPage,  P404, ProductDetailsPage, ProductPage, PurchasePage, SalePage, SupplierPage } from '../pages';
 import { ReportPage } from '@/pages/report';
-// import Layout from './routes/layout';
-// import Dashboard from './routes/dashboard';
-// import Login from './routes/login';
 
-// export const router = createBrowserRouter(
-//   createRoutesFromElements(
-//     <Route path="/" element={<Layout />}>
-//       <Route index element={<Dashboard />} />
-//       <Route path="login" element={<Login />} />
-//     </Route>
-//   )
-// );
 
 const router = createBrowserRouter([
   {
@@ -29,7 +18,7 @@ const router = createBrowserRouter([
       { path: '/reports', Component: ReportPage },
     ],
   },
-  { path: '/login', Component: LoginForm },
+  { path: '/login', Component: LoginPage },
   { path: '*', Component: P404 },
 ]);
 
