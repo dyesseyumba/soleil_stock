@@ -1,5 +1,13 @@
 import * as React from 'react';
-import { LayoutDashboard, PackageSearch, Store, BadgeDollarSign, NotebookPen, Settings, TruckElectric } from 'lucide-react';
+import {
+  LayoutDashboard,
+  PackageSearch,
+  Store,
+  BadgeDollarSign,
+  NotebookPen,
+  Settings,
+  TruckElectric,
+} from 'lucide-react';
 import { NavProjects } from '@/components/nav-projects';
 import { NavSecondary } from '@/components/nav-secondary';
 import { NavUser } from '@/components/nav-user';
@@ -21,8 +29,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   const data = {
     user: {
-      name: 'Cedelphie',
-      email: 'ced@example.com',
+      name: 'Bienvenue',
+      email: '',
       avatar: '/avatars/shadcn.jpg',
     },
     navSecondary: [

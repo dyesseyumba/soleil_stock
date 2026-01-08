@@ -47,7 +47,6 @@ const ProductDetailsForm = () => {
   const onSubmit = async (data: CreateProductPriceInput) => {
     try {
       if (mode === 'add') {
-        console.log(data);
         // const product = {...data, }
         await createProductPrice.mutateAsync(data);
       } else if (mode === 'edit' && editingItem) {

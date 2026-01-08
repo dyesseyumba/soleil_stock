@@ -45,8 +45,6 @@ export function Dashboard() {
   //   'Stock update: Flour adjusted to 780 units (Nov 18)',
   //   'Price update: Oil – New unit price applied (Nov 17)',
   // ];
-  console.log(recentActivity);
-  console.log(alerts);
   if (
     loadingTotalStocks ||
     loadingTotalValue ||
