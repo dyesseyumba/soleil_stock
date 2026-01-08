@@ -23,22 +23,24 @@ import {
 import logo from '../assets/logo.png';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useLocation } from 'react-router';
+import { getUserFromToken } from '@/pages';
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const location = useLocation();
+  const tokenUser = getUserFromToken();
 
   const data = {
     user: {
-      name: 'Bienvenue',
-      email: '',
+      name: tokenUser?.name ?? 'Bienvenue',
+      email: tokenUser?.email ?? '',
       avatar: '/avatars/shadcn.jpg',
     },
     navSecondary: [
-      {
-        title: 'Paramètres',
-        url: '#',
-        icon: Settings,
-      },
+      // {
+      //   title: 'Paramètres',
+      //   url: '#',
+      //   icon: Settings,
+      // },
     ],
     projects: [
       {
