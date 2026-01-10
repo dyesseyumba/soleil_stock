@@ -5,7 +5,6 @@ import {
   Store,
   BadgeDollarSign,
   NotebookPen,
-  Settings,
   TruckElectric,
 } from 'lucide-react';
 import { NavProjects } from '@/components/nav-projects';
