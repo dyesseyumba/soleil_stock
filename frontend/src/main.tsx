@@ -5,6 +5,17 @@ import './index.css';
 import { router } from './layout';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+// import { registerSW } from 'virtual:pwa-register';
+
+// const updateSW = registerSW({
+//   onNeedRefresh() {
+//     console.log('New version available');
+//   },
+//   onOfflineReady() {
+//     console.log('App ready for offline use');
+//   },
+// });
+
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')!).render(
