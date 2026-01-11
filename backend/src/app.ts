@@ -21,12 +21,6 @@ app.register(fastifyHelmet);
 
 // Register routes
 app.register(authRoutes, { prefix: '/api/auth' });
-// app.register(productRoutes, { prefix: '/api/products' });
-// app.register(supplierRoutes, { prefix: '/api/suppliers' });
-// app.register(purchaseRoutes, { prefix: '/api/purchases' });
-// app.register(salesRoutes, { prefix: '/api/sales' });
-// app.register(stockSummaryRoutes, { prefix: '/api/stocks' });
-// app.register(productPriceRoutes, { prefix: '/api/productPrices' });
 app.register(async (app) => {
   // This preHandler runs for all routes in this block
   app.addHook('preHandler', fastifyPassport.authenticate('jwt', { session: false }));

@@ -15,7 +15,7 @@ let failedQueue: FailedRequest[] = [];
 
 const axiosClient: AxiosInstance = axios.create({
   // baseURL: 'http://localhost:4000/api',
-  baseURL: 'https://soleil-stock-backend.railway.app/api',
+  baseURL: 'https://soleilstock-production.up.railway.app:8080/api',
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
