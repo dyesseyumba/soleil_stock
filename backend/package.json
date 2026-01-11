@@ -5,7 +5,7 @@
   "main": "app.ts",
   "private": true,
   "scripts": {
-    "build": "tsc && pnpm install --prod --prefix dist",
+    "build": "tsc",
     "start": "ts-node src/server.ts",
     "dev": "nodemon",
     "lint": "eslint . --fix",

@@ -14,7 +14,8 @@ let isRefreshing = false;
 let failedQueue: FailedRequest[] = [];
 
 const axiosClient: AxiosInstance = axios.create({
-  baseURL: 'http://localhost:4000/api',
+  // baseURL: 'http://localhost:4000/api',
+  baseURL: 'https://soleil-stock-backend.railway.app/api',
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',

@@ -17,5 +17,7 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "strict": true /* Enable all strict type-checking options. */,
     "resolveJsonModule": true
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "test", "**/*.test.ts", "vitest.config.ts", "prisma.config.ts"]
 }
