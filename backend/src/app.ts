@@ -12,7 +12,7 @@ const app = Fastify({ logger: true });
 
 // Register plugins
 app.register(fastifyCors, {
-  origin: "https://soleilstock-production.up.railway.app",
+  origin: "https://soleil-stock.netlify.app",
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
